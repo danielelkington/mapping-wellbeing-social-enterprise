@@ -1,4 +1,5 @@
-import {Component} from "@angular/core";
+import { Component } from "@angular/core";
+import { Router } from "@angular/router";
 
 // Displays a list of enterprises to the user and allows
 // them to select one.
@@ -9,4 +10,9 @@ import {Component} from "@angular/core";
 })
 export class EnterprisesComponent{
 
+    constructor(private router: Router){}
+
+    openEnterprise(){
+        this.router.navigate(["/map"])
+    }
 }
