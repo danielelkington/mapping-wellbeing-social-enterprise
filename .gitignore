@@ -1,0 +1,6 @@
+Prototype/**/*.js
+Prototype/**/*.js.map
+Prototype/hooks/
+Prototype/lib/
+Prototype/node_modules/
+Prototype/platforms/ 

@@ -1,0 +1,2 @@
+/*CSS for the whole app*/
+@import url("~/platform.css"); /*Include the relevant iOS/Android styles first*/
