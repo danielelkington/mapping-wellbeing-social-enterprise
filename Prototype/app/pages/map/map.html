@@ -1,3 +1,9 @@
-<Mapbox
-    [accessToken]="mapboxAccessToken">
+<Mapbox [accessToken]="mapboxAccessToken"
+  latitude="-37.8212"
+  longitude="145.0378"
+  zoomLevel="15.7"
+  mapStyle="emerald"
+  hideLogo="true"
+  hideAttribution="true"
+  (mapReady)="onMapReady($event)">
 </Mapbox>
