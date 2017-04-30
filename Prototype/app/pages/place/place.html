@@ -1,1 +1,6 @@
-<Label text="Hello World"></Label>
+
+<StackLayout *ngIf="place">
+    <Label text="Name = {{ place.name }}"></Label>
+    <Label text="Description = {{ place.desc }}"></Label>
+    <Button text="Go Back" (tap)="goBack()"></Button>
+</StackLayout>

@@ -5,6 +5,7 @@ import { AppComponent } from "./app.component";
 import { registerElement } from "nativescript-angular/element-registry";
 
 import { routes, navigatableComponents } from "./app.routing";
+import { PlaceService } from "./pages/place/place-service";
 
 //Allow the 'MapBox' element to be used in HTML.
 var map = require("nativescript-mapbox");
@@ -22,6 +23,9 @@ registerElement("Mapbox", () => map.Mapbox);
     declarations: [
         AppComponent,
         ...navigatableComponents
+    ],
+    providers: [
+        PlaceService
     ]
 })
 export class AppModule { }
