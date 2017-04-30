@@ -1,1 +1,11 @@
-<Label text="Hello World" (tap)="openEnterprise()"></Label>
+<GridLayout>
+	<ListView [items]="eplEnterpises" row="0" class="small-spacing">
+		<ng-template let-item="item" let-i="index">
+			<GridLayout columns="100, *, auto">
+				<Label [text]="item.strName" col="0" class="text"></Label>
+				<TextField id="item.numID" (propertyChange)="addPassword(item.numID, $event)" col="1" class="sml-txt-box" hint="Password"></TextField>
+				<Button text="View" col="2" class="sml-btn" (tap)="openEnterprise(item.strName)"></Button>
+			</GridLayout><!-- end GridLayout -->
+		</ng-template><!-- end ng-template -->
+	</ListView><!-- end ListView -->
+</GridLayout><!-- end GridLayout -->
