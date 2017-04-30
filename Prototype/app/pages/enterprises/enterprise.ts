@@ -1,10 +1,11 @@
 import { Participant } from "./participants";
 
 export class Enterprise {
+    passwordImageSrc: String;
 
     // creates an Enterprise object
-    constructor(public numID: number, public strName: string, public pplParticipantList: Array<Participant>, public strPassword: string,
-        public blnPassword: boolean) {
+    constructor(public numID: number, public strName: string, public pplParticipantList: Array<Participant>, public strPassword: string, public imageRef: string) {
+        this.passwordImageSrc = this.hasPassword() ? "https://i.imgur.com/hGw4LON.png" : "https://i.imgur.com/qeS6SKH.png";
     } // end constructor
 
     // add a participant to the array
@@ -13,7 +14,7 @@ export class Enterprise {
     } // end add
 
     hasPassword() {
-        return this.blnPassword;
+        return this.strPassword != null;
     } // end hasPassword
 
     // looks for a participant with the supplied name if one is one found then

@@ -79,7 +79,6 @@ export class MapComponent {
 	}
 
 	onTap(id: number) {	
-		console.log(id);
 		this.router.navigate(["/place", id]);
 	}
 }

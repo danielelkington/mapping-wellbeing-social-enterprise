@@ -1,10 +1,11 @@
 <GridLayout>
-	<ListView [items]="eplEnterpises" row="0" class="small-spacing">
+	<ListView [items]="eplEnterpises" row="0" class="small-spacing" (itemTap)="openEnterprise($event)">
 		<ng-template let-item="item" let-i="index">
-			<GridLayout columns="100, *, auto">
-				<Label [text]="item.strName" col="0" class="text"></Label>
-				<TextField id="item.numID" (propertyChange)="addPassword(item.numID, $event)" col="1" class="sml-txt-box" hint="Password"></TextField>
-				<Button text="View" col="2" class="sml-btn" (tap)="openEnterprise(item.strName)"></Button>
+			<GridLayout columns="100, *, 50" height="100">
+				<Image col="0" [src]="item.imageRef" width="100" height="100"></Image>
+				<Label [text]="item.strName" col="1" class="text"></Label>
+				<!--<TextField id="item.numID" (propertyChange)="addPassword(item.numID, $event)" col="1" class="sml-txt-box" hint="Password" secure="true"></TextField>-->
+				<Image col="2" [src]="item.passwordImageSrc" width="50" height="50"></Image>
 			</GridLayout><!-- end GridLayout -->
 		</ng-template><!-- end ng-template -->
 	</ListView><!-- end ListView -->

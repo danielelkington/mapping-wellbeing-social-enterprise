@@ -5,6 +5,7 @@ CSS to style the enterprises list page relevant to all platforms goes here
 .text {
     font-size: 17;
     vertical-align: middle;
+    margin: 10;
 } /* end text */
 
 .sml-txt-box {

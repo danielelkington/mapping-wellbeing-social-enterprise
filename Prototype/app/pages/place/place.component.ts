@@ -1,5 +1,6 @@
 import { Component, OnInit } from "@angular/core";
 import { Router, ActivatedRoute, Params } from '@angular/router';
+import { Location } from "@angular/common";
 import { PageRoute } from "nativescript-angular/router";
 import "rxjs/add/operator/switchMap";
 
@@ -18,7 +19,7 @@ export class PlaceComponent implements OnInit {
 
     constructor(
         private placeService: PlaceService,
-        private router: Router,
+        private location: Location,
         private route: ActivatedRoute
     ) {}
 
@@ -30,6 +31,6 @@ export class PlaceComponent implements OnInit {
     }
 
     goBack(): void {
-        this.router.navigate(['/map']);
+        this.location.back();
     }
 }
