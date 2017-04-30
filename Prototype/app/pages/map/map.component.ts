@@ -1,6 +1,7 @@
-import { Component } from "@angular/core";
+import { Component, OnInit } from "@angular/core";
 import { Config } from "../../config";
 import { Router, NavigationExtras } from "@angular/router";
+import * as geolocation from "nativescript-geolocation";
  
 // Displays a map associated with an enterprise to the user and allows
 // them to select a place.
@@ -9,7 +10,7 @@ import { Router, NavigationExtras } from "@angular/router";
 	templateUrl: "pages/map/map.html",
 	styleUrls: ["pages/map/map-common.css", "pages/map/map.css"]
 })
-export class MapComponent {
+export class MapComponent implements OnInit {
 	mapboxAccessToken = Config.mapboxAccessToken;
 
 	private map: any
@@ -17,6 +18,13 @@ export class MapComponent {
 	constructor(
     	private router : Router
   ) {}
+
+  ngOnInit(){
+    //Allows us to show the user's location on the map.
+    if (!geolocation.isEnabled()){
+      geolocation.enableLocationRequest();
+    }
+  }
 
 	onMapReady(args) {
 		this.map = args.map;
