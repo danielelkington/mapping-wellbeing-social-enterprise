@@ -1,6 +1,18 @@
-
-<StackLayout *ngIf="place">
-    <Label text="Name = {{ place.name }}"></Label>
-    <Label text="Description = {{ place.desc }}"></Label>
-    <Button text="Go Back" (tap)="goBack()"></Button>
-</StackLayout>
+<ScrollView orientation="vertical">
+    <StackLayout *ngIf="place">
+        <Image width="100%" src="https://i.imgur.com/Jodk4l7.jpg"></Image>
+        <StackLayout orientation="horizontal" horizontalAlignment="center" width="100%">
+            <StackLayout orientation="vertical" class="icon">
+                <Image src="res://ic_camera_enhance" class="icon" width="20"></Image>
+                <Label text="Inside" class="icon"></Label>
+            </StackLayout>
+            <StackLayout orientation="vertical" class="icon">
+                <Image src="res://ic_mic" class="icon" width="20"></Image>
+                <Label text="Listen" class="icon"></Label>
+            </StackLayout>
+        </StackLayout>
+        <Label class="heading" text="{{ place.name }}"></Label>
+        <Label class="body-text" text="{{ place.desc }}" textWrap="true"></Label>
+        <Button text="Go Back" (tap)="goBack()"></Button>
+    </StackLayout>
+</ScrollView>

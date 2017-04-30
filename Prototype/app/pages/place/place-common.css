@@ -6,3 +6,25 @@ Button {
     margin: 10;
     padding: 10;
 }
+
+Label.icon{
+    font-size: 13;
+}
+
+Image.icon{
+    width: 30;
+}
+
+StackLayout.icon{
+    margin: 10;
+}
+
+.heading{
+    font-size: 20;
+    horizontal-align: center;
+}
+
+.body-text{
+    padding: 10;
+    font-size: 15;
+}
