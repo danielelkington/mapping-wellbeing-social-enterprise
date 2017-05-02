@@ -1,0 +1,10 @@
+<GridLayout>
+	<ListView [items]="participantList" row="0" class="small-spacing" (itemTap)="openMap()">
+		<ng-template let-item="item" let-i="index">
+			<GridLayout columns="100, *, 50" height="100">
+				<Image col="0" [src]="userIcon" width="100" height="100"></Image>
+				<Label [text]="item.strName" col="1" class="text"></Label>
+			</GridLayout><!-- end GridLayout -->
+		</ng-template><!-- end ng-template -->
+	</ListView><!-- end ListView -->
+</GridLayout><!-- end GridLayout -->

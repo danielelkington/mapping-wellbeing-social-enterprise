@@ -49,13 +49,13 @@ export class EnterprisesComponent implements OnInit {
                     return;
                 }
                 if (enterprise.strPassword === r.text){
-                    this.router.navigate(["/map"]);
+                    this.router.navigate(["/participants"]);
                 }else{
                     alert("Incorrect Password");
                 }
             });
         } else{
-            this.router.navigate(["/map"]);
+            this.router.navigate(["/participants"]);
         }
     }
 
