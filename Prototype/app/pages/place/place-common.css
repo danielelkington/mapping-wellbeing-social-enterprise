@@ -25,6 +25,7 @@ StackLayout.icon{
 }
 
 .body-text{
+    margin: 5;
     padding: 10;
     font-size: 15;
 }

@@ -30,57 +30,39 @@ export class MapComponent implements OnInit {
 		this.map = args.map;
 		args.map.addMarkers([
 			{
-				lat: -37.8223,
-				lng: 145.03784,
+				lat: -37.757167,
+				lng: 145.347030,
 				id: 0,
-				title: 'Swinburne EN',
-				subtitle: 'The Engineering Building',
-				icon: 'https://i.imgur.com/cdFPldG.png',
+				title: 'By the train station',
+        		subtitle: 'Trees planted near the local train station',
+				icon: 'https://i.imgur.com/kYqCLAz.png',
 				onCalloutTap: (marker) => { this.onTap(marker.id); }
 			},
 			{
-				lat: -37.8228,
-				lng: 145.03842,
+				lat: -37.751435,
+				lng: 145.351357,
 				id: 1,
-				title: 'Swinburne ATC',
-				subtitle: 'The Advanced Technologies Centre',
-				icon: 'https://i.imgur.com/SRuzpbn.png',
+				title: 'The creek',
+				subtitle: 'Helping out down by the creek',
+				icon: 'https://i.imgur.com/vZ5C0tZ.png',
 				onCalloutTap: (marker) => { this.onTap(marker.id); }
 			},
 			{
-				lat: -37.8229,
-				lng: 145.03925,
+				lat: -37.753930,
+				lng: 145.348398,
 				id: 2,
-				title: 'Swinburne AMDC',
-				subtitle: 'The Advanced Manufacturing and Design Centre',
-				icon: 'https://i.imgur.com/C4pv4eZ.png',
+				title: 'Local charity',
+				subtitle: 'Maintaining the garden at a local charity',
+				icon: 'https://i.imgur.com/8kB8Kj1.png',
 				onCalloutTap: (marker) => { this.onTap(marker.id); }
 			},
 			{
-				lat: -37.8225,
-				lng: 145.03935,
+				lat: -37.755436,
+				lng: 145.352648,
 				id: 3,
-				title: 'Swinburne LB',
-				subtitle: 'The Swinburne Library',
-				icon: 'https://i.imgur.com/eInZqUj.png',
-				onCalloutTap: (marker) => { this.onTap(marker.id); }
-			},
-			{
-				lat: -37.8221,
-				lng: 145.03940,
-				id: 4,
-				title: 'Swinburne BA',
-				subtitle: 'The Business and Arts Building',
-				icon: 'https://i.imgur.com/92R3pMP.png',
-				onCalloutTap: (marker) => { this.onTap(marker.id); }
-			},
-			{
-				lat: -37.8214,
-				lng: 145.03846,
-				id: 5,
-				title: 'Swinburne GS',
-				subtitle: 'The George Swinburne Building',
-				icon: 'https://i.imgur.com/mJKaUem.png',
+				title: 'A new tree',
+				subtitle: 'A new tree has appeared in the local park...',
+				icon: 'https://i.imgur.com/z6UNnAj.png',
 				onCalloutTap: (marker) => { this.onTap(marker.id); }
 			}]
 		);

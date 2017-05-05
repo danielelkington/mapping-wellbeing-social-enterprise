@@ -11,6 +11,9 @@ import { PlaceService } from "./pages/place/place-service";
 var map = require("nativescript-mapbox");
 registerElement("Mapbox", () => map.Mapbox);
 
+var ripple = require("nativescript-ripple");
+registerElement("Ripple", () => ripple.Ripple);
+
 @NgModule({
     bootstrap: [
         AppComponent

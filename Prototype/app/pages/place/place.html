@@ -1,18 +1,16 @@
 <ScrollView orientation="vertical">
     <StackLayout *ngIf="place">
-        <Image width="100%" src="https://i.imgur.com/Jodk4l7.jpg"></Image>
+        <Image width="100%" src="https://i.imgur.com/gxvZhEJ.jpg"></Image>
         <StackLayout orientation="horizontal" horizontalAlignment="center" width="100%">
-            <StackLayout orientation="vertical" class="icon">
-                <Image src="res://ic_camera_enhance" class="icon" width="20"></Image>
-                <Label text="Inside" class="icon"></Label>
-            </StackLayout>
-            <StackLayout orientation="vertical" class="icon">
-                <Image src="res://ic_mic" class="icon" width="20"></Image>
-                <Label text="Listen" class="icon"></Label>
-            </StackLayout>
+            <Ripple height="70" width="150">
+                <StackLayout orientation="vertical" class="icon" horizontalAlignment="stretch" verticalAlignment="stretch">
+                    <Image src="res://ic_mic" class="icon" width="20"></Image>
+                    <Label text="Listen" class="icon" horizontalAlignment="center"></Label>
+                </StackLayout>
+            </Ripple>
         </StackLayout>
         <Label class="heading" text="{{ place.name }}"></Label>
-        <Label class="body-text" text="{{ place.desc }}" textWrap="true"></Label>
+        <TextView class="body-text" text="{{ place.desc }}" textWrap="true"></TextView>
         <Button text="Go Back" (tap)="goBack()"></Button>
     </StackLayout>
 </ScrollView>

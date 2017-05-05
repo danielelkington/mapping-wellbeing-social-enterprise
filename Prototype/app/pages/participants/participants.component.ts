@@ -16,7 +16,7 @@ export class ParticipantsComponent {
 	userIcon: String = "https://i.imgur.com/Qu3yZ9r.png"; 
 
     // the participants
-    participantList: Array<Participant> = [new Participant("Bob"), new Participant("Jack"), new Participant("Andrew"), new Participant("Max"), new Participant("John")];
+    participantList: Array<Participant> = [new Participant("Wendy"), new Participant("Jim"), new Participant("Steven"), new Participant("Marsha"), new Participant("Gwenda")];
 
     constructor(private router: Router) { }
 
