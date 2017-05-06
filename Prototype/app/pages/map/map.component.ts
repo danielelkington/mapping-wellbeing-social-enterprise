@@ -57,12 +57,12 @@ export class MapComponent implements OnInit {
 				onCalloutTap: (marker) => { this.onTap(marker.id); }
 			},
 			{
-				lat: -37.755436,
-				lng: 145.352648,
+				lat: -37.762877,
+				lng: 145.350944,
 				id: 3,
 				title: 'A new tree',
 				subtitle: 'A new tree has appeared in the local park...',
-				icon: 'https://i.imgur.com/z6UNnAj.png',
+				icon: 'https://i.imgur.com/wPX2eNT.png',
 				onCalloutTap: (marker) => { this.onTap(marker.id); }
 			}]
 		);
