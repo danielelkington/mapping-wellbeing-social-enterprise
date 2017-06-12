@@ -4,12 +4,12 @@
   "readme": "NativeScript Application",
   "repository": "<fill-your-repository-here>",
   "nativescript": {
-    "id": "org.nativescript.Prototype",
-    "tns-ios": {
-      "version": "2.5.0"
-    },
+    "id": "com.danielelkington.backontrackprototype",
     "tns-android": {
       "version": "2.5.0"
+    },
+    "tns-ios": {
+      "version": "3.0.1"
     }
   },
   "dependencies": {
