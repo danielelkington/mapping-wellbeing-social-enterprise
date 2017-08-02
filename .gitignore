@@ -4,3 +4,12 @@ Prototype/hooks/
 Prototype/lib/
 Prototype/node_modules/
 Prototype/platforms/ 
+Prototype/app/config.ts
+
+Frontend/**/*.js
+Frontend/**/*.js.map
+Frontend/hooks/
+Frontend/lib/
+Frontend/node_modules/
+Frontend/platforms/ 
+Frontend/app/config.ts
