@@ -7,6 +7,9 @@
     "id": "au.edu.swinburne.backontrack",
     "tns-ios": {
       "version": "3.1.0"
+    },
+    "tns-android": {
+      "version": "3.1.1"
     }
   },
   "dependencies": {
@@ -15,9 +18,13 @@
     "tns-core-modules": "~3.1.0"
   },
   "devDependencies": {
+    "babel-traverse": "6.25.0",
+    "babel-types": "6.25.0",
+    "babylon": "6.17.4",
     "karma": "^1.7.0",
     "karma-nativescript-launcher": "^0.4.0",
     "karma-qunit": "^1.2.1",
+    "lazy": "1.0.11",
     "nativescript-dev-typescript": "~0.5.0",
     "qunitjs": "^2.4.0",
     "typescript": "~2.2.1"
