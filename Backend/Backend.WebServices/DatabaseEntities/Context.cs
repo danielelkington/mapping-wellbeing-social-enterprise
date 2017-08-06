@@ -2,9 +2,9 @@ namespace Backend.WebServices.DatabaseEntities
 {
     using System.Data.Entity;
 
-    public partial class backontrack : DbContext
+    public partial class Context : DbContext, IContext
     {
-        public backontrack()
+        public Context()
             : base("name=backontrack")
         {
         }
@@ -18,5 +18,6 @@ namespace Backend.WebServices.DatabaseEntities
         protected override void OnModelCreating(DbModelBuilder modelBuilder)
         {
         }
+
     }
 }
