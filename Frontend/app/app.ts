@@ -1,15 +1,6 @@
-﻿/*
-In NativeScript, the app.ts file is the entry point to your application.
-You can use this file to perform app-level initialization, but the primary
-purpose of the file is to pass control to the app’s first module.
-*/
+﻿// this import should be first in order to load some required settings (like globals and reflect-metadata)
+import { platformNativeScriptDynamic } from "nativescript-angular/platform";
 
-import "./bundle-config";
-import * as app from 'application';
+import { AppModule } from "./app.module";
 
-app.start({ moduleName: 'main-page' });
-
-/*
-Do not place any code after the application has been started as it will not
-be executed on iOS.
-*/
+platformNativeScriptDynamic().bootstrapModule(AppModule);
