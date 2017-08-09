@@ -4,10 +4,10 @@ namespace Backend.WebServices.DatabaseEntities
 {
     public interface IContext
     {
-        DbSet<Enterprise> Enterprises { get; set; }
-        DbSet<MediaItem> MediaItems { get; set; }
-        DbSet<MediaItemType> MediaItemTypes { get; set; }
-        DbSet<Participant> Participants { get; set; }
-        DbSet<Place> Places { get; set; }
+        DbSet<Enterprise> Enterprises { get; }
+        DbSet<MediaItem> MediaItems { get; }
+        DbSet<MediaItemType> MediaItemTypes { get; }
+        DbSet<Participant> Participants { get; }
+        DbSet<Place> Places { get; }
     }
 }
