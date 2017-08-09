@@ -3,6 +3,7 @@ namespace Backend.WebServices.DatabaseEntities
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
+    using System.Data.Entity.Spatial;
 
     [Table("Place")]
     public partial class Place
@@ -13,22 +14,18 @@ namespace Backend.WebServices.DatabaseEntities
             MediaItems = new HashSet<MediaItem>();
         }
 
-        [StringLength(50)]
-        public string PlaceId { get; set; }
+        public int PlaceId { get; set; }
 
-        [StringLength(50)]
-        public string ParticipantId { get; set; }
+        public int ParticipantId { get; set; }
 
-        [StringLength(50)]
-        public string PlaceSquenceNumber { get; set; }
+        public int SequenceNumber { get; set; }
 
-        [StringLength(50)]
-        public string PlaceName { get; set; }
+        [StringLength(255)]
+        public string Name { get; set; }
 
-        public double? PlaceCoordinate { get; set; }
+        public DbGeography Coordinate { get; set; }
 
-        [StringLength(50)]
-        public string PlaceDescription { get; set; }
+        public string Description { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MediaItem> MediaItems { get; set; }

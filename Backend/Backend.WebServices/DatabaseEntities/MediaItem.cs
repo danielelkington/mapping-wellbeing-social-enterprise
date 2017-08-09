@@ -6,20 +6,17 @@ namespace Backend.WebServices.DatabaseEntities
     [Table("MediaItem")]
     public partial class MediaItem
     {
-        [StringLength(50)]
-        public string MediaItemId { get; set; }
+        public int Id { get; set; }
 
-        [StringLength(50)]
-        public string PlaceId { get; set; }
+        public int PlaceId { get; set; }
 
-        [StringLength(50)]
-        public string MediaItemTypeId { get; set; }
+        public int MediaItemTypeId { get; set; }
 
-        [StringLength(50)]
-        public string MediaItemName { get; set; }
+        [StringLength(255)]
+        public string Name { get; set; }
 
-        [StringLength(50)]
-        public string MediaItemURL { get; set; }
+        [StringLength(255)]
+        public string URL { get; set; }
 
         public virtual MediaItemType MediaItemType { get; set; }
 

@@ -13,11 +13,10 @@ namespace Backend.WebServices.DatabaseEntities
             MediaItems = new HashSet<MediaItem>();
         }
 
-        [StringLength(50)]
-        public string MediaItemTypeId { get; set; }
+        public int Id { get; set; }
 
         [StringLength(50)]
-        public string MediaItemTypeName { get; set; }
+        public string Name { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<MediaItem> MediaItems { get; set; }

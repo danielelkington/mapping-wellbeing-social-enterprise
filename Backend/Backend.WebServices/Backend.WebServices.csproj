@@ -143,6 +143,7 @@
     <Compile Include="Controllers\EnterpriseController.cs" />
     <Compile Include="DatabaseEntities\Enterprise.cs" />
     <Compile Include="DatabaseEntities\IContext.cs" />
+    <Compile Include="DataTransferObjects\EnterpriseDTO.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>

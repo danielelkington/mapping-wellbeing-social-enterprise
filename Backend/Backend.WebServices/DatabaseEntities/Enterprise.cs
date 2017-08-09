@@ -3,6 +3,7 @@ namespace Backend.WebServices.DatabaseEntities
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
+    using System.Data.Entity.Spatial;
 
     [Table("Enterprise")]
     public partial class Enterprise
@@ -13,22 +14,20 @@ namespace Backend.WebServices.DatabaseEntities
             Participants = new HashSet<Participant>();
         }
 
-        [StringLength(50)]
-        public string EnterpriseId { get; set; }
+        public int Id { get; set; }
 
-        [StringLength(50)]
-        public string EnterpriseName { get; set; }
+        [StringLength(255)]
+        public string Name { get; set; }
 
-        [StringLength(50)]
-        public string EnterprisePassword { get; set; }
+        [StringLength(255)]
+        public string Password { get; set; }
 
-        [Column(TypeName = "image")]
-        public byte[] EnterpriseCoverImage { get; set; }
+        [StringLength(255)]
+        public string CoverImageURL { get; set; }
 
-        public double? EnterpriseCoverCoordinate { get; set; }
+        public DbGeography CoverCoordinate { get; set; }
 
-        [StringLength(50)]
-        public string EnterpriseModifiedUTC { get; set; }
+        public int? ModifiedUTC { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Participant> Participants { get; set; }

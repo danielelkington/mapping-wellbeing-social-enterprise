@@ -13,20 +13,16 @@ namespace Backend.WebServices.DatabaseEntities
             Places = new HashSet<Place>();
         }
 
-        [StringLength(50)]
-        public string ParticipantId { get; set; }
+        public int Id { get; set; }
 
-        [StringLength(50)]
-        public string EnterpriseId { get; set; }
+        public int EnterpriseId { get; set; }
 
-        [StringLength(50)]
+        [StringLength(255)]
         public string ParticipantName { get; set; }
 
-        [StringLength(50)]
-        public string ParticipantBio { get; set; }
+        public string Bio { get; set; }
 
-        [Column(TypeName = "image")]
-        public byte[] ParticipantImage { get; set; }
+        public string ImageURL { get; set; }
 
         public virtual Enterprise Enterprise { get; set; }
 

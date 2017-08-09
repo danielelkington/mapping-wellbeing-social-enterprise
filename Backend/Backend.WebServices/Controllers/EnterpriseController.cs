@@ -5,6 +5,7 @@ using System.Web.Http;
 using System;
 using Backend.WebServices.DatabaseEntities;
 using System.Linq;
+using Backend.WebServices.DataTransferObjects;
 
 namespace Backend.WebServices.Controllers
 {
@@ -35,11 +36,14 @@ namespace Backend.WebServices.Controllers
         }
 
         // GET api/enterprise
-        public IEnumerable<string> Get()
+        public IEnumerable<EnterpriseDTO> Get()
         {
             ThrowExceptionIfNotHttps();
-            return _context.Enterprises.Select(x => x.EnterpriseName).ToList();
-            //return new string[] { "ForestedgeCommunityGarden", "VolunteerZoo" };
+            var enterprises = _context.Enterprises
+                                .OrderBy(x => x.Name)
+                                .ToList();
+
+            return enterprises.Select(x => new EnterpriseDTO(x)).ToList();
         }
 
         // GET api/enterprise/5
