@@ -9,7 +9,9 @@ export class Enterprise
     constructor(public id: number, public name: string, //public pplParticipantList: Array<Participant>
                 public password: string, public downloaded: boolean, public image: string)
     {
-        this.passwordImageSrc = this.hasPassword() ? "https://i.imgur.com/hGw4LON.png" : "https://i.imgur.com/qeS6SKH.png";
+        if (this.hasPassword())
+            this.lock();
+            
         this.setDownloadedImage();
     } // end constructor
 
@@ -23,9 +25,20 @@ export class Enterprise
         return this.password != null;
     } // end hasPassword
 
+    lock()
+    {
+        if (this.password != null)
+            this.passwordImageSrc = "https://i.imgur.com/hGw4LON.png";
+    }
+
+    unlock()
+    {
+        this.passwordImageSrc = null;
+    }
+
     setDownloadedImage()
     {
-        this.downloadedImageSrc = this.isDownloaded() ? "" : "";
+        this.downloadedImageSrc = this.isDownloaded() ? "http://i.imgur.com/KmQ9WNS.png" : "http://i.imgur.com/AlWlXQo.png";
     }
 
     isDownloaded()

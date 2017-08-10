@@ -4,6 +4,7 @@ import { Enterprise } from "./enterprise";
 import { TextField } from "ui/text-field";
 import { Observable } from "data/observable";
 import dialogs = require("ui/dialogs");
+import timer = require("timer");
 
 // Displays a list of enterprises to the user and allows
 // them to select one.
@@ -23,8 +24,8 @@ export class EnterprisesComponent implements OnInit
     // Initialize the enterprise list with values
     ngOnInit()
     {
-        this.enterprises.push(new Enterprise(1, "Swinburne", null, false, "https://i.imgur.com/6rtFgGZ.png"));
-        this.enterprises.push(new Enterprise(2, "Lilydale Garden", "abc", true, "https://i.imgur.com/SREjEeO.png"));
+        this.enterprises.push(new Enterprise(1, "Enterprise A", null, false, "https://i.imgur.com/nq7E3mc.png"));
+        this.enterprises.push(new Enterprise(2, "Enterprise B", "abc", true, "https://i.imgur.com/AJ1Qn9v.png"));
     }
 
     //Request password if required by enterprise
@@ -48,6 +49,7 @@ export class EnterprisesComponent implements OnInit
                 }
                 if (enterprise.password === r.text)
                 {
+                    enterprise.unlock();
                     dialogs.alert("Entering enterprise...");
                 }
                 else
@@ -79,6 +81,13 @@ export class EnterprisesComponent implements OnInit
                 // result argument is boolean
                 if (result)
                     dialogs.alert("Downloading enterprise " + enterprise.name);
+                
+                var timer1 = timer.setTimeout(() =>
+                {
+                    dialogs.alert(enterprise.name + " has been downloaded.");
+                    enterprise.download();
+                }, 5000);
+                timer.clearTimeout(timer1);
             });
         }
         else
