@@ -28,7 +28,7 @@ export class Enterprise
     lock()
     {
         if (this.password != null)
-            this.passwordImageSrc = "https://i.imgur.com/hGw4LON.png";
+            this.passwordImageSrc = "https://i.imgur.com/L2lNjOC.png";
     }
 
     unlock()
@@ -38,7 +38,7 @@ export class Enterprise
 
     setDownloadedImage()
     {
-        this.downloadedImageSrc = this.isDownloaded() ? "http://i.imgur.com/KmQ9WNS.png" : "http://i.imgur.com/AlWlXQo.png";
+        this.downloadedImageSrc = this.isDownloaded() ? "https://i.imgur.com/KmQ9WNS.png" : "https://i.imgur.com/AlWlXQo.png";
     }
 
     isDownloaded()
