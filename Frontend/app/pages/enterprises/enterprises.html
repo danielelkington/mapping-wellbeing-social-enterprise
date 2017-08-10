@@ -1,8 +1,8 @@
 <GridLayout>
-	<ListView [items]="eplEnterpises" row="0" class="small-spacing">
+	<ListView [items]="enterprises" row="0" class="small-spacing">
 		<ng-template let-item="item" let-i="index">
 			<GridLayout columns="100, *, 50" height="100">
-				<Label [text]="item.strName" col="1" class="text"></Label>
+				<Label [text]="item.name" col="1" class="text"></Label>
 			</GridLayout>
 		</ng-template>
 	</ListView>

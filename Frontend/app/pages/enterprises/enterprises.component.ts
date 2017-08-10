@@ -9,7 +9,7 @@ import dialogs = require("ui/dialogs");
 // them to select one.
 @Component({
     selector: "enterprises",
-    templateUrl: "//pages/enterprises/enterprises.html",
+    templateUrl: "pages/enterprises/enterprises.html",
     styleUrls: ["pages/enterprises/enterprises-common.css", "pages/enterprises/enterprises.css"]
 })
 export class EnterprisesComponent implements OnInit
