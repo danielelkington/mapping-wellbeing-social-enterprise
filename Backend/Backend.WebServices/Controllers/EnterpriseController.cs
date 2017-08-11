@@ -3,11 +3,16 @@ using System.Collections.Generic;
 using System.Web;
 using System.Web.Http;
 using System;
+using Backend.WebServices.DatabaseEntities;
+using System.Linq;
+using Backend.WebServices.DataTransferObjects;
 
 namespace Backend.WebServices.Controllers
 {
     public class EnterpriseController : ApiController
     {
+        private IContext _context;
+
         /// <summary>
         /// True if we're debugging, false if deployed to actual backend.
         /// </summary>
@@ -25,11 +30,20 @@ namespace Backend.WebServices.Controllers
                 throw new HttpException(403, "Must use https to access this resource, cannot use http");
         }
 
+        public EnterpriseController(IContext context)
+        {
+            _context = context;
+        }
+
         // GET api/enterprise
-        public IEnumerable<string> Get()
+        public IEnumerable<EnterpriseDTO> Get()
         {
             ThrowExceptionIfNotHttps();
-            return new string[] { "ForestedgeCommunityGarden", "VolunteerZoo" };
+            var enterprises = _context.Enterprises
+                                .OrderBy(x => x.Name)
+                                .ToList();
+
+            return enterprises.Select(x => new EnterpriseDTO(x)).ToList();
         }
 
         // GET api/enterprise/5
