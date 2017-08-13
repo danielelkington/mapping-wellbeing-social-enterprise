@@ -1,0 +1,12 @@
+<GridLayout>
+	<ListView [items]="enterprises" row="0" class="small-spacing" (itemTap)="openEnterprise($event)">
+		<ng-template let-item="item" let-i="index">
+			<GridLayout columns="100, *, 35, 50" height="100">
+				<Image col="0" [src]="item.image" width="100" height="100"></Image>
+				<Label [text]="item.name" col="1" class="text"></Label>
+				<Image col="2" [src]="item.downloadedImageSrc" width="35" height="35" (tap)="downloadEnterprise($event)"></Image>
+				<Image col="3" [src]="item.passwordImageSrc" width="35"></Image>
+			</GridLayout>
+		</ng-template>
+	</ListView>
+</GridLayout>
