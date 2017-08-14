@@ -1,5 +1,6 @@
 import {Injectable} from "@angular/core";
 import {Observable} from "rxjs/Rx";
+import {Enterprise} from "../pages/enterprises/enterprise"
 var Sqlite = require("nativescript-sqlite");
 
 @Injectable()
@@ -65,6 +66,30 @@ export class LocalDatabaseService{
 
         promise.catch(this.handleErrors);
         return promise;
+    }
+
+    //Get a list of basic details of all enterprises saved locally
+    getSavedEnterprises():Promise<Array<Enterprise>>{
+        //TODO
+        return new Promise(function(resolve, reject){
+            resolve([new Enterprise(1, 'Enterprise A', null, true, 'https://i.imgur.com/nq7E3mc.png')]);
+        });
+    }
+
+    //Get complete details of a single enterprise saved locally
+    getSavedEnterprise(entepriseId: number):Promise<Enterprise>{
+        //TODO
+        return new Promise(function(resolve, reject){
+            resolve(new Enterprise(1, 'Enterprise A', null, true, 'https://i.imgur.com/nq7E3mc.png'));
+        });
+    }
+
+    //Given a complete enterprise, save it to the local db
+    saveEnterprise(enterprise: Enterprise):Promise<any>{
+        //TODO
+        return new Promise(function(resolve, reject){
+            resolve(null);
+        });
     }
 
     private handleErrors(error){
