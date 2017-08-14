@@ -62,8 +62,14 @@ namespace Backend.UnitTest
         [TestMethod]
         public void GetEnterprise_ReturnsSingleEnterprise()
         {
-            var response = _target.Get(1);
-            response.Should().Be("ForestedgeCommunityGarden");
+            //Arrange
+            _fakeContext.EnterpriseList.Add(new Enterprise { Id = 5, Name = "Enterprise1", Password = "abc", CoverImageURL = "myimage.com", ModifiedUTC = 2 });
+
+            //Act
+            var response = _target.Get(5);
+
+            //Assert
+            response.Name.Should().Be("Enterprise1");
         }
     }
 }

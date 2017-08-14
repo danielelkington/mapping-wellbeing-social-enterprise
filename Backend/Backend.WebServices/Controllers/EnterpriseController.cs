@@ -51,11 +51,23 @@ namespace Backend.WebServices.Controllers
         /// Given an Id (and possibly a password), get details of a specific enterprise
         /// </summary>
         /// <param name="id">ID of the enterprise whose details will be returned</param>
-        /// <returns>A string representing an enterprise</returns>
-        public string Get(int id)
+        /// <returns>An EnterpriseDTO with the specified ID or null</returns>
+        public EnterpriseDTO Get(int id)
         {
             ThrowExceptionIfNotHttps();
-            return "ForestedgeCommunityGarden";
+            IEnumerable<EnterpriseDTO> enterprises = Get(); //Tried using _context.Enterprises.Find(id) but always returned null.
+            EnterpriseDTO enterprise = null;
+
+            foreach (EnterpriseDTO e in enterprises)
+                if (e.Id == id)
+                    enterprise = e;
+
+            if (enterprise != null && enterprise.HasPassword)
+            {
+                var test = RequestContext;
+            }
+
+            return enterprise;
         }
     }
 }
