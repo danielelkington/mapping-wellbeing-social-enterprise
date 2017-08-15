@@ -3,6 +3,9 @@ using Backend.WebServices.Controllers;
 using FluentAssertions;
 using System.Linq;
 using Backend.WebServices.DatabaseEntities;
+using System.Collections.Generic;
+using System.Net.Http;
+using System.Web;
 
 namespace Backend.UnitTest
 {
@@ -62,14 +65,70 @@ namespace Backend.UnitTest
         [TestMethod]
         public void GetEnterprise_ReturnsSingleEnterprise()
         {
-            //Arrange
-            _fakeContext.EnterpriseList.Add(new Enterprise { Id = 5, Name = "Enterprise1", Password = "abc", CoverImageURL = "myimage.com", ModifiedUTC = 2 });
+            //Arrange                           --Is there an easier way?
+            MediaItemType mediaItemType = new MediaItemType { Id = 25, Name = "newMediaItemType" };
+            MediaItem mediaItem = new MediaItem { Id = 20, Name = "newMediaItem", PlaceId = 15, MediaItemType = mediaItemType };
+            Place place = new Place { PlaceId = 15, Name = "newPlace", ParticipantId = 10, MediaItems = new List<MediaItem>() { mediaItem } };
+            Participant participant = new Participant { Id = 10, ParticipantName = "newParticipant", EnterpriseId = 5, Places = new List<Place>() { place } };
+            Enterprise enterprise = new Enterprise { Id = 5, Name = "Enterprise1", Password = "abc", CoverImageURL = "myimage.com", ModifiedUTC = 2, Participants = new List<Participant>() { participant } };
+
+            _fakeContext.EnterpriseList.Add(enterprise);
+
+            _target.Request = new HttpRequestMessage();
+            _target.Request.Headers.Add("Authorization", "abc");
 
             //Act
-            var response = _target.Get(5, "abc");
+             var response = _target.Get(5);
             
             //Assert
-            response.Name.Should().Be("Enterprise1");
+            response.Participants.First()
+                    .Places.First()
+                    .MediaItems.First()
+                    .MediaItemType.Name.Should().Be("newMediaItemType");
+        }
+
+        [TestMethod]
+        public void GetEnterprise_ReturnError403()
+        {
+            //Arrange
+            Enterprise enterprise = new Enterprise { Id = 5, Name = "Enterprise1", Password = "abc", CoverImageURL = "myimage.com", ModifiedUTC = 2 };
+
+            _fakeContext.EnterpriseList.Add(enterprise);
+
+            _target.Request = new HttpRequestMessage();
+            _target.Request.Headers.Add("Authorization", "wrongPassword");
+
+            //Act
+            try
+            {
+                var response = _target.Get(5);
+            }
+
+            //Assert
+            catch (HttpException ex)
+            {
+                Assert.AreEqual(403, ex.GetHttpCode());
+            }
+        }
+
+        [TestMethod]
+        public void GetEnterprise_ReturnError404()
+        {
+            //Arrange
+            _target.Request = new HttpRequestMessage();
+            _target.Request.Headers.Add("Authorization", "wrongPassword");
+
+            //Act
+            try
+            {
+                var response = _target.Get(5);
+            }
+
+            //Assert
+            catch (HttpException ex)
+            {
+                Assert.AreEqual(404, ex.GetHttpCode());
+            }
         }
     }
 }

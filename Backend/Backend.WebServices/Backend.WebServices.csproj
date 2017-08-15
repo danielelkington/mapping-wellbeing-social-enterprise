@@ -143,7 +143,12 @@
     <Compile Include="Controllers\EnterpriseController.cs" />
     <Compile Include="DatabaseEntities\Enterprise.cs" />
     <Compile Include="DatabaseEntities\IContext.cs" />
+    <Compile Include="DataTransferObjects\EnterpriseDetailsDTO.cs" />
     <Compile Include="DataTransferObjects\EnterpriseDTO.cs" />
+    <Compile Include="DataTransferObjects\MediaItemDTO.cs" />
+    <Compile Include="DataTransferObjects\MediaItemTypeDTO.cs" />
+    <Compile Include="DataTransferObjects\ParticipantDTO.cs" />
+    <Compile Include="DataTransferObjects\PlaceDTO.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
