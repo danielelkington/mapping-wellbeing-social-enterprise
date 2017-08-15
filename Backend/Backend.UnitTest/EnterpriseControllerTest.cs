@@ -3,6 +3,11 @@ using Backend.WebServices.Controllers;
 using FluentAssertions;
 using System.Linq;
 using Backend.WebServices.DatabaseEntities;
+using System.Net.Http;
+using System.Web.Http;
+using Backend.WebServices;
+using System.Collections.Generic;
+using Backend.WebServices.DataTransferObjects;
 
 namespace Backend.UnitTest
 {
@@ -66,8 +71,8 @@ namespace Backend.UnitTest
             _fakeContext.EnterpriseList.Add(new Enterprise { Id = 5, Name = "Enterprise1", Password = "abc", CoverImageURL = "myimage.com", ModifiedUTC = 2 });
 
             //Act
-            var response = _target.Get(5);
-
+            var response = _target.Get(5, "abc");
+            
             //Assert
             response.Name.Should().Be("Enterprise1");
         }

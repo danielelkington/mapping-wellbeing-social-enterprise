@@ -51,23 +51,26 @@ namespace Backend.WebServices.Controllers
         /// Given an Id (and possibly a password), get details of a specific enterprise
         /// </summary>
         /// <param name="id">ID of the enterprise whose details will be returned</param>
-        /// <returns>An EnterpriseDTO with the specified ID or null</returns>
-        public EnterpriseDTO Get(int id)
+        /// <param name="password">Password of the enterprise</param>
+        /// <returns>An EnterpriseDTO with the specified ID</returns>
+        public EnterpriseDTO Get(int id, string password = null)
         {
             ThrowExceptionIfNotHttps();
-            IEnumerable<EnterpriseDTO> enterprises = Get(); //Tried using _context.Enterprises.Find(id) but always returned null.
-            EnterpriseDTO enterprise = null;
+            var enterprises = _context.Enterprises.ToList();
+            Enterprise enterprise = null;
 
-            foreach (EnterpriseDTO e in enterprises)
+            foreach (Enterprise e in enterprises)
                 if (e.Id == id)
                     enterprise = e;
 
-            if (enterprise != null && enterprise.HasPassword)
-            {
-                var test = RequestContext;
-            }
+            if (password != null && enterprise.Password != null)
+                if (!enterprise.Password.Equals(password))
+                    throw new HttpException(403, "Password is incorrect");
 
-            return enterprise;
+            if (enterprise == null)
+                throw new HttpException(404, "Enterprise not found");
+
+            return new EnterpriseDTO(enterprise);
         }
     }
 }
