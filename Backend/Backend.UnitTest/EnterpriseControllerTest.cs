@@ -3,11 +3,6 @@ using Backend.WebServices.Controllers;
 using FluentAssertions;
 using System.Linq;
 using Backend.WebServices.DatabaseEntities;
-using System.Net.Http;
-using System.Web.Http;
-using Backend.WebServices;
-using System.Collections.Generic;
-using Backend.WebServices.DataTransferObjects;
 
 namespace Backend.UnitTest
 {
