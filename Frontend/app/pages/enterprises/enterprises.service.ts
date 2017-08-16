@@ -1,6 +1,6 @@
 import { Injectable } from "@angular/core";
 import { Http, Headers, Response } from "@angular/http";
-import { Enterprise } from "./enterprise";
+import { Enterprise } from "../../shared/enterprise";
 import "rxjs/add/operator/map";
 import { Observable } from "rxjs/Rx";
 import { Config } from "./config";
@@ -14,7 +14,6 @@ export class EnterpriseService
     {
         let enterpriseList = [];
         let headers = new Headers();
-        headers.append("Authorization", "Bearer " + Config.token);
 
         return this.http.get(Config.apiUrl, {
         headers: headers
@@ -22,6 +21,7 @@ export class EnterpriseService
         .map(res => res.json())
         .map(data =>
         {
+            setTimeout(function(){}, 2000); //to make sure the busy indicator works - later remove this!
             data.forEach((enterprise) =>
             {
                 enterpriseList.push(new Enterprise(enterprise.Id, enterprise.Name, "abcd", enterprise.CoverImageURL));

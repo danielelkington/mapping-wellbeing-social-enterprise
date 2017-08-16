@@ -1,6 +1,6 @@
 import {Injectable} from "@angular/core";
 import {Observable} from "rxjs/Rx";
-import {Enterprise} from "../pages/enterprises/enterprise"
+import {Enterprise} from "./enterprise"
 import {Participant} from "./participant";
 import {Place} from "./place";
 import {MediaItem} from "./mediaItem";

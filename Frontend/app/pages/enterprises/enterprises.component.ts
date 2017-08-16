@@ -1,6 +1,6 @@
 import { Component, ElementRef, OnInit, ViewChild, NgModule } from "@angular/core";
 import { Router } from "@angular/router";
-import { Enterprise } from "./enterprise";
+import { Enterprise } from "../../shared/enterprise";
 import { TextField } from "ui/text-field";
 import { Observable } from "data/observable";
 import { EnterpriseService } from "./enterprises.service";
@@ -39,23 +39,16 @@ export class EnterprisesComponent implements OnInit
             {
                 this.enterprises.push(enterprise);
             });
+            this.isLoading = false;
+            if (this.enterprises.length === 0){
+
+            }
         },
         err =>
         {
             console.log(err);
             dialogs.alert("Failed to load enterprises");
         });
-
-        this.isLoading = false;
-
-        if (this.enterprises.length === 0)
-        {
-            dialogs.alert("Failed to load enterprises");
-        }
-        else
-        {
-            
-        }
     }
 
     //Request password if required by enterprise
@@ -125,30 +118,4 @@ export class EnterprisesComponent implements OnInit
             dialogs.alert("This enterprise has already been downloaded");
         }
     }
-
-    //Request password if required by enterprise. If password correct or no password,
-    //changes the page.
-    /*openEnterprise(args){
-        var enterprise = this.eplEnterpises[args.index];
-        if (enterprise.hasPassword()){
-            dialogs.prompt({
-                title: "Password",
-                message: "Enter password to view " + enterprise.strName,
-                okButtonText: "OK",
-                cancelButtonText: "Cancel",
-                inputType: dialogs.inputType.password
-            }).then(r => {
-                if (!r.result){
-                    return;
-                }
-                if (enterprise.strPassword === r.text){
-                    this.router.navigate(["/participants"]);
-                }else{
-                    alert("Incorrect Password");
-                }
-            });
-        } else{
-            this.router.navigate(["/participants"]);
-        }
-    }*/
-} // end EnterprisesComponent
+}
