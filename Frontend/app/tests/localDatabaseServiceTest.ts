@@ -77,7 +77,7 @@ QUnit.test("getSavedEnterprises returns enterprises if enterprises in DB", funct
 });
 
 QUnit.test("getSavedEnterprise returns full details of saved enterprise", function(assert){
-    assert.expect(2);
+    assert.expect(20);
     var databaseName = "testBackOnTrack.db";
     var target = setupTests(databaseName);
 
@@ -107,10 +107,29 @@ QUnit.test("getSavedEnterprise returns full details of saved enterprise", functi
     
     promise = promise.then(x => target.getSavedEnterprise(1))
         .then(enterprise => {
-            console.log('here3');
             assert.equal(1, enterprise.id);
             assert.equal('e1', enterprise.name);
-            //TODO when enterprises have participants, do more assertions!
+
+            assert.equal(2, enterprise.participants.length);
+            assert.equal('John', enterprise.participants[0].name);
+            assert.equal('bio1', enterprise.participants[0].bio);
+            assert.equal('url1', enterprise.participants[0].imageURL);
+            assert.equal('filename1', enterprise.participants[0].imageFileName);
+            assert.equal('Sally', enterprise.participants[1].name);
+            
+            assert.equal(0, enterprise.participants[0].places.length);
+            assert.equal(2, enterprise.participants[1].places.length);
+            assert.equal('place2', enterprise.participants[1].places[0].name);
+            assert.equal(4, enterprise.participants[1].places[0].latitude);
+            assert.equal(5, enterprise.participants[1].places[0].longitude);
+            assert.equal('place2desc', enterprise.participants[1].places[0].description);
+            assert.equal('place1', enterprise.participants[1].places[1].name);
+
+            assert.equal(2, enterprise.participants[1].places[1].mediaItems.length);
+            assert.equal('pic1', enterprise.participants[1].places[1].mediaItems[0].name);
+            assert.equal('pic1filename', enterprise.participants[1].places[1].mediaItems[0].filename);
+            assert.equal('pic1url', enterprise.participants[1].places[1].mediaItems[0].url);
+            assert.equal('pic2', enterprise.participants[1].places[1].mediaItems[1].name);
         });
     return promise;
 });

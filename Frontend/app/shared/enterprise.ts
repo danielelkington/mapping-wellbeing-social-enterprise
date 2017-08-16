@@ -1,10 +1,11 @@
-//import { Participant } from "./participants";
+import { Participant } from "./participant";
 
 export class Enterprise
 {
     passwordImageSrc: String;
     downloadedImageSrc: String;
     downloaded: Boolean;
+    public participants: Array<Participant> = [];
 
     // creates an Enterprise object
     constructor(public id: number, public name: string, //public pplParticipantList: Array<Participant>
@@ -55,14 +56,4 @@ export class Enterprise
         }
     }
 
-    // looks for a participant with the supplied name if one is one found then
-    // returns that participant otherwise returns null
-    /*getParticipant(strName: string) {
-        this.pplParticipantList.forEach((ptpParticipant) => {
-            if (ptpParticipant.strName === strName)
-                return ptpParticipant;
-        }); // end foreach
-
-        return null;
-    } // end getParticipant*/
-} // end Enterprise
+}

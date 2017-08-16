@@ -89,8 +89,6 @@ export class LocalDatabaseService{
     //Get complete details of a single enterprise saved locally
     getSavedEnterprise(enterpriseId: number):Promise<Enterprise>{
         var enterprise : Enterprise = null;
-        //TODO remove this when Enterprise has a list of participants
-        var participants : Array<Participant> = [];
         var promise = this.database.get(
             "SELECT Id, Name, CoverImageURL, CoverImageFilename, ModifiedUTC " +
             "FROM Enterprise " +
@@ -107,12 +105,12 @@ export class LocalDatabaseService{
                 if (error){
                     this.handleErrors(error);
                 }
-                participants.push(new Participant(row[0], row[1], row[2], row[3], row[4]));
+                enterprise.participants.push(new Participant(row[0], row[1], row[2], row[3], row[4]));
             }
         ));
         promise = promise.then(x => {
             var placePromises : Array<Promise<any>> = [];
-            for (let participant of participants){
+            for (let participant of enterprise.participants){
                 placePromises.push(this.populatePlacesInParticipant(participant));
             }
             return Promise.all(placePromises);
