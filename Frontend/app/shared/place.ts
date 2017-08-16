@@ -14,4 +14,8 @@ export class Place
     {
 
     }
+
+    numberOfThingsToDownload(): number{
+        return this.mediaItems.length;
+    }
 }

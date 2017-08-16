@@ -80,7 +80,7 @@ export class LocalDatabaseService{
                     console.log(JSON.stringify(error));
                     return enterprises;
                 }
-                enterprises.push(new Enterprise(row[0], row[1], null, row[2]));
+                enterprises.push(new Enterprise(row[0], row[1], /*downloaded:*/true, /*haspassword*/false, row[2]));
             });
         promise = promise.then(x => enterprises).catch(this.handleErrors);
         return promise;
@@ -94,7 +94,7 @@ export class LocalDatabaseService{
             "FROM Enterprise " +
             "WHERE Id = ?", [enterpriseId]);
         promise = promise.then(row => {
-            enterprise = new Enterprise(row[0], row[1], null, row[2]);
+            enterprise = new Enterprise(row[0], row[1], /*downloaded*/true, /*haspassword*/false, row[2]);
         });
         promise = promise.then(x => this.database.each(
             "SELECT Id, Name, Bio, ImageURL, ImageFilename " +

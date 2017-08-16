@@ -21,14 +21,22 @@ export class EnterpriseService
         .map(res => res.json())
         .map(data =>
         {
-            setTimeout(function(){}, 2000); //to make sure the busy indicator works - later remove this!
             data.forEach((enterprise) =>
             {
-                enterpriseList.push(new Enterprise(enterprise.Id, enterprise.Name, "abcd", enterprise.CoverImageURL));
+                enterpriseList.push(new Enterprise(enterprise.Id, enterprise.Name, 
+                /*downloaded:*/false, /*hasPassword:*/enterprise.HasPassword, enterprise.CoverImageURL));
             });
             return enterpriseList;
         })
         .catch(this.handleErrors);
+    }
+
+    getEnterprise(id: Number, password: string){
+        
+        //TODO call service!
+        return new Observable<Enterprise>(observer=> {
+            observer.next(new Enterprise(1, 'a', true, false, 'a'));
+        });
     }
 
     handleErrors(error: Response)

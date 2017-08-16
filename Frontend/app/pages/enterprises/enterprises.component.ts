@@ -4,6 +4,8 @@ import { Enterprise } from "../../shared/enterprise";
 import { TextField } from "ui/text-field";
 import { Observable } from "data/observable";
 import { EnterpriseService } from "./enterprises.service";
+import {LocalStorageService} from"../../shared/localStorageService";
+import {LocalDatabaseService} from"../../shared/localDatabaseService";
 import { Config } from "./config";
 import dialogs = require("ui/dialogs");
 import timer = require("timer");
@@ -12,7 +14,7 @@ import timer = require("timer");
 // them to select one.
 @Component({
     selector: "enterprises",
-    providers:  [EnterpriseService],
+    providers:  [EnterpriseService, LocalStorageService, LocalDatabaseService],
     templateUrl: "pages/enterprises/enterprises.html",
     styleUrls: ["pages/enterprises/enterprises-common.css", "pages/enterprises/enterprises.css"]
 })
@@ -22,13 +24,18 @@ export class EnterprisesComponent implements OnInit
     enterprises: Array<Enterprise> = [];
     isLoading = false;
 
-    constructor(private router: Router, private enterpriseService: EnterpriseService) { }
+    constructor(private router: Router,
+        private enterpriseService: EnterpriseService,
+        private localStorageService : LocalStorageService) { }
 
     // Initialize the enterprise list with values
     ngOnInit()
     {
         ////////////////////////////////////////////////
-        //Add code to check for downloaded enterprises//
+        //Add code to check for downloaded enterprises
+        //(note DE: should shove downloaded enterprises in first,
+        //and for any that come back from the service we should NOT update any
+        //them in the list - ie, keep the hasPassword value false and isDownloaded value true)
         ////////////////////////////////////////////////
 
         this.isLoading = true;
@@ -52,11 +59,21 @@ export class EnterprisesComponent implements OnInit
     }
 
     //Request password if required by enterprise
+    //If enterprise already downloaded, enters it
+    //If enterprise not downloaded, tries to download it.
     //Enters the enterprise if password is correct, or no password required
-    openEnterprise(args)
+    selectEnterprise(args)
     {
         var enterprise = this.enterprises[args.index];
-        if (enterprise.hasPassword())
+        if (enterprise.busy){
+            return;
+        }
+        if (enterprise.isDownloaded()){
+            this.openEnterprise(enterprise);
+            return;
+        }
+
+        if (enterprise.hasPassword)
         {
             dialogs.prompt({
                 title: "Password",
@@ -70,52 +87,52 @@ export class EnterprisesComponent implements OnInit
                 {
                     return;
                 }
-                if (enterprise.password === r.text)
-                {
-                    enterprise.unlock();
-                    dialogs.alert("Entering enterprise...");
-                }
-                else
-                {
-                    dialogs.alert("Incorrect Password");
-                }
+                this.downloadEnterprise(enterprise, r.text);
             });
         }
         else
         {
-            dialogs.alert("Entering enterprise...");
+            this.downloadEnterprise(enterprise, null);
         }
     }
 
+    openEnterprise(enterprise){
+        //TODO
+        dialogs.alert("Entering enterprise...");
+    }
+
     //Asks user to confirm download before downloading enterprise
-    downloadEnterprise(args)
+    downloadEnterprise(enterprise, password)
     {
-        var enterprise = this.enterprises[args.index];
-        if (!enterprise.isDownloaded())
+        dialogs.confirm({
+            title: "Download " + enterprise.name,
+            message: "Are you sure you want to download the enterprise " + enterprise.name + " ?",
+            okButtonText: "Yes",
+            cancelButtonText: "No"
+        })
+        .then(result =>
         {
-            dialogs.confirm({
-                title: "Download " + enterprise.name,
-                message: "Are you sure you want to download the enterprise " + enterprise.name + " ?",
-                okButtonText: "Yes",
-                cancelButtonText: "No"
-            })
-            .then(result =>
+            if (!result)
+                return;
+            enterprise.busy = true;
+
+            this.enterpriseService.getEnterprise(enterprise, password)
+            .subscribe(downloadedEnterprise =>
             {
-                // result argument is boolean
-                if (result)
-                    dialogs.alert("Downloading enterprise " + enterprise.name);
-                
-                var timer1 = timer.setTimeout(() =>
-                {
-                    dialogs.alert(enterprise.name + " has been downloaded.");
-                    enterprise.download();
-                }, 5000);
-                timer.clearTimeout(timer1);
+                this.localStorageService.saveEnterprise(enterprise, downloadedEnterprise)
+                    .then(x => {
+                        enterprise.busy = false;
+                        enterprise.setDownloaded();
+                    });
+            },
+            err =>
+            {
+                console.log(err);
+                dialogs.alert("Failed to download enterprise");
+                enterprise.busy = false;
             });
-        }
-        else
-        {
-            dialogs.alert("This enterprise has already been downloaded");
-        }
+            
+            
+        });
     }
 }

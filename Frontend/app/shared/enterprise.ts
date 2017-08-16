@@ -4,42 +4,35 @@ export class Enterprise
 {
     passwordImageSrc: String;
     downloadedImageSrc: String;
-    downloaded: Boolean;
-    public participants: Array<Participant> = [];
+    public busy: Boolean = false;
+    public downloadProgressPercentage: Number = 0;
+    public participants: Array<Participant> = [];    
 
     // creates an Enterprise object
-    constructor(public id: number, public name: string, //public pplParticipantList: Array<Participant>
-                public password: string, public image: string)
+    constructor(public id: number, public name: string, public downloaded: Boolean,
+                public hasPassword: Boolean, public image: string)
     {
-        if (this.hasPassword())
+        if (this.hasPassword)
             this.lock();
+        this.setDownloadedImage();
     } // end constructor
-
-    // add a participant to the array
-    /*add(ptpParticipant: Participant) {
-        this.pplParticipantList.push(ptpParticipant);
-    } // end add*/
-
-    hasPassword()
-    {
-        return this.password != null;
-    } // end hasPassword
 
     lock()
     {
-        if (this.password != null)
+        if (this.hasPassword)
             this.passwordImageSrc = "https://i.imgur.com/L2lNjOC.png";
-    }
-
-    unlock()
-    {
-        this.passwordImageSrc = null;
     }
 
     setDownloaded()
     {
-        //downloaded = Enterprise found on local storage ? true : false;
-        this.downloadedImageSrc = this.isDownloaded() ? "https://i.imgur.com/KmQ9WNS.png" : "https://i.imgur.com/AlWlXQo.png";
+        this.downloaded = true;
+        this.setDownloadedImage();
+        this.passwordImageSrc = null;
+        this.hasPassword = false;
+    }
+
+    setDownloadedImage(){
+        this.downloadedImageSrc = this.isDownloaded() ? null : "https://i.imgur.com/AlWlXQo.png";
     }
 
     isDownloaded()
@@ -47,13 +40,12 @@ export class Enterprise
         return this.downloaded;
     }
 
-    download()
-    {
-        if (!this.isDownloaded())
-        {
-            this.downloaded = true;
-            this.setDownloaded();
+    numberOfThingsToDownload(): number{
+        var count = 1; //enterprise image
+        for(let participant of this.participants){
+            count += participant.numberOfThingsToDownload();
         }
+        return count;
     }
 
 }

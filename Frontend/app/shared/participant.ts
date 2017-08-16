@@ -7,4 +7,11 @@ export class Participant{
 
     }
 
+    numberOfThingsToDownload(): number{
+        var count = 2; //participant image + map
+        for(let place of this.places){
+            count += place.numberOfThingsToDownload();
+        }
+        return count;
+    }
 }
