@@ -4,15 +4,14 @@ export class Enterprise
 {
     passwordImageSrc: String;
     downloadedImageSrc: String;
+    downloaded: Boolean;
 
     // creates an Enterprise object
     constructor(public id: number, public name: string, //public pplParticipantList: Array<Participant>
-                public password: string, public downloaded: boolean, public image: string)
+                public password: string, public image: string)
     {
         if (this.hasPassword())
             this.lock();
-            
-        this.setDownloadedImage();
     } // end constructor
 
     // add a participant to the array
@@ -36,8 +35,9 @@ export class Enterprise
         this.passwordImageSrc = null;
     }
 
-    setDownloadedImage()
+    setDownloaded()
     {
+        //downloaded = Enterprise found on local storage ? true : false;
         this.downloadedImageSrc = this.isDownloaded() ? "https://i.imgur.com/KmQ9WNS.png" : "https://i.imgur.com/AlWlXQo.png";
     }
 
@@ -51,7 +51,7 @@ export class Enterprise
         if (!this.isDownloaded())
         {
             this.downloaded = true;
-            this.setDownloadedImage();
+            this.setDownloaded();
         }
     }
 

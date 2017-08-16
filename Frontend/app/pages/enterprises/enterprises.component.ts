@@ -3,6 +3,8 @@ import { Router } from "@angular/router";
 import { Enterprise } from "./enterprise";
 import { TextField } from "ui/text-field";
 import { Observable } from "data/observable";
+import { EnterpriseService } from "./enterprises.service";
+import { Config } from "./config";
 import dialogs = require("ui/dialogs");
 import timer = require("timer");
 
@@ -10,22 +12,50 @@ import timer = require("timer");
 // them to select one.
 @Component({
     selector: "enterprises",
+    providers:  [EnterpriseService],
     templateUrl: "pages/enterprises/enterprises.html",
     styleUrls: ["pages/enterprises/enterprises-common.css", "pages/enterprises/enterprises.css"]
 })
 export class EnterprisesComponent implements OnInit
 {
-
     // an array of all enterprises
     enterprises: Array<Enterprise> = [];
+    isLoading = false;
 
-    constructor(private router: Router) { }
+    constructor(private router: Router, private enterpriseService: EnterpriseService) { }
 
     // Initialize the enterprise list with values
     ngOnInit()
     {
-        this.enterprises.push(new Enterprise(1, "Enterprise A", null, false, "https://i.imgur.com/nq7E3mc.png"));
-        this.enterprises.push(new Enterprise(2, "Enterprise B", "abc", true, "https://i.imgur.com/AJ1Qn9v.png"));
+        ////////////////////////////////////////////////
+        //Add code to check for downloaded enterprises//
+        ////////////////////////////////////////////////
+
+        this.isLoading = true;
+        this.enterpriseService.getEnterprises()
+        .subscribe(loadedEnterprises =>
+        {
+            loadedEnterprises.forEach((enterprise) =>
+            {
+                this.enterprises.push(enterprise);
+            });
+        },
+        err =>
+        {
+            console.log(err);
+            dialogs.alert("Failed to load enterprises");
+        });
+
+        this.isLoading = false;
+
+        if (this.enterprises.length === 0)
+        {
+            dialogs.alert("Failed to load enterprises");
+        }
+        else
+        {
+            
+        }
     }
 
     //Request password if required by enterprise

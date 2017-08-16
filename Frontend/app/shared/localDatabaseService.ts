@@ -77,7 +77,7 @@ export class LocalDatabaseService{
                     console.log(JSON.stringify(error));
                     return enterprises;
                 }
-                enterprises.push(new Enterprise(row[0], row[1], null, true, row[2]));
+                enterprises.push(new Enterprise(row[0], row[1], null, row[2]));
             });
         promise = promise.then(x => enterprises).catch(this.handleErrors);
         return promise;
@@ -87,7 +87,7 @@ export class LocalDatabaseService{
     getSavedEnterprise(entepriseId: number):Promise<Enterprise>{
         //TODO
         return new Promise(function(resolve, reject){
-            resolve(new Enterprise(1, 'Enterprise A', null, true, 'https://i.imgur.com/nq7E3mc.png'));
+            resolve(new Enterprise(1, 'Enterprise A', null, 'https://i.imgur.com/nq7E3mc.png'));
         });
     }
 
