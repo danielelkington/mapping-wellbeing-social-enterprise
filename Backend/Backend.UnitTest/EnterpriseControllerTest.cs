@@ -68,8 +68,8 @@ namespace Backend.UnitTest
             //Arrange                           --Is there an easier way?
             MediaItemType mediaItemType = new MediaItemType { Id = 25, Name = "newMediaItemType" };
             MediaItem mediaItem = new MediaItem { Id = 20, Name = "newMediaItem", PlaceId = 15, MediaItemType = mediaItemType };
-            Place place = new Place { PlaceId = 15, Name = "newPlace", ParticipantId = 10, MediaItems = new List<MediaItem>() { mediaItem } };
-            Participant participant = new Participant { Id = 10, ParticipantName = "newParticipant", EnterpriseId = 5, Places = new List<Place>() { place } };
+            Place place = new Place { Id = 15, Name = "newPlace", ParticipantId = 10, MediaItems = new List<MediaItem>() { mediaItem } };
+            Participant participant = new Participant { Id = 10, Name = "newParticipant", EnterpriseId = 5, Places = new List<Place>() { place } };
             Enterprise enterprise = new Enterprise { Id = 5, Name = "Enterprise1", Password = "abc", CoverImageURL = "myimage.com", ModifiedUTC = 2, Participants = new List<Participant>() { participant } };
 
             _fakeContext.EnterpriseList.Add(enterprise);

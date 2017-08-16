@@ -10,7 +10,7 @@ namespace Backend.WebServices.DataTransferObjects
         {
             Id = participant.Id;
             EnterpriseId = participant.EnterpriseId;
-            ParticipantName = participant.ParticipantName;
+            Name = participant.Name;
             Bio = participant.Bio;
             ImageUrl = participant.ImageURL;
             Places = participant.Places.Select(x => new PlaceDTO(x)).ToList();    
@@ -18,9 +18,10 @@ namespace Backend.WebServices.DataTransferObjects
 
         public int Id { get; set; }
         public int EnterpriseId { get; set; }
-        public string ParticipantName { get; set; }
+        public string Name { get; set; }
         public string Bio { get; set; }
         public string ImageUrl { get; set; }
+        public string ImageFilename { get; set; }
         public virtual ICollection<PlaceDTO> Places { get; set; }
 }
 }

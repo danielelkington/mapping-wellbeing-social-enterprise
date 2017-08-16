@@ -10,11 +10,9 @@ namespace Backend.WebServices.DataTransferObjects
         {
             Id = mediaItemType.Id;
             Name = mediaItemType.Name;
-            MediaItems = mediaItemType.MediaItems.Select(x => new MediaItemDTO(x)).ToList();
         } 
 
         public int Id { get; set; }
         public string Name { get; set; }
-        public virtual ICollection<MediaItemDTO> MediaItems { get; set; }
     }
 }

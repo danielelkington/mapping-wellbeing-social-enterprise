@@ -7,6 +7,8 @@ namespace Backend.WebServices
         protected void Application_Start()
         {
             Bootstrapper.Initialise();
+            //Need to do this next line because we're using dbgeography
+            SqlServerTypes.Utilities.LoadNativeAssemblies(Server.MapPath("~/bin"));
             GlobalConfiguration.Configure(WebApiConfig.Register);
         }
     }

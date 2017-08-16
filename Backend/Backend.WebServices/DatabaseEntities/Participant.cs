@@ -18,9 +18,12 @@ namespace Backend.WebServices.DatabaseEntities
         public int EnterpriseId { get; set; }
 
         [StringLength(255)]
-        public string ParticipantName { get; set; }
+        public string Name { get; set; }
 
         public string Bio { get; set; }
+
+        [StringLength(255)]
+        public string ImageFilename { get; set; }
 
         public string ImageURL { get; set; }
 

@@ -12,18 +12,16 @@ namespace Backend.WebServices.DataTransferObjects
         {
             Id = enterprise.Id;
             Name = enterprise.Name;
-            //Password = enterprise.Password;
-            CoverImage = enterprise.CoverImageURL;
-            CoverCoordinate = enterprise.CoverCoordinate;
+            CoverImageURL = enterprise.CoverImageURL;
+            CoverImageFilename = enterprise.CoverImageFilename;
             ModifiedUTC = enterprise.ModifiedUTC;
             Participants = enterprise.Participants.Select(x => new ParticipantDTO(x)).ToList();
         }
 
         public int Id { get; set; }
         public string Name { get; set; }
-        //public string Password { get; set; }
-        public string CoverImage { get; set; }
-        public DbGeography CoverCoordinate { get; set; }
+        public string CoverImageURL { get; set; }
+        public string CoverImageFilename { get; set; }
         public int? ModifiedUTC { get; set; }
         public virtual ICollection<ParticipantDTO> Participants { get; set; }
     }

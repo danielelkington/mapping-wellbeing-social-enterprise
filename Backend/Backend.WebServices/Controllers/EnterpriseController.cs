@@ -79,6 +79,10 @@ namespace Backend.WebServices.Controllers
                     if (!password.Equals(enterprise.Password))
                         throw new HttpException(403, "That password was incorrect");
                 }
+                else
+                {
+                    throw new HttpException(403, "No password provided when enterprise is password protected");
+                }
             }
             return new EnterpriseDetailsDTO(enterprise);
         }
