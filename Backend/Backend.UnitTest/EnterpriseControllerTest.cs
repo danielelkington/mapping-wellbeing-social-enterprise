@@ -102,6 +102,7 @@ namespace Backend.UnitTest
             try
             {
                 var response = _target.Get(5);
+                Assert.Fail();
             }
 
             //Assert
@@ -122,6 +123,7 @@ namespace Backend.UnitTest
             try
             {
                 var response = _target.Get(5);
+                Assert.Fail();
             }
 
             //Assert

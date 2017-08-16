@@ -1,5 +1,6 @@
 ﻿using Backend.WebServices.DatabaseEntities;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Backend.WebServices.DataTransferObjects
 {
@@ -12,8 +13,7 @@ namespace Backend.WebServices.DataTransferObjects
             ParticipantName = participant.ParticipantName;
             Bio = participant.Bio;
             ImageUrl = participant.ImageURL;
-            Enterprise = participant.Enterprise;
-            Places = participant.Places;    
+            Places = participant.Places.Select(x => new PlaceDTO(x)).ToList();    
         }
 
         public int Id { get; set; }
@@ -21,7 +21,6 @@ namespace Backend.WebServices.DataTransferObjects
         public string ParticipantName { get; set; }
         public string Bio { get; set; }
         public string ImageUrl { get; set; }
-        public virtual Enterprise Enterprise { get; set; }
-        public virtual ICollection<Place> Places { get; set; }
+        public virtual ICollection<PlaceDTO> Places { get; set; }
 }
 }

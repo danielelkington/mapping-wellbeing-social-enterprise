@@ -1,6 +1,7 @@
 ﻿using Backend.WebServices.DatabaseEntities;
 using System.Collections.Generic;
 using System.Data.Entity.Spatial;
+using System.Linq;
 
 
 namespace Backend.WebServices.DataTransferObjects
@@ -15,7 +16,7 @@ namespace Backend.WebServices.DataTransferObjects
             CoverImage = enterprise.CoverImageURL;
             CoverCoordinate = enterprise.CoverCoordinate;
             ModifiedUTC = enterprise.ModifiedUTC;
-            Participants = enterprise.Participants;
+            Participants = enterprise.Participants.Select(x => new ParticipantDTO(x)).ToList();
         }
 
         public int Id { get; set; }
@@ -24,6 +25,6 @@ namespace Backend.WebServices.DataTransferObjects
         public string CoverImage { get; set; }
         public DbGeography CoverCoordinate { get; set; }
         public int? ModifiedUTC { get; set; }
-        public ICollection<Participant> Participants { get; set; }
+        public virtual ICollection<ParticipantDTO> Participants { get; set; }
     }
 }

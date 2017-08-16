@@ -12,8 +12,7 @@ namespace Backend.WebServices.DataTransferObjects
             MediaTypeById = mediaItem.MediaItemTypeId;
             name = mediaItem.Name;
             URL = mediaItem.URL;
-            MediaItemType = mediaItem.MediaItemType;
-            Place = mediaItem.Place;
+            MediaItemType = new MediaItemTypeDTO(mediaItem.MediaItemType);
         }
 
         public int Id { get; set; }
@@ -21,7 +20,6 @@ namespace Backend.WebServices.DataTransferObjects
         public int MediaTypeById { get; set; }
         public string name { get; set; }
         public string URL { get; set; }
-        public virtual MediaItemType MediaItemType { get; set; }
-        public virtual Place Place { get; set; }
+        public virtual MediaItemTypeDTO MediaItemType { get; set; }
     }
 }

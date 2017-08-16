@@ -66,18 +66,20 @@ namespace Backend.WebServices.Controllers
                                 .SingleOrDefault();
 
             if (enterprise == null)
-                throw new HttpException(404, "Enterprise not found. The Enterprise with ID: " + id + " does not exist."); //Might be better to do something else
+                throw new HttpException(404, "Enterprise not found. The Enterprise with ID: " + id + " does not exist.");
 
-            string password = null;
-
-            if (Request.Headers.Any(x => "Authorization".Equals(x.Key)))
+            if (enterprise.Password != null)
             {
-                password = Request.Headers.GetValues("Authorization").First();
+                string password = null;
 
-                if (!password.Equals(enterprise.Password))
-                    throw new HttpException(403, "That password was incorrect");
+                if (Request.Headers.Any(x => "Authorization".Equals(x.Key)))
+                {
+                    password = Request.Headers.GetValues("Authorization").First();
+
+                    if (!password.Equals(enterprise.Password))
+                        throw new HttpException(403, "That password was incorrect");
+                }
             }
-
             return new EnterpriseDetailsDTO(enterprise);
         }
     }

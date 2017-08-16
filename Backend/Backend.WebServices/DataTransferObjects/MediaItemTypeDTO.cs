@@ -1,5 +1,6 @@
 ﻿using Backend.WebServices.DatabaseEntities;
 using System.Collections.Generic;
+using System.Linq;
 
 namespace Backend.WebServices.DataTransferObjects
 {
@@ -9,11 +10,11 @@ namespace Backend.WebServices.DataTransferObjects
         {
             Id = mediaItemType.Id;
             Name = mediaItemType.Name;
-            MediaItems = mediaItemType.MediaItems;
+            MediaItems = mediaItemType.MediaItems.Select(x => new MediaItemDTO(x)).ToList();
         } 
 
         public int Id { get; set; }
         public string Name { get; set; }
-        public virtual ICollection<MediaItem> MediaItems { get; set; }
+        public virtual ICollection<MediaItemDTO> MediaItems { get; set; }
     }
 }
