@@ -6,18 +6,17 @@ var Sqlite = require("nativescript-sqlite");
 @Injectable()
 export class LocalDatabaseService{
     private database: any;
-    private databaseName: string;
+    databaseName: string = "backontrack.db"; //can be overriden in tests
 
-    //Initialise with a database name - allows us to override in tests
-    //so we don't muck up the DB on the device!
-    constructor(databaseName: string = "backontrack.db"){
-        this.databaseName = databaseName;
+    constructor(){
     }
 
     static readonly initialiseDatabaseStrings : string[] = 
         ["CREATE TABLE IF NOT EXISTS Enterprise (" +
         "   Id INTEGER PRIMARY KEY," +
         "   Name TEXT NOT NULL," +
+        "   CoverImageURL TEXT," +
+        "   CoverImageFilename TEXT," +
         "   ModifiedUTC INTEGER)",
         
         "CREATE TABLE IF NOT EXISTS Participant (" +
@@ -70,10 +69,18 @@ export class LocalDatabaseService{
 
     //Get a list of basic details of all enterprises saved locally
     getSavedEnterprises():Promise<Array<Enterprise>>{
-        //TODO
-        return new Promise(function(resolve, reject){
-            resolve([new Enterprise(1, 'Enterprise A', null, true, 'https://i.imgur.com/nq7E3mc.png')]);
-        });
+        var enterprises : Array<Enterprise> = [];
+        var promise = this.database.each("SELECT Id, Name, CoverImageURL, CoverImageFilename, ModifiedUTC " +
+                           "FROM Enterprise", [],
+            function(error, row){
+                if (error){
+                    console.log(JSON.stringify(error));
+                    return enterprises;
+                }
+                enterprises.push(new Enterprise(row[0], row[1], null, true, row[2]));
+            });
+        promise = promise.then(x => enterprises).catch(this.handleErrors);
+        return promise;
     }
 
     //Get complete details of a single enterprise saved locally
