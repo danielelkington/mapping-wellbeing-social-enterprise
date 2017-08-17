@@ -32,38 +32,7 @@ export class EnterprisesComponent implements OnInit
     // Initialize the enterprise list with values
     ngOnInit()
     {
-                    //Not yet tested//
-        //this.localDatabaseService.getSavedEnterprises()
-        //.then(x => this.enterprises);
-
-        //Hard-coded dummy enterprise in place of enterprises from local database.
-        this.enterprises.push(new Enterprise(9, "Downloaded Enterprise", true, false, "https://i.imgur.com/7gX1F3d.png"));
-
-        //Keep track of enterprises that have been downloaded
-        var downloadedEnterprisesId: Array<number> = [];
-        this.enterprises.forEach((enterprise) =>
-        {
-            downloadedEnterprisesId.push(enterprise.id);
-        })
-        
-        //Load Enterprises from database
-        this.isLoading = true;
-        this.enterpriseService.getEnterprises()
-        .subscribe(loadedEnterprises =>
-        {
-            loadedEnterprises.forEach((enterprise) =>
-            {
-                //Only retrieve enterprises that have not been downloaded
-                if (downloadedEnterprisesId.indexOf(enterprise.id) < 0)
-                    this.enterprises.push(enterprise);
-            });
-            this.isLoading = false;
-        },
-        err =>
-        {
-            console.log(err);
-            dialogs.alert("Failed to load enterprises");
-        });
+        this.refresh();
     }
 
     //Request password if required by enterprise
@@ -147,4 +116,45 @@ export class EnterprisesComponent implements OnInit
             
         });
     }
+
+    // refreshes the current page
+    refresh()
+    {
+        if (this.isLoading)
+            return;
+        //Not yet tested//
+        //this.localDatabaseService.getSavedEnterprises()
+        //.then(x => this.enterprises);
+        this.enterprises = [];
+        //Hard-coded dummy enterprise in place of enterprises from local database.
+        this.enterprises.push(new Enterprise(9, "Test", true, false, "https://i.imgur.com/7gX1F3d.png"));
+
+        //Keep track of enterprises that have been downloaded
+        var downloadedEnterprisesId: Array<number> = [];
+        this.enterprises.forEach((enterprise) =>
+        {
+            downloadedEnterprisesId.push(enterprise.id);
+        })
+        
+        //Load Enterprises from database
+        this.isLoading = true;
+        this.enterpriseService.getEnterprises()
+        .subscribe(loadedEnterprises =>
+        {
+            loadedEnterprises.forEach((enterprise) =>
+            {
+                //Only retrieve enterprises that have not been downloaded
+                if (downloadedEnterprisesId.indexOf(enterprise.id) < 0)
+                    this.enterprises.push(enterprise);
+            });
+            this.isLoading = false;
+        },
+        err =>
+        {
+            console.log(err);
+            this.isLoading = false;
+            dialogs.alert("Failed to load enterprises");
+        });
+    }
+
 }
