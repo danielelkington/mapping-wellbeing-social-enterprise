@@ -96,6 +96,12 @@ export class EnterprisesComponent implements OnInit
         }
     }
 
+     // refreshes the current page
+     refresh()
+     {
+         this.router.navigate(["/enterprises"]);
+     }
+
     //Request password if required by enterprise. If password correct or no password,
     //changes the page.
     /*openEnterprise(args){

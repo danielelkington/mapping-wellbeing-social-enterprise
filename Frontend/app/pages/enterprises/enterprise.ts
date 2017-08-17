@@ -38,7 +38,10 @@ export class Enterprise
 
     setDownloadedImage()
     {
-        this.downloadedImageSrc = this.isDownloaded() ? "https://i.imgur.com/KmQ9WNS.png" : "https://i.imgur.com/AlWlXQo.png";
+        if (!this.isDownloaded())
+        {
+            this.downloadedImageSrc = "https://i.imgur.com/AlWlXQo.png"; /*: ; "https://i.imgur.com/KmQ9WNS.png"*/
+        }
     }
 
     isDownloaded()

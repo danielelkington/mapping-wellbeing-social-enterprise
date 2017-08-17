@@ -6,6 +6,7 @@ CSS to style the enterprises list page relevant to all platforms goes here
     font-size: 17;
     vertical-align: middle;
     margin: 10;
+    color: #212121;
 } /* end text */
 
 .sml-txt-box {
@@ -15,3 +16,18 @@ CSS to style the enterprises list page relevant to all platforms goes here
 .sml-btn {
     width: 80;
 } /* end sml-btn */
+
+.bck-grnd {
+    background-color: #e4e6e7;
+} /* end bck-grnd*/
+
+.ent-col {
+    background-color: #fafafa;
+} /* end ent-col*/
+
+.text-head {
+    font-size: 17;
+    font-weight: bold;
+    margin: 10;
+    color: #212121;
+} /* end text-head */

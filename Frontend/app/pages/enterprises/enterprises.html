@@ -1,7 +1,12 @@
-<GridLayout>
+<ActionBar title="Enterprises" class="bck-grnd">
+	<Label text="Enterprises" class="text-head"></Label>
+	<NavigationButton ios.systemIcon="13" android.systemIcon="ic_menu_refresh" text="Refresh" (tap)="refresh()"></NavigationButton>
+</ActionBar>
+
+<GridLayout class="bck-grnd">
 	<ListView [items]="enterprises" row="0" class="small-spacing" (itemTap)="openEnterprise($event)">
 		<ng-template let-item="item" let-i="index">
-			<GridLayout columns="100, *, 35, 50" height="100">
+			<GridLayout columns="100, *, 35, 50" height="100" class="ent-col">
 				<Image col="0" [src]="item.image" width="100" height="100"></Image>
 				<Label [text]="item.name" col="1" class="text"></Label>
 				<Image col="2" [src]="item.downloadedImageSrc" width="35" height="35" (tap)="downloadEnterprise($event)"></Image>
