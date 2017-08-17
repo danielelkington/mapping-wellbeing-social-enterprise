@@ -4,8 +4,8 @@ import { Enterprise } from "../../shared/enterprise";
 import { TextField } from "ui/text-field";
 import { Observable } from "data/observable";
 import { EnterpriseService } from "./enterprises.service";
-import {LocalStorageService} from"../../shared/localStorageService";
-import {LocalDatabaseService} from"../../shared/localDatabaseService";
+import { LocalStorageService } from"../../shared/localStorageService";
+import { LocalDatabaseService } from"../../shared/localDatabaseService";
 import { Config } from "./config";
 import dialogs = require("ui/dialogs");
 import timer = require("timer");
@@ -26,30 +26,38 @@ export class EnterprisesComponent implements OnInit
 
     constructor(private router: Router,
         private enterpriseService: EnterpriseService,
-        private localStorageService : LocalStorageService) { }
+        private localStorageService : LocalStorageService,
+        private localDatabaseService : LocalDatabaseService) { }
 
     // Initialize the enterprise list with values
     ngOnInit()
     {
-        ////////////////////////////////////////////////
-        //Add code to check for downloaded enterprises
-        //(note DE: should shove downloaded enterprises in first,
-        //and for any that come back from the service we should NOT update any
-        //them in the list - ie, keep the hasPassword value false and isDownloaded value true)
-        ////////////////////////////////////////////////
+                    //Not yet tested//
+        //this.localDatabaseService.getSavedEnterprises()
+        //.then(x => this.enterprises);
 
+        //Hard-coded dummy enterprise in place of enterprises from local database.
+        this.enterprises.push(new Enterprise(9, "Downloaded Enterprise", true, false, "https://i.imgur.com/7gX1F3d.png"));
+
+        //Keep track of enterprises that have been downloaded
+        var downloadedEnterprisesId: Array<number> = [];
+        this.enterprises.forEach((enterprise) =>
+        {
+            downloadedEnterprisesId.push(enterprise.id);
+        })
+        
+        //Load Enterprises from database
         this.isLoading = true;
         this.enterpriseService.getEnterprises()
         .subscribe(loadedEnterprises =>
         {
             loadedEnterprises.forEach((enterprise) =>
             {
-                this.enterprises.push(enterprise);
+                //Only retrieve enterprises that have not been downloaded
+                if (downloadedEnterprisesId.indexOf(enterprise.id) < 0)
+                    this.enterprises.push(enterprise);
             });
             this.isLoading = false;
-            if (this.enterprises.length === 0){
-
-            }
         },
         err =>
         {
@@ -65,10 +73,13 @@ export class EnterprisesComponent implements OnInit
     selectEnterprise(args)
     {
         var enterprise = this.enterprises[args.index];
-        if (enterprise.busy){
+        if (enterprise.busy)
+        {
             return;
         }
-        if (enterprise.isDownloaded()){
+
+        if (enterprise.isDownloaded())
+        {
             this.openEnterprise(enterprise);
             return;
         }
@@ -96,7 +107,8 @@ export class EnterprisesComponent implements OnInit
         }
     }
 
-    openEnterprise(enterprise){
+    openEnterprise(enterprise)
+    {
         //TODO
         dialogs.alert("Entering enterprise...");
     }

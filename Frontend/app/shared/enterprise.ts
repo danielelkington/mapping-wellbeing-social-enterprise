@@ -31,8 +31,9 @@ export class Enterprise
         this.hasPassword = false;
     }
 
-    setDownloadedImage(){
-        this.downloadedImageSrc = this.isDownloaded() ? null : "https://i.imgur.com/AlWlXQo.png";
+    setDownloadedImage()
+    {
+        this.downloadedImageSrc = this.isDownloaded() ? null : "https://i.imgur.com/nJyft0f.png";
     }
 
     isDownloaded()
@@ -40,9 +41,11 @@ export class Enterprise
         return this.downloaded;
     }
 
-    numberOfThingsToDownload(): number{
+    numberOfThingsToDownload(): number
+    {
         var count = 1; //enterprise image
-        for(let participant of this.participants){
+        for(let participant of this.participants)
+        {
             count += participant.numberOfThingsToDownload();
         }
         return count;
