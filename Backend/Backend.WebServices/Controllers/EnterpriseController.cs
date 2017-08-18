@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Web;
 using System.Web.Http;
 using System;
+using System.Data.Entity;
+using Backend.WebServices.DatabaseEntities;
+using System.Linq;
+using Backend.WebServices.DataTransferObjects;
 
 namespace Backend.WebServices.Controllers
 {
@@ -37,11 +41,39 @@ namespace Backend.WebServices.Controllers
         /// Given an Id (and possibly a password), get details of a specific enterprise
         /// </summary>
         /// <param name="id">ID of the enterprise whose details will be returned</param>
-        /// <returns>A string representing an enterprise</returns>
-        public string Get(int id)
+        /// <param name="password">Password of the enterprise</param>
+        /// <returns>An EnterpriseDTO with the specified ID</returns>
+        public EnterpriseDetailsDTO Get(int id)
         {
             ThrowExceptionIfNotHttps();
-            return "ForestedgeCommunityGarden";
+            var enterprise = _context.Enterprises
+                                .Where(x => x.Id == id)
+                                .Include(x => x.Participants.Select(
+                                         p => p.Places.Select(
+                                         m => m.MediaItems.Select(
+                                         t => t.MediaItemType))))
+                                .SingleOrDefault();
+
+            if (enterprise == null)
+                throw new HttpException(404, "Enterprise not found. The Enterprise with ID: " + id + " does not exist.");
+
+            if (enterprise.Password != null)
+            {
+                string password = null;
+
+                if (Request.Headers.Any(x => "Authorization".Equals(x.Key)))
+                {
+                    password = Request.Headers.GetValues("Authorization").First();
+
+                    if (!password.Equals(enterprise.Password))
+                        throw new HttpException(403, "That password was incorrect");
+                }
+                else
+                {
+                    throw new HttpException(403, "No password provided when enterprise is password protected");
+                }
+            }
+            return new EnterpriseDetailsDTO(enterprise);
         }
     }
 }

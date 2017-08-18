@@ -16,6 +16,9 @@ namespace Backend.WebServices.DatabaseEntities
         public string Name { get; set; }
 
         [StringLength(255)]
+        public string Filename { get; set; }
+
+        [StringLength(255)]
         public string URL { get; set; }
 
         public virtual MediaItemType MediaItemType { get; set; }

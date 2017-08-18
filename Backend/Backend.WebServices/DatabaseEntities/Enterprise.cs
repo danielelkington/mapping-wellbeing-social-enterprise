@@ -23,6 +23,9 @@ namespace Backend.WebServices.DatabaseEntities
         public string Password { get; set; }
 
         [StringLength(255)]
+        public string CoverImageFilename { get; set; }
+
+        [StringLength(255)]
         public string CoverImageURL { get; set; }
 
         public DbGeography CoverCoordinate { get; set; }

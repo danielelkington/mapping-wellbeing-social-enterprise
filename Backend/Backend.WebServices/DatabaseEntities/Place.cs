@@ -14,7 +14,7 @@ namespace Backend.WebServices.DatabaseEntities
             MediaItems = new HashSet<MediaItem>();
         }
 
-        public int PlaceId { get; set; }
+        public int Id { get; set; }
 
         public int ParticipantId { get; set; }
 
