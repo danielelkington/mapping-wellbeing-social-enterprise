@@ -17,7 +17,8 @@ CREATE TABLE Enterprise (
 	[Id] int NOT NULL IDENTITY(1,1) PRIMARY KEY,
 	[Name] nvarchar(255) NOT NULL, 
 	[Password] nvarchar(255), 
-	[CoverImageURL] nvarchar(255), 
+	[CoverImageURL] nvarchar(255),
+	[CoverImageFilename] nvarchar(255),
 	[CoverCoordinate] geography,
 	[ModifiedUTC] int
 );
@@ -28,6 +29,7 @@ CREATE TABLE Participant (
 	[Name] nvarchar(255) NOT NULL,
 	[Bio] nvarchar(max),
 	[ImageURL] nvarchar(255),
+	[ImageFilename] nvarchar(255),
 	FOREIGN KEY (EnterpriseId) REFERENCES Enterprise(Id)
 );
 
@@ -51,6 +53,7 @@ CREATE TABLE MediaItem (
 	[PlaceId] int,
 	[MediaItemTypeId] int,
 	[Name] nvarchar(255),
+	[Filename] nvarchar(255),
 	[URL] nvarchar(255),
 	FOREIGN KEY (PlaceId) REFERENCES Place(Id),
 	FOREIGN KEY (MediaItemTypeId) REFERENCES MediaItemType(Id)

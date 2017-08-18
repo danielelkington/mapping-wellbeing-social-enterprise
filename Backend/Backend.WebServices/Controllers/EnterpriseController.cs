@@ -12,8 +12,6 @@ namespace Backend.WebServices.Controllers
 {
     public class EnterpriseController : ApiController
     {
-        private IContext _context;
-
         /// <summary>
         /// True if we're debugging, false if deployed to actual backend.
         /// </summary>
@@ -31,20 +29,11 @@ namespace Backend.WebServices.Controllers
                 throw new HttpException(403, "Must use https to access this resource, cannot use http");
         }
 
-        public EnterpriseController(IContext context)
-        {
-            _context = context;
-        }
-
         // GET api/enterprise
-        public IEnumerable<EnterpriseDTO> Get()
+        public IEnumerable<string> Get()
         {
             ThrowExceptionIfNotHttps();
-            var enterprises = _context.Enterprises
-                                .OrderBy(x => x.Name)
-                                .ToList();
-
-            return enterprises.Select(x => new EnterpriseDTO(x)).ToList();
+            return new string[] { "ForestedgeCommunityGarden", "VolunteerZoo" };
         }
 
         // GET api/enterprise/5

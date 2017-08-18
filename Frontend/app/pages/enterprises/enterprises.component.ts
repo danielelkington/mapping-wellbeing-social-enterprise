@@ -1,8 +1,12 @@
 import { Component, ElementRef, OnInit, ViewChild, NgModule } from "@angular/core";
 import { Router } from "@angular/router";
-import { Enterprise } from "./enterprise";
+import { Enterprise } from "../../shared/enterprise";
 import { TextField } from "ui/text-field";
 import { Observable } from "data/observable";
+import { EnterpriseService } from "./enterprises.service";
+import { LocalStorageService } from"../../shared/localStorageService";
+import { LocalDatabaseService } from"../../shared/localDatabaseService";
+import { Config } from "./config";
 import dialogs = require("ui/dialogs");
 import timer = require("timer");
 
@@ -10,30 +14,46 @@ import timer = require("timer");
 // them to select one.
 @Component({
     selector: "enterprises",
+    providers:  [EnterpriseService, LocalStorageService, LocalDatabaseService],
     templateUrl: "pages/enterprises/enterprises.html",
     styleUrls: ["pages/enterprises/enterprises-common.css", "pages/enterprises/enterprises.css"]
 })
 export class EnterprisesComponent implements OnInit
 {
-
     // an array of all enterprises
     enterprises: Array<Enterprise> = [];
+    isLoading = false;
 
-    constructor(private router: Router) { }
+    constructor(private router: Router,
+        private enterpriseService: EnterpriseService,
+        private localStorageService : LocalStorageService,
+        private localDatabaseService : LocalDatabaseService) { }
 
     // Initialize the enterprise list with values
     ngOnInit()
     {
-        this.enterprises.push(new Enterprise(1, "Enterprise A", null, false, "https://i.imgur.com/nq7E3mc.png"));
-        this.enterprises.push(new Enterprise(2, "Enterprise B", "abc", true, "https://i.imgur.com/AJ1Qn9v.png"));
+        this.refresh();
     }
 
     //Request password if required by enterprise
+    //If enterprise already downloaded, enters it
+    //If enterprise not downloaded, tries to download it.
     //Enters the enterprise if password is correct, or no password required
-    openEnterprise(args)
+    selectEnterprise(args)
     {
         var enterprise = this.enterprises[args.index];
-        if (enterprise.hasPassword())
+        if (enterprise.busy)
+        {
+            return;
+        }
+
+        if (enterprise.isDownloaded())
+        {
+            this.openEnterprise(enterprise);
+            return;
+        }
+
+        if (enterprise.hasPassword)
         {
             dialogs.prompt({
                 title: "Password",
@@ -47,78 +67,94 @@ export class EnterprisesComponent implements OnInit
                 {
                     return;
                 }
-                if (enterprise.password === r.text)
-                {
-                    enterprise.unlock();
-                    dialogs.alert("Entering enterprise...");
-                }
-                else
-                {
-                    dialogs.alert("Incorrect Password");
-                }
+                this.downloadEnterprise(enterprise, r.text);
             });
         }
         else
         {
-            dialogs.alert("Entering enterprise...");
+            this.downloadEnterprise(enterprise, null);
         }
+    }
+
+    openEnterprise(enterprise)
+    {
+        //TODO
+        dialogs.alert("Entering enterprise...");
     }
 
     //Asks user to confirm download before downloading enterprise
-    downloadEnterprise(args)
+    downloadEnterprise(enterprise, password)
     {
-        var enterprise = this.enterprises[args.index];
-        if (!enterprise.isDownloaded())
+        dialogs.confirm({
+            title: "Download " + enterprise.name,
+            message: "Are you sure you want to download the enterprise " + enterprise.name + " ?",
+            okButtonText: "Yes",
+            cancelButtonText: "No"
+        })
+        .then(result =>
         {
-            dialogs.confirm({
-                title: "Download " + enterprise.name,
-                message: "Are you sure you want to download the enterprise " + enterprise.name + " ?",
-                okButtonText: "Yes",
-                cancelButtonText: "No"
-            })
-            .then(result =>
+            if (!result)
+                return;
+            enterprise.busy = true;
+
+            this.enterpriseService.getEnterprise(enterprise, password)
+            .subscribe(downloadedEnterprise =>
             {
-                // result argument is boolean
-                if (result)
-                    dialogs.alert("Downloading enterprise " + enterprise.name);
-                
-                var timer1 = timer.setTimeout(() =>
-                {
-                    dialogs.alert(enterprise.name + " has been downloaded.");
-                    enterprise.download();
-                }, 5000);
-                timer.clearTimeout(timer1);
+                this.localStorageService.saveEnterprise(enterprise, downloadedEnterprise)
+                    .then(x => {
+                        enterprise.busy = false;
+                        enterprise.setDownloaded();
+                    });
+            },
+            err =>
+            {
+                console.log(err);
+                dialogs.alert("Failed to download enterprise");
+                enterprise.busy = false;
             });
-        }
-        else
-        {
-            dialogs.alert("This enterprise has already been downloaded");
-        }
+            
+            
+        });
     }
 
-    //Request password if required by enterprise. If password correct or no password,
-    //changes the page.
-    /*openEnterprise(args){
-        var enterprise = this.eplEnterpises[args.index];
-        if (enterprise.hasPassword()){
-            dialogs.prompt({
-                title: "Password",
-                message: "Enter password to view " + enterprise.strName,
-                okButtonText: "OK",
-                cancelButtonText: "Cancel",
-                inputType: dialogs.inputType.password
-            }).then(r => {
-                if (!r.result){
-                    return;
-                }
-                if (enterprise.strPassword === r.text){
-                    this.router.navigate(["/participants"]);
-                }else{
-                    alert("Incorrect Password");
-                }
+    // refreshes the current page
+    refresh()
+    {
+        if (this.isLoading)
+            return;
+        //Not yet tested//
+        //this.localDatabaseService.getSavedEnterprises()
+        //.then(x => this.enterprises);
+        this.enterprises = [];
+        //Hard-coded dummy enterprise in place of enterprises from local database.
+        this.enterprises.push(new Enterprise(9, "Test", true, false, "https://i.imgur.com/7gX1F3d.png"));
+
+        //Keep track of enterprises that have been downloaded
+        var downloadedEnterprisesId: Array<number> = [];
+        this.enterprises.forEach((enterprise) =>
+        {
+            downloadedEnterprisesId.push(enterprise.id);
+        })
+        
+        //Load Enterprises from database
+        this.isLoading = true;
+        this.enterpriseService.getEnterprises()
+        .subscribe(loadedEnterprises =>
+        {
+            loadedEnterprises.forEach((enterprise) =>
+            {
+                //Only retrieve enterprises that have not been downloaded
+                if (downloadedEnterprisesId.indexOf(enterprise.id) < 0)
+                    this.enterprises.push(enterprise);
             });
-        } else{
-            this.router.navigate(["/participants"]);
-        }
-    }*/
-} // end EnterprisesComponent
+            this.isLoading = false;
+        },
+        err =>
+        {
+            console.log(err);
+            this.isLoading = false;
+            dialogs.alert("Failed to load enterprises");
+        });
+    }
+
+}
