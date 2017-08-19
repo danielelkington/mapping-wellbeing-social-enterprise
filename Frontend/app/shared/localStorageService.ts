@@ -9,28 +9,16 @@ import {LocalDatabaseService} from "./localDatabaseService";
 @Injectable()
 export class LocalStorageService{
 
-    constructor(localDatabaseService:LocalDatabaseService){
+    constructor(private localDatabaseService:LocalDatabaseService){
     }
 
-    saveEnterprise(
-        enterpriseWithoutDetail : Enterprise, 
-        enterpriseToSave : Enterprise) : Promise<any>{
-            //TODO: this should do the following steps:
-            //1. Add the downloaded enterprise to the DB using the local database service
-            //2. Download all relevant images and media
-            //3. Download relevant map area
-            //While it does this it should periodically call progressUpdateCallback to update progress
-            return new Promise(function(resolve, reject){
-                //Let's cheat and make it look like this is doing something...
-                setTimeout(function(){
-                    enterpriseWithoutDetail.downloadProgressPercentage = 50;
-                    setTimeout(function(){
-                        enterpriseWithoutDetail.downloadProgressPercentage = 75;
-                        setTimeout(function(){
-                            resolve();
-                        }, 1000);
-                    }, 1000);
-                }, 2000);
-            });
+    saveEnterprise(enterpriseWithoutDetail : Enterprise, enterpriseToSave : Enterprise) : Promise<any>{
+        console.log("here...");
+        var promise = this.localDatabaseService.saveEnterprise(enterpriseToSave);
+        promise = promise.then(x => {
+            console.log("here2");
+            //enterpriseWithoutDetail.downloadProgressPercentage = (1.0/enterpriseWithoutDetail.numberOfThingsToDownload());
+        });
+        return promise;
     }
 }

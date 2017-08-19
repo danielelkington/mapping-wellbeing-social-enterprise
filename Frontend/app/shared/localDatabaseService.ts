@@ -41,10 +41,6 @@ export class LocalDatabaseService{
         "   Description TEXT," +
         "   FOREIGN KEY(ParticipantId) REFERENCES Participant(Id))",
 
-        "CREATE TABLE IF NOT EXISTS MediaItemType (" +
-        "   Id INTEGER PRIMARY KEY," +
-        "   Name TEXT)",
-
         "CREATE TABLE IF NOT EXISTS MediaItem (" +
         "   Id INTEGER PRIMARY KEY," +
         "   PlaceId INTEGER," +
@@ -52,8 +48,7 @@ export class LocalDatabaseService{
         "   Name TEXT," +
         "   Filename TEXT," +
         "   URL TEXT," +
-        "   FOREIGN KEY(PlaceId) REFERENCES Place(Id)," +
-        "   FOREIGN KEY(MediaItemTypeId) REFERENCES MediaItemType(Id))"
+        "   FOREIGN KEY(PlaceId) REFERENCES Place(Id))"
     ];
 
     initialiseDatabaseIfNotExists(){
@@ -122,10 +117,38 @@ export class LocalDatabaseService{
 
     //Given a complete enterprise, save it to the local db
     saveEnterprise(enterprise: Enterprise):Promise<any>{
-        //TODO
-        return new Promise(function(resolve, reject){
-            resolve(null);
-        });
+        console.log("db: ", this.database);
+        var promise = this.database.execSQL(
+            "INSERT INTO Enterprise(Id, Name, CoverImageURL, CoverImageFilename, ModifiedUTC) " +
+            "VALUES(?,?,?,?,?)",
+            [enterprise.id, enterprise.name, enterprise.imageURL, enterprise.imageFileName, enterprise.modifiedUTC]
+        );
+        
+        for(let participant of enterprise.participants){
+            promise = promise.then(x => this.database.execSQL(
+                "INSERT INTO Participant(Id, EnterpriseId, Name, Bio, ImageURL, ImageFilename) " +
+                "VALUES(?,?,?,?,?,?)",
+                [participant.id, enterprise.id, participant.name, participant.bio, participant.imageURL, participant.imageFileName]
+            ));
+            
+            for (let place of participant.places){
+                promise = promise.then(x => this.database.execSQL(
+                    "INSERT INTO Place(Id, ParticipantId, SequenceNumber, Name, Latitude, Longitude, Description) " +
+                    "VALUES(?,?,?,?,?,?,?)",
+                    [place.id, participant.id, place.sequenceNumber, place.name, place.latitude, place.longitude, place.description]
+                ));
+                for (let mediaItem of place.mediaItems){
+                    promise = promise.then(x => this.database.execSQL(
+                        "INSERT INTO MediaItem(Id, PlaceId, MediaItemTypeId, Name, Filename, URL) " +
+                        "VALUES(?,?,?,?,?,?)",
+                        [mediaItem.id, place.id, mediaItem.mediaItemType, mediaItem.name, mediaItem.filename, mediaItem.url]
+                    ));
+                }
+            }
+        }
+        
+        promise.catch(this.handleErrors);
+        return promise;
     }
 
     private handleErrors(error){

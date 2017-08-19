@@ -124,38 +124,41 @@ export class EnterprisesComponent implements OnInit
     {
         if (this.isLoading)
             return;
-        //Not yet tested//
-        //this.localDatabaseService.getSavedEnterprises()
-        //.then(x => this.enterprises);
-        this.enterprises = [];
-        //Hard-coded dummy enterprise in place of enterprises from local database.
-        this.enterprises.push(new Enterprise(9, "Test", true, false, "https://i.imgur.com/7gX1F3d.png", "test.png", 1));
-
-        //Keep track of enterprises that have been downloaded
-        var downloadedEnterprisesId: Array<number> = [];
-        this.enterprises.forEach((enterprise) =>
-        {
-            downloadedEnterprisesId.push(enterprise.id);
-        })
-        
-        //Load Enterprises from database
         this.isLoading = true;
-        this.enterpriseService.getEnterprises()
-        .subscribe(loadedEnterprises =>
-        {
-            loadedEnterprises.forEach((enterprise) =>
+        this.localDatabaseService.initialiseDatabaseIfNotExists()
+        .then(x => {
+            //Not yet tested//
+            //this.localDatabaseService.getSavedEnterprises()
+            //.then(x => this.enterprises);
+            this.enterprises = [];
+            //Hard-coded dummy enterprise in place of enterprises from local database.
+            this.enterprises.push(new Enterprise(9, "Test", true, false, "https://i.imgur.com/7gX1F3d.png", "test.png", 1));
+
+            //Keep track of enterprises that have been downloaded
+            var downloadedEnterprisesId: Array<number> = [];
+            this.enterprises.forEach((enterprise) =>
             {
-                //Only retrieve enterprises that have not been downloaded
-                if (downloadedEnterprisesId.indexOf(enterprise.id) < 0)
-                    this.enterprises.push(enterprise);
+                downloadedEnterprisesId.push(enterprise.id);
+            })
+            
+            //Load Enterprises from database
+            this.enterpriseService.getEnterprises()
+            .subscribe(loadedEnterprises =>
+            {
+                loadedEnterprises.forEach((enterprise) =>
+                {
+                    //Only retrieve enterprises that have not been downloaded
+                    if (downloadedEnterprisesId.indexOf(enterprise.id) < 0)
+                        this.enterprises.push(enterprise);
+                });
+                this.isLoading = false;
+            },
+            err =>
+            {
+                console.log(err);
+                this.isLoading = false;
+                dialogs.alert("Failed to load enterprises");
             });
-            this.isLoading = false;
-        },
-        err =>
-        {
-            console.log(err);
-            this.isLoading = false;
-            dialogs.alert("Failed to load enterprises");
         });
     }
 
