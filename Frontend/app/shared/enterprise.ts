@@ -1,13 +1,15 @@
 import { Participant } from "./participant";
 import { Place } from "./place";
 import { MediaItem } from "./mediaItem";
+import { SimpleMediaItem } from "./simpleMediaItem";
 
 export class Enterprise
 {
     passwordImageSrc: String;
     downloadedImageSrc: String;
     public busy: Boolean = false;
-    public downloadProgressPercentage: Number = 0;
+    public totalThingsToDownload: number = 10;
+    public numberDownloaded: number = 0;
     public participants: Array<Participant> = [];    
 
     // creates an Enterprise object
@@ -73,14 +75,13 @@ export class Enterprise
         return this.downloaded;
     }
 
-    numberOfThingsToDownload(): number
+    getMediaToDownload() : Array<SimpleMediaItem>
     {
-        var count = 1; //enterprise image
-        for(let participant of this.participants)
-        {
-            count += participant.numberOfThingsToDownload();
+        var result = [new SimpleMediaItem(this.imageFileName, this.imageURL)];
+        for (let participant of this.participants){
+            result = result.concat(participant.getMediaToDownload());
         }
-        return count;
+        return result;
     }
 
 }

@@ -1,4 +1,5 @@
 import {Place} from "./place";
+import {SimpleMediaItem} from "./simpleMediaItem";
 
 export class Participant{
     public places: Array<Place> = [];
@@ -7,11 +8,12 @@ export class Participant{
 
     }
 
-    numberOfThingsToDownload(): number{
-        var count = 2; //participant image + map
-        for(let place of this.places){
-            count += place.numberOfThingsToDownload();
+    getMediaToDownload() : Array<SimpleMediaItem>
+    {
+        var result = [new SimpleMediaItem(this.imageFileName, this.imageURL)];
+        for (let place of this.places){
+            result = result.concat(place.getMediaToDownload());
         }
-        return count;
+        return result;
     }
 }

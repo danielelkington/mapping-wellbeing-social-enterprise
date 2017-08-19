@@ -117,7 +117,6 @@ export class LocalDatabaseService{
 
     //Given a complete enterprise, save it to the local db
     saveEnterprise(enterprise: Enterprise):Promise<any>{
-        console.log("db: ", this.database);
         var promise = this.database.execSQL(
             "INSERT INTO Enterprise(Id, Name, CoverImageURL, CoverImageFilename, ModifiedUTC) " +
             "VALUES(?,?,?,?,?)",

@@ -13,7 +13,7 @@
 				<Image col="2" row="0" [src]="item.downloadedImageSrc" width="35" height="35"></Image>
 				<Image col="3" row="0" [src]="item.passwordImageSrc" width="35"></Image>
 				<Progress col="1" row="1" [visibility]="item.busy ? 'visible' : 'hidden'" 
-						[value]="item.downloadProgressPercentage" maxValue="100"></Progress>
+						[value]="item.numberDownloaded" [maxValue]="item.totalThingsToDownload"></Progress>
 			</GridLayout>
 		</ng-template>
 	</ListView>
