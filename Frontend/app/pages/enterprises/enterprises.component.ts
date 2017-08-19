@@ -57,7 +57,7 @@ export class EnterprisesComponent implements OnInit
         {
             dialogs.prompt({
                 title: "Password",
-                message: "Enter password to view " + enterprise.name,
+                message: "Enter password to download " + enterprise.name,
                 okButtonText: "OK",
                 cancelButtonText: "Cancel",
                 inputType: dialogs.inputType.password
@@ -72,7 +72,18 @@ export class EnterprisesComponent implements OnInit
         }
         else
         {
-            this.downloadEnterprise(enterprise, null);
+            dialogs.confirm({
+                title: "Download " + enterprise.name,
+                message: "Are you sure you want to download the enterprise " + enterprise.name + " ?",
+                okButtonText: "Yes",
+                cancelButtonText: "No"
+            })
+            .then(result =>
+            {
+                if (!result)
+                    return;
+                this.downloadEnterprise(enterprise, null);
+            });
         }
     }
 
@@ -82,38 +93,29 @@ export class EnterprisesComponent implements OnInit
         dialogs.alert("Entering enterprise...");
     }
 
-    //Asks user to confirm download before downloading enterprise
     downloadEnterprise(enterprise, password)
     {
-        dialogs.confirm({
-            title: "Download " + enterprise.name,
-            message: "Are you sure you want to download the enterprise " + enterprise.name + " ?",
-            okButtonText: "Yes",
-            cancelButtonText: "No"
-        })
-        .then(result =>
-        {
-            if (!result)
-                return;
-            enterprise.busy = true;
+        enterprise.busy = true;
 
-            this.enterpriseService.getEnterprise(enterprise, password)
-            .subscribe(downloadedEnterprise =>
-            {
-                this.localStorageService.saveEnterprise(enterprise, downloadedEnterprise)
-                    .then(x => {
-                        enterprise.busy = false;
-                        enterprise.setDownloaded();
-                    });
-            },
-            err =>
-            {
-                console.log(err);
-                dialogs.alert("Failed to download enterprise");
-                enterprise.busy = false;
-            });
-            
-            
+        this.enterpriseService.getEnterprise(enterprise.id, password)
+        .subscribe(downloadedEnterprise =>
+        {
+            this.localStorageService.saveEnterprise(enterprise, downloadedEnterprise)
+                .then(x => {
+                    enterprise.busy = false;
+                    enterprise.setDownloaded();
+                });
+        },
+        err =>
+        {
+            if (err.status == 403){
+                dialogs.alert({title: "Password incorrect", message: "Please check the password and try again", okButtonText: "OK"});
+            }
+            else{
+                console.log(JSON.stringify(err));
+                dialogs.alert({title: "Failed to download enterprise", message: "Please try again later"});
+            }
+            enterprise.busy = false;
         });
     }
 
@@ -127,7 +129,7 @@ export class EnterprisesComponent implements OnInit
         //.then(x => this.enterprises);
         this.enterprises = [];
         //Hard-coded dummy enterprise in place of enterprises from local database.
-        this.enterprises.push(new Enterprise(9, "Test", true, false, "https://i.imgur.com/7gX1F3d.png"));
+        this.enterprises.push(new Enterprise(9, "Test", true, false, "https://i.imgur.com/7gX1F3d.png", "test.png", 1));
 
         //Keep track of enterprises that have been downloaded
         var downloadedEnterprisesId: Array<number> = [];
