@@ -20,7 +20,7 @@ CREATE TABLE Enterprise (
 	[CoverImageURL] nvarchar(255),
 	[CoverImageFilename] nvarchar(255),
 	[CoverCoordinate] geography,
-	[ModifiedUTC] int
+	[ModifiedUTC] datetime2 NOT NULL
 );
 
 CREATE TABLE Participant (
@@ -58,3 +58,9 @@ CREATE TABLE MediaItem (
 	FOREIGN KEY (PlaceId) REFERENCES Place(Id),
 	FOREIGN KEY (MediaItemTypeId) REFERENCES MediaItemType(Id)
 ); 
+
+
+SET IDENTITY_INSERT MediaItemType ON
+INSERT INTO MediaItemType(Id, Name) VALUES (1, 'Image')
+INSERT INTO MediaItemType(Id, Name) VALUES (2, 'Video')
+SET IDENTITY_INSERT MediaItemType OFF
