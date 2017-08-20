@@ -126,13 +126,9 @@ export class EnterprisesComponent implements OnInit
             return;
         this.isLoading = true;
         this.localDatabaseService.initialiseDatabaseIfNotExists()
-        .then(x => {
-            //Not yet tested//
-            //this.localDatabaseService.getSavedEnterprises()
-            //.then(x => this.enterprises);
-            this.enterprises = [];
-            //Hard-coded dummy enterprise in place of enterprises from local database.
-            this.enterprises.push(new Enterprise(9, "Test", true, false, "https://i.imgur.com/7gX1F3d.png", "test.png", 1));
+        .then(x => this.localDatabaseService.getSavedEnterprises())
+        .then(result => {
+            this.enterprises = result;
 
             //Keep track of enterprises that have been downloaded
             var downloadedEnterprisesId: Array<number> = [];

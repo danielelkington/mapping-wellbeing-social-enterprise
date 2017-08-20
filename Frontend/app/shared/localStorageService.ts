@@ -22,7 +22,8 @@ export class LocalStorageService{
     }
 
     saveEnterprise(enterpriseWithoutDetail : Enterprise, enterpriseToSave : Enterprise) : Promise<any>{
-        var promise = this.localDatabaseService.saveEnterprise(enterpriseToSave);
+        //Empty promise makes chaining easier.
+        var promise : Promise<any> = Promise.resolve(0);
 
         let mediaItems = enterpriseToSave.getMediaToDownload();
         enterpriseWithoutDetail.totalThingsToDownload = 
@@ -39,6 +40,23 @@ export class LocalStorageService{
             })(m);
         }
         
+        promise = this.downloadMaps(enterpriseToSave, promise);
+        promise = promise.then(x => console.log("Looks like downloading worked!"));
+
+        //Save to local DB last, because this is harder to recover from
+        //TODO: think of how to make all this more ACID. :)
+        promise = promise.then(x => this.localDatabaseService.saveEnterprise(enterpriseToSave));
+
+        promise.catch(err => {
+            console.log("Error: ", JSON.stringify(err));
+            return Observable.throw(err);
+        });
+
+        return promise;
+    }
+
+    private downloadMaps(enterpriseToSave: Enterprise, promise: Promise<any>) : Promise<any>
+    {
         //Download mapbox region
         var mapbox = new Mapbox();
 
@@ -73,20 +91,13 @@ export class LocalStorageService{
                                 west: participant.getMaxWestBound() - LocalStorageService.mapBoundaryDegrees
                             },
                             onProgress: function (progress) {
-                                
+                                //Weird things seem to happen if you leave this out...
                             }
                         });
                     });
                 }
             })(p);
         }
-        promise = promise.then(x => console.log("Looks like downloading worked!"));
-
-        promise.catch(err => {
-            console.log("Error: ", JSON.stringify(err));
-            return Observable.throw(err);
-        });
-
         return promise;
     }
 }
