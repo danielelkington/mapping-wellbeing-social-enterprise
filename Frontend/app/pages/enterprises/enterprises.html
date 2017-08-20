@@ -5,7 +5,9 @@
 		(tap)="refresh()"></ActionItem>
 </ActionBar>
 <GridLayout class="bck-grnd">
-	<ListView [items]="enterprises" row="0" class="small-spacing" (itemTap)="selectEnterprise($event)">
+	<RadListView [items]="enterprises" id="listView" row="0" class="small-spacing" (itemTap)="selectEnterprise($event)" pullToRefresh="true" (pullToRefreshInitiated)="onPullToRefreshInitiated($event)" 
+		(itemSwipeProgressStarted)="onSwipeCellStarted($event)" itemSwipe="true">
+		
 		<ng-template let-item="item" let-i="index">
 			<GridLayout columns="100, *, 35, 50" rows="auto auto " class="end-col">
 				<Image col="0" row="0" [src]="item.image" width="100" height="100"></Image>
@@ -16,6 +18,11 @@
 						[value]="item.downloadProgressPercentage" maxValue="100"></Progress>
 			</GridLayout>
 		</ng-template>
-	</ListView>
+        <GridLayout *tkListItemSwipeTemplate columns="auto, *, auto" class="listItemSwipeGridLayout">
+            <StackLayout orientation="horizontal" id="delete" class="delete" col="2" (tap)="onRightSwipeClick($event)">
+                <Image src="res://ic_delete_white_24dp" stretch ="none" horizontalAlignment="center" verticalAlignment="center"></Image>
+            </StackLayout>
+        </GridLayout>
+	</RadListView>
 	<ActivityIndicator [busy]="isLoading" [visibility]="isLoading ? 'visible' : 'collapsed'" row="1" horizontalAlignment="center" verticalAlignment="center"></ActivityIndicator>
 </GridLayout>

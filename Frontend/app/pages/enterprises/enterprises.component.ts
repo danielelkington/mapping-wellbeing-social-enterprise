@@ -2,13 +2,19 @@ import { Component, ElementRef, OnInit, ViewChild, NgModule } from "@angular/cor
 import { Router } from "@angular/router";
 import { Enterprise } from "../../shared/enterprise";
 import { TextField } from "ui/text-field";
-import { Observable } from "data/observable";
+import { ItemEventData } from "ui/list-view";
+import { Observable, EventData } from "data/observable";
 import { EnterpriseService } from "./enterprises.service";
 import { LocalStorageService } from"../../shared/localStorageService";
 import { LocalDatabaseService } from"../../shared/localDatabaseService";
 import { Config } from "./config";
+import { View } from "tns-core-modules/ui/core/view";
+import { ListViewEventData, RadListView, SwipeActionsEventData } from "nativescript-telerik-ui/listview";
 import dialogs = require("ui/dialogs");
 import timer = require("timer");
+
+import * as frameModule from "tns-core-modules/ui/frame";
+import * as utilsModule from "tns-core-modules/utils/utils";
 
 // Displays a list of enterprises to the user and allows
 // them to select one.
@@ -156,5 +162,34 @@ export class EnterprisesComponent implements OnInit
             dialogs.alert("Failed to load enterprises");
         });
     }
+    
+    //Pull to Refresh
+    public onPullToRefreshInitiated(args: ListViewEventData) {
+            this.refresh();
+            var listView = args.object;
+            listView.notifyPullToRefreshFinished();
+    }
 
+    //Swipe to delete
+    public onSwipeCellStarted(args: SwipeActionsEventData) {
+        var swipeLimits = args.data.swipeLimits;
+
+        swipeLimits.threshold = 50 * utilsModule.layout.getDisplayDensity();
+        swipeLimits.left = 0;
+        swipeLimits.right = 60 * utilsModule.layout.getDisplayDensity();
+    }
+
+    public onItemClick(args: ListViewEventData) {
+        var listView = <RadListView>frameModule.topmost().currentPage.getViewById("listView");
+        listView.notifySwipeToExecuteFinished();
+        console.log("Item click: " + args.index);
+    }
+
+    public onRightSwipeClick(args) {
+        //Delete enterprise data - need to keep enterprise in list but have it greyed-out
+        this.enterprises.splice(args.index, 1);
+        
+        var listView = <RadListView>frameModule.topmost().currentPage.getViewById("listView");
+        listView.notifySwipeToExecuteFinished();
+    }
 }
