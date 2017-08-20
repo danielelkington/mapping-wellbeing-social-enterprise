@@ -13,11 +13,11 @@ insert into Participant(EnterpriseId, Name, Bio, ImageURL, ImageFilename)
 	values ((select Id from Enterprise where Name = 'Hawthorn'), 'Sarah', 'Has dreams to making it big.', '', ''); 
 
 insert into Place(ParticipantId, SequenceNumber, Name, Coordinate, Description)
-	values ((select Id from Participant where Name = 'John'), 1, 'Home', geography::Point(-38.822603, 145.035383, 4326), 'Where he grew up');
+	values ((select Id from Participant where Name = 'John'), 1, 'Home', geography::Point(-38.8046, 144.9834, 4326), 'Where he grew up');
 insert into Place(ParticipantId, SequenceNumber, Name, Coordinate, Description)
-	values ((select Id from Participant where Name = 'John'), 2, 'School', geography::Point(-39.822603, 145.035383, 4326), 'Met some dodgey friends');
+	values ((select Id from Participant where Name = 'John'), 2, 'School', geography::Point(-38.8049, 144.9835, 4326), 'Met some dodgey friends');
 insert into Place(ParticipantId, SequenceNumber, Name, Coordinate, Description)
-	values ((select Id from Participant where Name = 'John'), 3, 'Work', geography::Point(-40.822603, 145.035383, 4326), 'Working har to pay bills');
+	values ((select Id from Participant where Name = 'John'), 3, 'Work', geography::Point(-38.8043, 144.9836, 4326), 'Working har to pay bills');
 
 insert into MediaItem(PlaceId, MediaItemTypeId, Name, Filename, URL)
 	values ((select Id from Place where SequenceNumber = 1), (select Id from MediaItemType where Name = 'Image'), 'House', '', '');
