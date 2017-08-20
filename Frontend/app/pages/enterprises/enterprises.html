@@ -18,7 +18,7 @@
 						[value]="item.downloadProgressPercentage" maxValue="100"></Progress>
 			</GridLayout>
 		</ng-template>
-        <GridLayout *tkListItemSwipeTemplate columns="auto, *, auto" class="listItemSwipeGridLayout">
+        <GridLayout *tkListItemSwipeTemplate columns="auto, *, 60" class="listItemSwipeGridLayout">
             <StackLayout orientation="horizontal" id="delete" class="delete" col="2" (tap)="onRightSwipeClick($event)">
                 <Image src="res://ic_delete_white_24dp" stretch ="none" horizontalAlignment="center" verticalAlignment="center"></Image>
             </StackLayout>

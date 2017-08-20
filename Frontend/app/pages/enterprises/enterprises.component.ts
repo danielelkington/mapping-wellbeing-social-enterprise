@@ -172,23 +172,33 @@ export class EnterprisesComponent implements OnInit
 
     //Swipe to delete
     public onSwipeCellStarted(args: SwipeActionsEventData) {
+
         var swipeLimits = args.data.swipeLimits;
 
         swipeLimits.threshold = 50 * utilsModule.layout.getDisplayDensity();
         swipeLimits.left = 0;
-        swipeLimits.right = 60 * utilsModule.layout.getDisplayDensity();
+        
+        var test = false;   //replace with isDownloaded when implemented
+       
+        if (test) {
+            swipeLimits.right = 0;
+        } else {
+            swipeLimits.right = 60 * utilsModule.layout.getDisplayDensity();
+        }
     }
 
     public onItemClick(args: ListViewEventData) {
         var listView = <RadListView>frameModule.topmost().currentPage.getViewById("listView");
         listView.notifySwipeToExecuteFinished();
-        console.log("Item click: " + args.index);
     }
 
-    public onRightSwipeClick(args) {
-        //Delete enterprise data - need to keep enterprise in list but have it greyed-out
-        this.enterprises.splice(args.index, 1);
-        
+    public onRightSwipeClick(args: SwipeActionsEventData) {
+        var tappedItemData = args.object.bindingContext;
+        console.log("Item index: " + tappedItemData.id);
+
+        var index = this.enterprises.findIndex(x => x.id === tappedItemData.id) //Delete enterprise data - need to keep enterprise in list but have it greyed-out
+        this.enterprises.splice(index, 1);
+
         var listView = <RadListView>frameModule.topmost().currentPage.getViewById("listView");
         listView.notifySwipeToExecuteFinished();
     }
