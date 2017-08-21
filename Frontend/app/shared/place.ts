@@ -1,4 +1,5 @@
 import {MediaItem} from "./mediaItem";
+import {SimpleMediaItem} from "./simpleMediaItem";
 
 export class Place
 {
@@ -15,7 +16,12 @@ export class Place
 
     }
 
-    numberOfThingsToDownload(): number{
-        return this.mediaItems.length;
+    getMediaToDownload() : Array<SimpleMediaItem>
+    {
+        var result = [];
+        for (let mediaItem of this.mediaItems){
+            result.push(new SimpleMediaItem(mediaItem.filename, mediaItem.url));
+        }
+        return result;
     }
 }

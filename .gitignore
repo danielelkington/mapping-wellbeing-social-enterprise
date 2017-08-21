@@ -14,3 +14,5 @@ Frontend/node_modules/
 Frontend/platforms/ 
 Frontend/app/config.ts
 !Frontend/karma.conf.js
+Frontend/app/secretConfig.ts
+Frontend/app/secretConfig.js

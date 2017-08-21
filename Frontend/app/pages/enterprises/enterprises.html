@@ -3,19 +3,19 @@
 	<ActionItem ios.systemIcon="13" ios.position="right" 
 		android.systemIcon="ic_menu_refresh" android.position="actionBar" 
 		(tap)="refresh()"></ActionItem>
-</ActionBar>
+</ActionBar> 
 <GridLayout class="bck-grnd">
 	<ListView [items]="enterprises" row="0" class="small-spacing" (itemTap)="selectEnterprise($event)">
 		<ng-template let-item="item" let-i="index">
 			<GridLayout columns="100, *, 35, 50" rows="auto auto " class="end-col">
-				<Image col="0" row="0" [src]="item.image" width="100" height="100"></Image>
+				<Image col="0" row="0" [src]="item.imageURL" width="100" height="100"></Image>
 				<Label [text]="item.name" col="1" [ngClass]="(item.isDownloaded() == true) ? 'text' : 'n-dwn-txt'"></Label>
 				<Image col="2" row="0" [src]="item.downloadedImageSrc" width="35" height="35"></Image>
 				<Image col="3" row="0" [src]="item.passwordImageSrc" width="35"></Image>
 				<Progress col="1" row="1" [visibility]="item.busy ? 'visible' : 'hidden'" 
-						[value]="item.downloadProgressPercentage" maxValue="100"></Progress>
+						[value]="item.numberDownloaded" [maxValue]="item.totalThingsToDownload"></Progress>
 			</GridLayout>
 		</ng-template>
 	</ListView>
 	<ActivityIndicator [busy]="isLoading" [visibility]="isLoading ? 'visible' : 'collapsed'" row="1" horizontalAlignment="center" verticalAlignment="center"></ActivityIndicator>
-</GridLayout>
+</GridLayout> 

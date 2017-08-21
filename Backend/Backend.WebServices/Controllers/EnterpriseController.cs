@@ -7,6 +7,8 @@ using System.Data.Entity;
 using Backend.WebServices.DatabaseEntities;
 using System.Linq;
 using Backend.WebServices.DataTransferObjects;
+using System.Net.Http;
+using System.Net;
 
 namespace Backend.WebServices.Controllers
 {
@@ -20,6 +22,15 @@ namespace Backend.WebServices.Controllers
         //note: HttpContext.Current is null when running unit tests
         private bool Debugging => HttpContext.Current?.IsDebuggingEnabled ?? true;
 
+        private void ThrowHttpException(HttpStatusCode statusCode, string message)
+        {
+            var response = new HttpResponseMessage(statusCode)
+            {
+                Content = new StringContent(message)
+            };
+            throw new HttpResponseException(response);
+        }
+
         /// <summary>
         /// Because our APIs contain sensitive data, force the client to use HTTPS.
         /// </summary>
@@ -28,7 +39,7 @@ namespace Backend.WebServices.Controllers
             if (Debugging)
                 return; //don't worry about this if in debug mode.
             if (Request.RequestUri.Scheme != Uri.UriSchemeHttps)
-                throw new HttpException(403, "Must use https to access this resource, cannot use http");
+                ThrowHttpException(HttpStatusCode.Forbidden, "Must use https to access this resource, cannot use http");
         }
 
         public EnterpriseController(IContext context)
@@ -61,12 +72,11 @@ namespace Backend.WebServices.Controllers
                                 .Where(x => x.Id == id)
                                 .Include(x => x.Participants.Select(
                                          p => p.Places.Select(
-                                         m => m.MediaItems.Select(
-                                         t => t.MediaItemType))))
+                                         m => m.MediaItems)))
                                 .SingleOrDefault();
 
             if (enterprise == null)
-                throw new HttpException(404, "Enterprise not found. The Enterprise with ID: " + id + " does not exist.");
+                ThrowHttpException(HttpStatusCode.NotFound, $"Enterprise not found. The Enterprise with ID: {id} does not exist.");
 
             if (enterprise.Password != null)
             {
@@ -77,11 +87,11 @@ namespace Backend.WebServices.Controllers
                     password = Request.Headers.GetValues("Authorization").First();
 
                     if (!password.Equals(enterprise.Password))
-                        throw new HttpException(403, "That password was incorrect");
+                        ThrowHttpException(HttpStatusCode.Forbidden, "That password was incorrect");
                 }
                 else
                 {
-                    throw new HttpException(403, "No password provided when enterprise is password protected");
+                    ThrowHttpException(HttpStatusCode.Forbidden, "No password provided when enterprise is password protected");
                 }
             }
             return new EnterpriseDetailsDTO(enterprise);

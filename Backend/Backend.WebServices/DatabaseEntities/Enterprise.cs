@@ -1,5 +1,6 @@
 namespace Backend.WebServices.DatabaseEntities
 {
+    using System;
     using System.Collections.Generic;
     using System.ComponentModel.DataAnnotations;
     using System.ComponentModel.DataAnnotations.Schema;
@@ -30,7 +31,7 @@ namespace Backend.WebServices.DatabaseEntities
 
         public DbGeography CoverCoordinate { get; set; }
 
-        public int? ModifiedUTC { get; set; }
+        public DateTime ModifiedUTC { get; set; }
 
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<Participant> Participants { get; set; }
