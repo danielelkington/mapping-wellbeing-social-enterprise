@@ -4,6 +4,7 @@ import { NativeScriptModule } from "nativescript-angular/nativescript.module";
 import { NativeScriptRouterModule } from "nativescript-angular/router";
 import { AppComponent } from "./app.component";
 import { registerElement } from "nativescript-angular/element-registry";
+import { LocalDatabaseService } from"./shared/localDatabaseService";
 
 import { routes, navigatableComponents } from "./app.routing";
 
@@ -23,6 +24,9 @@ registerElement("Mapbox", () => require("nativescript-mapbox").MapboxView);
     declarations: [
         AppComponent,
         ...navigatableComponents
+    ],
+    providers: [
+        LocalDatabaseService
     ]
 })
 export class AppModule { }

@@ -6,7 +6,6 @@ import { Observable } from "data/observable";
 import { EnterpriseService } from "./enterprises.service";
 import { LocalStorageService } from"../../shared/localStorageService";
 import { LocalDatabaseService } from"../../shared/localDatabaseService";
-import { Config } from "./config";
 import dialogs = require("ui/dialogs");
 import timer = require("timer");
 
@@ -14,7 +13,7 @@ import timer = require("timer");
 // them to select one.
 @Component({
     selector: "enterprises",
-    providers:  [EnterpriseService, LocalStorageService, LocalDatabaseService],
+    providers:  [EnterpriseService, LocalStorageService],
     templateUrl: "pages/enterprises/enterprises.html",
     styleUrls: ["pages/enterprises/enterprises-common.css", "pages/enterprises/enterprises.css"]
 })
@@ -90,7 +89,7 @@ export class EnterprisesComponent implements OnInit
     openEnterprise(enterprise)
     {
         //TODO
-        dialogs.alert("Entering enterprise...");
+        this.router.navigate(["/participants", enterprise.id]);
     }
 
     downloadEnterprise(enterprise, password)
