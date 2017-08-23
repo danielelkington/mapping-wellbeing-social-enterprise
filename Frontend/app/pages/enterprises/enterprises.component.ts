@@ -134,6 +134,7 @@ export class EnterprisesComponent implements OnInit
             var downloadedEnterprisesId: Array<number> = [];
             this.enterprises.forEach((enterprise) =>
             {
+                enterprise.iconImagePath = this.localStorageService.getImagePath(enterprise.imageFileName, enterprise.imageURL);
                 downloadedEnterprisesId.push(enterprise.id);
             })
             
@@ -144,8 +145,10 @@ export class EnterprisesComponent implements OnInit
                 loadedEnterprises.forEach((enterprise) =>
                 {
                     //Only retrieve enterprises that have not been downloaded
-                    if (downloadedEnterprisesId.indexOf(enterprise.id) < 0)
+                    if (downloadedEnterprisesId.indexOf(enterprise.id) < 0){
+                        enterprise.iconImagePath = this.localStorageService.getImagePath(enterprise.imageFileName, enterprise.imageURL);
                         this.enterprises.push(enterprise);
+                    }
                 });
                 this.isLoading = false;
             },
@@ -153,7 +156,8 @@ export class EnterprisesComponent implements OnInit
             {
                 console.log(err);
                 this.isLoading = false;
-                dialogs.alert("Failed to load enterprises");
+                if (this.enterprises.length == 0)
+                    dialogs.alert("Failed to load enterprises");
             });
         });
     }

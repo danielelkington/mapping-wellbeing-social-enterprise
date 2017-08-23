@@ -8,7 +8,7 @@
 	<ListView [items]="enterprises" row="0" class="small-spacing" (itemTap)="selectEnterprise($event)">
 		<ng-template let-item="item" let-i="index">
 			<GridLayout columns="100, *, 35, 50" rows="auto auto " class="end-col">
-				<Image col="0" row="0" [src]="item.imageURL" width="100" height="100"></Image>
+				<Image col="0" row="0" [src]="item.iconImagePath" width="100" height="100"></Image>
 				<Label [text]="item.name" col="1" [ngClass]="(item.isDownloaded() == true) ? 'text' : 'n-dwn-txt'"></Label>
 				<Image col="2" row="0" [src]="item.downloadedImageSrc" width="35" height="35"></Image>
 				<Image col="3" row="0" [src]="item.passwordImageSrc" width="35"></Image>

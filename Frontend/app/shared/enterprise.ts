@@ -7,6 +7,7 @@ export class Enterprise
 {
     passwordImageSrc: String;
     downloadedImageSrc: String;
+    iconImagePath: string;
     public busy: Boolean = false;
     public totalThingsToDownload: number = 10;
     public numberDownloaded: number = 0;
