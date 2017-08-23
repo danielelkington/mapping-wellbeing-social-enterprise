@@ -6,6 +6,9 @@ using Backend.WebServices.DatabaseEntities;
 using System.Collections.Generic;
 using System.Net.Http;
 using System.Web;
+using System;
+using System.Web.Http;
+using System.Net;
 
 namespace Backend.UnitTest
 {
@@ -25,8 +28,8 @@ namespace Backend.UnitTest
         public void GetAllEnterprises_ReturnsAllEnterprises()
         {
             //Arrange
-            _fakeContext.EnterpriseList.Add(new Enterprise { Id = 1, Name = "Enterprise1", Password = "abc", CoverImageURL = "myimage.com", ModifiedUTC = 2 });
-            _fakeContext.EnterpriseList.Add(new Enterprise { Id = 2, Name = "Enterprise2", CoverImageURL = "anotherImage.com", ModifiedUTC = 3 });
+            _fakeContext.EnterpriseList.Add(new Enterprise { Id = 1, Name = "Enterprise1", Password = "abc", CoverImageURL = "myimage.com", ModifiedUTC = new DateTime(1970,1,1) });
+            _fakeContext.EnterpriseList.Add(new Enterprise { Id = 2, Name = "Enterprise2", CoverImageURL = "anotherImage.com", ModifiedUTC = new DateTime(1970,1,1) });
 
             //Act
             var response = _target.Get().ToList();
@@ -38,7 +41,7 @@ namespace Backend.UnitTest
             first.Name.Should().Be("Enterprise1");
             first.HasPassword.Should().BeTrue();
             first.CoverImageURL.Should().Be("myimage.com");
-            first.ModifiedUTC.Should().Be(2);
+            first.ModifiedUTC.Should().Be(0);
 
             var last = response.Last();
             last.Id.Should().Be(2);
@@ -70,7 +73,7 @@ namespace Backend.UnitTest
             MediaItem mediaItem = new MediaItem { Id = 20, Name = "newMediaItem", PlaceId = 15, MediaItemType = mediaItemType };
             Place place = new Place { Id = 15, Name = "newPlace", ParticipantId = 10, MediaItems = new List<MediaItem>() { mediaItem } };
             Participant participant = new Participant { Id = 10, Name = "newParticipant", EnterpriseId = 5, Places = new List<Place>() { place } };
-            Enterprise enterprise = new Enterprise { Id = 5, Name = "Enterprise1", Password = "abc", CoverImageURL = "myimage.com", ModifiedUTC = 2, Participants = new List<Participant>() { participant } };
+            Enterprise enterprise = new Enterprise { Id = 5, Name = "Enterprise1", Password = "abc", CoverImageURL = "myimage.com", ModifiedUTC = DateTime.UtcNow, Participants = new List<Participant>() { participant } };
 
             _fakeContext.EnterpriseList.Add(enterprise);
 
@@ -79,19 +82,18 @@ namespace Backend.UnitTest
 
             //Act
              var response = _target.Get(5);
-            
+
             //Assert
             response.Participants.First()
                     .Places.First()
-                    .MediaItems.First()
-                    .MediaItemType.Name.Should().Be("newMediaItemType");
+                    .MediaItems.First().Name.Should().Be("newMediaItem");
         }
 
         [TestMethod]
         public void GetEnterprise_ReturnError403()
         {
             //Arrange
-            Enterprise enterprise = new Enterprise { Id = 5, Name = "Enterprise1", Password = "abc", CoverImageURL = "myimage.com", ModifiedUTC = 2 };
+            Enterprise enterprise = new Enterprise { Id = 5, Name = "Enterprise1", Password = "abc", CoverImageURL = "myimage.com", ModifiedUTC = DateTime.UtcNow };
 
             _fakeContext.EnterpriseList.Add(enterprise);
 
@@ -106,9 +108,9 @@ namespace Backend.UnitTest
             }
 
             //Assert
-            catch (HttpException ex)
+            catch (HttpResponseException ex)
             {
-                Assert.AreEqual(403, ex.GetHttpCode());
+                Assert.AreEqual(HttpStatusCode.Forbidden, ex.Response.StatusCode);
             }
         }
 
@@ -127,9 +129,9 @@ namespace Backend.UnitTest
             }
 
             //Assert
-            catch (HttpException ex)
+            catch (HttpResponseException ex)
             {
-                Assert.AreEqual(404, ex.GetHttpCode());
+                Assert.AreEqual(HttpStatusCode.NotFound, ex.Response.StatusCode);
             }
         }
     }

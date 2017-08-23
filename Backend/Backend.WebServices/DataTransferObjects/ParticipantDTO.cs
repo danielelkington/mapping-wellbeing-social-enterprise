@@ -13,6 +13,7 @@ namespace Backend.WebServices.DataTransferObjects
             Name = participant.Name;
             Bio = participant.Bio;
             ImageUrl = participant.ImageURL;
+            ImageFilename = participant.ImageFilename;
             Places = participant.Places.Select(x => new PlaceDTO(x)).ToList();    
         }
 

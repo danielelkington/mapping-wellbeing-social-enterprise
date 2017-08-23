@@ -4,8 +4,12 @@ import { NativeScriptModule } from "nativescript-angular/nativescript.module";
 import { NativeScriptRouterModule } from "nativescript-angular/router";
 import { LISTVIEW_DIRECTIVES } from "nativescript-telerik-ui/listview/angular";
 import { AppComponent } from "./app.component";
+import { registerElement } from "nativescript-angular/element-registry";
 
 import { routes, navigatableComponents } from "./app.routing";
+
+//Allow the 'MapBox' element to be used in HTML.
+registerElement("Mapbox", () => require("nativescript-mapbox").MapboxView);
 
 @NgModule({
     bootstrap: [
