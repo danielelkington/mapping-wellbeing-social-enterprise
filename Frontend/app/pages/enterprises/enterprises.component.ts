@@ -19,7 +19,7 @@ import timer = require("timer");
 })
 export class EnterprisesComponent implements OnInit
 {
-    // an array of all enterprises
+    // An array of all enterprises
     enterprises: Array<Enterprise> = [];
     isLoading = false;
 
@@ -34,10 +34,10 @@ export class EnterprisesComponent implements OnInit
         this.refresh();
     }
 
-    //Request password if required by enterprise
-    //If enterprise already downloaded, enters it
-    //If enterprise not downloaded, tries to download it.
-    //Enters the enterprise if password is correct, or no password required
+    // Request password if required by enterprise
+    // If enterprise already downloaded, enters it
+    // If enterprise not downloaded, tries to download it.
+    // Enters the enterprise if password is correct, or no password required
     selectEnterprise(args)
     {
         var enterprise = this.enterprises[args.index];
@@ -85,13 +85,13 @@ export class EnterprisesComponent implements OnInit
             });
         }
     }
-
+    
     openEnterprise(enterprise)
     {
-        //TODO
         this.router.navigate(["/participants", enterprise.id]);
     }
-
+    
+    // Saves the selected enterprise to the device
     downloadEnterprise(enterprise, password)
     {
         enterprise.busy = true;
@@ -118,7 +118,7 @@ export class EnterprisesComponent implements OnInit
         });
     }
 
-    // refreshes the current page
+    // Refreshes the current page
     refresh()
     {
         if (this.isLoading)
