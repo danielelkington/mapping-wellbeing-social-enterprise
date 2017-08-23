@@ -183,7 +183,7 @@ export class EnterprisesComponent implements OnInit
         if (test) {
             swipeLimits.right = 0;
         } else {
-            swipeLimits.right = 60 * utilsModule.layout.getDisplayDensity();
+            swipeLimits.right = utilsModule.layout.toDevicePixels(60);
         }
     }
 
@@ -194,7 +194,6 @@ export class EnterprisesComponent implements OnInit
 
     public onRightSwipeClick(args: SwipeActionsEventData) {
         var tappedItemData = args.object.bindingContext;
-        console.log("Item index: " + tappedItemData.id);
 
         var index = this.enterprises.findIndex(x => x.id === tappedItemData.id) //Delete enterprise data - need to keep enterprise in list but have it greyed-out
         this.enterprises.splice(index, 1);

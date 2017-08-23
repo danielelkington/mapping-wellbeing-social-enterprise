@@ -19,9 +19,9 @@
 			</GridLayout>
 		</ng-template>
         <GridLayout *tkListItemSwipeTemplate columns="auto, *, 60" class="listItemSwipeGridLayout">
-            <StackLayout orientation="horizontal" id="delete" class="delete" col="2" (tap)="onRightSwipeClick($event)">
+            <GridLayout id="delete" class="delete" col="2" (tap)="onRightSwipeClick($event)" columns="*" rows="*"> <!-- Tried using stacklayout, wouldn't center. Maybe someone else could try -->'
                 <Image src="res://ic_delete_white_24dp" stretch ="none" horizontalAlignment="center" verticalAlignment="center"></Image>
-            </StackLayout>
+            </GridLayout>
         </GridLayout>
 	</RadListView>
 	<ActivityIndicator [busy]="isLoading" [visibility]="isLoading ? 'visible' : 'collapsed'" row="1" horizontalAlignment="center" verticalAlignment="center"></ActivityIndicator>
