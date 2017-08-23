@@ -1,8 +1,5 @@
 <ActionBar title="Enterprises" class="bck-grnd">
 	<Label text="Enterprises" class="text-head"></Label>
-	<ActionItem ios.systemIcon="13" ios.position="right" 
-		android.systemIcon="ic_menu_refresh" android.position="actionBar" 
-		(tap)="refresh()"></ActionItem>
 </ActionBar> 
 <GridLayout class="bck-grnd">
 	<RadListView [items]="enterprises" id="listView" row="0" class="small-spacing" (itemTap)="selectEnterprise($event)" pullToRefresh="true" (pullToRefreshInitiated)="onPullToRefreshInitiated($event)" 
@@ -20,7 +17,7 @@
 		</ng-template>
         <GridLayout *tkListItemSwipeTemplate columns="auto, *, 60" class="listItemSwipeGridLayout">
             <GridLayout id="delete" class="delete" col="2" (tap)="onRightSwipeClick($event)" columns="*" rows="*"> <!-- Tried using stacklayout, wouldn't center. Maybe someone else could try -->'
-                <Image src="res://ic_delete_white_24dp" stretch ="none" horizontalAlignment="center" verticalAlignment="center"></Image>
+                <Image src="res://ic_delete_white" stretch ="none" horizontalAlignment="center" verticalAlignment="center"></Image>
             </GridLayout>
         </GridLayout>
 	</RadListView>
