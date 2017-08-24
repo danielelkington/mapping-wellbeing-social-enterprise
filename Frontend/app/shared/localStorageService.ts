@@ -21,6 +21,19 @@ export class LocalStorageService{
     constructor(private localDatabaseService:LocalDatabaseService){
     }
 
+    getImagePath(filename: string, url: string) : string{
+        //Preference will be to load it from a local file
+        if (filename){
+            console.log("mediaFolder: ", LocalStorageService.mediaFolder.path);
+            var filePath = path.join(LocalStorageService.mediaFolder.path, filename);
+            if (File.exists(filePath)){
+                console.log("Image path is ", path);
+                return filePath;
+            }
+        }
+        return url;
+    }
+
     saveEnterprise(enterpriseWithoutDetail : Enterprise, enterpriseToSave : Enterprise) : Promise<any>{
         //Empty promise makes chaining easier.
         var promise : Promise<any> = Promise.resolve(0);

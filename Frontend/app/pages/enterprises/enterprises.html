@@ -7,7 +7,7 @@
 		
 		<ng-template let-item="item" let-i="index">
 			<GridLayout columns="100, *, 35, 50" rows="auto auto " class="end-col">
-				<Image col="0" row="0" rowSpan="2" [src]="item.imageURL" width="100" height="100" 
+				<Image col="0" row="0" rowSpan="2" [src]="item.iconImagePath" width="100" height="100" 
 						stretch="aspectFill"></Image>
 				<Label [text]="item.name" col="1" rowSpan="2" [ngClass]="(item.isDownloaded() == true) ? 'text' : 'n-dwn-txt'"></Label>
 				<Image col="2" row="0" rowSpan="2" [src]="item.downloadedImageSrc" width="35" height="35"></Image>
