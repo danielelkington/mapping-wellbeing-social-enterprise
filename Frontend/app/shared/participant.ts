@@ -77,4 +77,8 @@ export class Participant{
     getIcon() {
         return "http://i.imgur.com/sk5jAas.png";
     }
+
+    getArrow() {
+        return "http://i.imgur.com/leZvrFM.png";
+    }
 }
