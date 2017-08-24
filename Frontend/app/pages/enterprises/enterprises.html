@@ -1,21 +1,31 @@
 <ActionBar title="Enterprises" class="bck-grnd">
-	<Label text="Enterprises" class="text-head"></Label>
-	<ActionItem ios.systemIcon="13" ios.position="right" 
-		android.systemIcon="ic_menu_refresh" android.position="actionBar" 
-		(tap)="refresh()"></ActionItem>
+	<Label text="Enterprises" class="text-head" horizontalAlignment="center"></Label>
 </ActionBar> 
 <GridLayout class="bck-grnd">
-	<ListView [items]="enterprises" row="0" class="small-spacing" (itemTap)="selectEnterprise($event)">
+	<RadListView [items]="enterprises" id="listView" row="0" class="small-spacing" (itemTap)="selectEnterprise($event)" pullToRefresh="true" (pullToRefreshInitiated)="onPullToRefreshInitiated($event)" 
+		(itemSwipeProgressStarted)="onSwipeCellStarted($event)" itemSwipe="true" (itemLoading)="onItemLoading($event)">
+		
 		<ng-template let-item="item" let-i="index">
 			<GridLayout columns="100, *, 35, 50" rows="auto auto " class="end-col">
-				<Image col="0" row="0" [src]="item.iconImagePath" width="100" height="100"></Image>
-				<Label [text]="item.name" col="1" [ngClass]="(item.isDownloaded() == true) ? 'text' : 'n-dwn-txt'"></Label>
-				<Image col="2" row="0" [src]="item.downloadedImageSrc" width="35" height="35"></Image>
-				<Image col="3" row="0" [src]="item.passwordImageSrc" width="35"></Image>
-				<Progress col="1" row="1" [visibility]="item.busy ? 'visible' : 'hidden'" 
-						[value]="item.numberDownloaded" [maxValue]="item.totalThingsToDownload"></Progress>
+				<Image col="0" row="0" rowSpan="2" [src]="item.iconImagePath" width="100" height="100" 
+						stretch="aspectFill"></Image>
+				<Label [text]="item.name" col="1" rowSpan="2" [ngClass]="(item.isDownloaded() == true) ? 'text' : 'n-dwn-txt'"></Label>
+				<Image col="2" row="0" rowSpan="2" [src]="item.downloadedImageSrc" width="35" height="35"></Image>
+				<Image col="3" row="0" rowSpan="2" [src]="item.passwordImageSrc" width="35"></Image>
+				<Image col="3" rowSpan="2" src="res://ic_keyboard_arrow_right" 
+					[visibility]="(item.isDownloaded() == true) ? 'visible' : 'hidden'"
+					verticalAlignment="center" horizontalAlignment="right" stretch="none"></Image>
+				<Progress col="1" row="1" [visibility]="item.busy ? 'visible' : 'hidden'" margin="5"
+						[value]="item.numberDownloaded" [maxValue]="item.totalThingsToDownload"
+						verticalAlignment="bottom"></Progress>
 			</GridLayout>
 		</ng-template>
-	</ListView>
-	<ActivityIndicator [busy]="isLoading" [visibility]="isLoading ? 'visible' : 'collapsed'" row="1" horizontalAlignment="center" verticalAlignment="center"></ActivityIndicator>
+        <GridLayout *tkListItemSwipeTemplate columns="auto, *, 60" class="listItemSwipeGridLayout">
+            <GridLayout id="delete" class="delete" col="2" (tap)="onRightSwipeClick($event)" columns="*" rows="*"> <!-- Tried using stacklayout, wouldn't center. Maybe someone else could try -->'
+                <Image src="res://ic_delete_white" stretch ="none" horizontalAlignment="center" verticalAlignment="center"></Image>
+            </GridLayout>
+        </GridLayout>
+	</RadListView>
+	<ActivityIndicator [busy]="isLoading" [visibility]="isLoading ? 'visible' : 'collapsed'" row="1" 
+		horizontalAlignment="center" verticalAlignment="center"></ActivityIndicator>
 </GridLayout> 
