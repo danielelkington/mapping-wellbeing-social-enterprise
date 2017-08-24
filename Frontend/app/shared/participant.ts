@@ -63,15 +63,7 @@ export class Participant{
     }
 
     getNumStories() : string {
-        var numStories = "";
-        var count = 0;
-        this.places.forEach(element => {
-            count++;
-        });
-
-        numStories = "(" + count + " stories)";
-
-        return numStories;
+        return "(" + this.places.length + ((this.places.length == 1) ? " story" : " stories") + ")";
     }
 
     getIcon() {
