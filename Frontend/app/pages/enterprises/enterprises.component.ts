@@ -224,8 +224,8 @@ export class EnterprisesComponent implements OnInit
     }
 
     public onItemLoading(args: ListViewEventData) {
-        const colours = ["#FFC300", "#FF5733", "#C70039", "#900C3F", "#581845"] //Need to find another way to get colours. This only supports 5 elements.
+        const colours = ["#E5DBE1", "#E2EEE5", "#F7E6E3", "#F8F7F2"];
         
-        args.view.backgroundColor = new Color(colours[args.index]);
+        args.view.backgroundColor = new Color(colours[args.index % colours.length]);
     }
 }

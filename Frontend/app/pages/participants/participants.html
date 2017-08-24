@@ -2,14 +2,14 @@
 	<Label text="Participants" class="text-head"></Label>
 </ActionBar>
 <GridLayout class="bck-grnd">
-	<ListView [items]="participants" row="0" class="small-spacing">
+	<RadListView [items]="participants" row="0" class="small-spacing" (itemLoading)="onItemLoading($event)">
 		<ng-template let-item="item" let-i="index">
-			<GridLayout columns="75, 100, *, 75" rows="auto auto" [ngClass]="getStyle(item.id)">
-				<Image col="0" row="0" [src]="item.getIcon()" width="100" height="100"></Image>
+			<GridLayout columns="75, 100, *, auto" rows="auto">
+				<Image col="0" [src]="item.getIcon()" width="100" height="100"></Image>
 				<Label [text]="item.name" col="1" class="text"></Label>
 				<Label [text]="item.getNumStories()" col="2" class="text"></Label>
-				<Image col="3" [src]="item.getArrow()"></Image>
+				<Image col="3" src="res://ic_keyboard_arrow_right"></Image>
 			</GridLayout><!-- end GridLayout -->
 		</ng-template><!-- end ng-template -->
-	</ListView><!-- end ListView -->
+	</RadListView><!-- end RadListView -->
 </GridLayout><!-- end GridLayout -->
