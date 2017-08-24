@@ -2,13 +2,23 @@ import { Component, ElementRef, OnInit, ViewChild, NgModule } from "@angular/cor
 import { Router } from "@angular/router";
 import { Enterprise } from "../../shared/enterprise";
 import { TextField } from "ui/text-field";
-import { Observable } from "data/observable";
+import { ItemEventData } from "ui/list-view";
+import { Observable, EventData } from "data/observable";
 import { EnterpriseService } from "./enterprises.service";
 import { LocalStorageService } from"../../shared/localStorageService";
 import { LocalDatabaseService } from"../../shared/localDatabaseService";
 import { Config } from "./config";
+import { View } from "tns-core-modules/ui/core/view";
+import { ListViewEventData, RadListView, SwipeActionsEventData } from "nativescript-telerik-ui/listview";
 import dialogs = require("ui/dialogs");
 import timer = require("timer");
+
+import * as frameModule from "tns-core-modules/ui/frame";
+import * as utilsModule from "tns-core-modules/utils/utils";
+import * as app from "tns-core-modules/application";
+
+import * as colorModule from "tns-core-modules/color";
+var Color = colorModule.Color;
 
 // Displays a list of enterprises to the user and allows
 // them to select one.
@@ -120,42 +130,102 @@ export class EnterprisesComponent implements OnInit
     }
 
     // refreshes the current page
-    refresh()
+    refresh() : Promise<any>
     {
         if (this.isLoading)
-            return;
+            return Promise.resolve(0);
+        //Keep track of enterprises that have been downloaded
+        var downloadedEnterprisesId: Array<number> = [];
         this.isLoading = true;
-        this.localDatabaseService.initialiseDatabaseIfNotExists()
+
+        var promise = this.localDatabaseService.initialiseDatabaseIfNotExists()
         .then(x => this.localDatabaseService.getSavedEnterprises())
         .then(result => {
             this.enterprises = result;
-
-            //Keep track of enterprises that have been downloaded
-            var downloadedEnterprisesId: Array<number> = [];
             this.enterprises.forEach((enterprise) =>
             {
                 downloadedEnterprisesId.push(enterprise.id);
             })
-            
-            //Load Enterprises from database
-            this.enterpriseService.getEnterprises()
-            .subscribe(loadedEnterprises =>
-            {
-                loadedEnterprises.forEach((enterprise) =>
+        });
+        promise = promise.then(x => this.enterpriseService.getEnterprises().toPromise());
+        promise = promise.then(loadedEnterprises => {
+            loadedEnterprises.forEach((enterprise) =>
                 {
                     //Only retrieve enterprises that have not been downloaded
                     if (downloadedEnterprisesId.indexOf(enterprise.id) < 0)
                         this.enterprises.push(enterprise);
                 });
                 this.isLoading = false;
-            },
-            err =>
-            {
-                console.log(err);
-                this.isLoading = false;
-                dialogs.alert("Failed to load enterprises");
-            });
         });
+        promise.catch(err => {
+            console.log(err);
+            this.isLoading = false;
+            dialogs.alert("Failed to load enterprises");
+        });
+        return promise;
+    }
+    
+    //Pull to Refresh
+    public onPullToRefreshInitiated(args: ListViewEventData) {
+        var listView = args.object;    
+        this.refresh()
+            .then(x => {
+                if (app.ios){
+                    listView.notifyPullToRefreshFinished();
+                }
+            });
+        if (app.android){
+            //Android seems to have issues recognising this if we put it in the 'then' of a promise.
+            //We'll put it here and rely on the other busy indicator.
+            listView.notifyPullToRefreshFinished();
+        }
     }
 
+    //Swipe to delete
+    public onSwipeCellStarted(args: SwipeActionsEventData) {
+        var swipeLimits = args.data.swipeLimits;
+
+        swipeLimits.threshold = 50 * utilsModule.layout.getDisplayDensity();
+        swipeLimits.left = 0;
+        
+        var enterprise = this.enterprises[args.index];
+        if (enterprise.isDownloaded()){
+            swipeLimits.right = utilsModule.layout.toDevicePixels(60);
+        }
+        else{
+            swipeLimits.right = 0;
+        }
+    }
+
+    public onItemClick(args: ListViewEventData) {
+        var listView = <RadListView>frameModule.topmost().currentPage.getViewById("listView");
+        listView.notifySwipeToExecuteFinished();
+    }
+
+    public onRightSwipeClick(args: SwipeActionsEventData) {
+        if (this.isLoading)
+            return;
+        var tappedItemData = args.object.bindingContext;
+        var listView = <RadListView>frameModule.topmost().currentPage.getViewById("listView");
+
+        var index = this.enterprises.findIndex(x => x.id === tappedItemData.id)
+        var enterprise = this.enterprises[index];
+        //Delete enterprise data - need to keep enterprise in list but have it greyed-out
+        this.isLoading = true;
+        this.localStorageService.deleteEnterprise(enterprise)
+            .then(x => {
+                listView.notifySwipeToExecuteFinished();
+                this.isLoading = false;
+                this.refresh();
+            })
+            .catch(x => {
+                this.isLoading = false;
+            });
+    }
+
+    public onItemLoading(args: ListViewEventData) {
+        const colours = ["#FFC300", "#FF5733", "#C70039", "#900C3F", "#581845"] //Need to find another way to get colours. This only supports 5 elements.
+        
+        args.view.backgroundColor = new Color(colours[args.index]);
+    }
 }
