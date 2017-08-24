@@ -17,6 +17,9 @@ import * as frameModule from "tns-core-modules/ui/frame";
 import * as utilsModule from "tns-core-modules/utils/utils";
 import * as app from "tns-core-modules/application";
 
+import * as colorModule from "tns-core-modules/color";
+var Color = colorModule.Color;
+
 // Displays a list of enterprises to the user and allows
 // them to select one.
 @Component({
@@ -218,5 +221,11 @@ export class EnterprisesComponent implements OnInit
             .catch(x => {
                 this.isLoading = false;
             });
+    }
+
+    public onItemLoading(args: ListViewEventData) {
+        const colours = ["#FFC300", "#FF5733", "#C70039", "#900C3F", "#581845"] //Need to find another way to get colours. This only supports 5 elements.
+        
+        args.view.backgroundColor = new Color(colours[args.index]);
     }
 }

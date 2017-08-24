@@ -3,7 +3,7 @@
 </ActionBar> 
 <GridLayout class="bck-grnd">
 	<RadListView [items]="enterprises" id="listView" row="0" class="small-spacing" (itemTap)="selectEnterprise($event)" pullToRefresh="true" (pullToRefreshInitiated)="onPullToRefreshInitiated($event)" 
-		(itemSwipeProgressStarted)="onSwipeCellStarted($event)" itemSwipe="true">
+		(itemSwipeProgressStarted)="onSwipeCellStarted($event)" itemSwipe="true" (itemLoading)="onItemLoading($event)">
 		
 		<ng-template let-item="item" let-i="index">
 			<GridLayout columns="100, *, 35, 50" rows="auto auto " class="end-col">
