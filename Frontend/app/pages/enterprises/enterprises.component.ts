@@ -24,13 +24,13 @@ var Color = colorModule.Color;
 // them to select one.
 @Component({
     selector: "enterprises",
-    providers:  [EnterpriseService, LocalStorageService, LocalDatabaseService],
+    providers:  [EnterpriseService, LocalStorageService],
     templateUrl: "pages/enterprises/enterprises.html",
     styleUrls: ["pages/enterprises/enterprises-common.css", "pages/enterprises/enterprises.css"]
 })
 export class EnterprisesComponent implements OnInit
 {
-    // an array of all enterprises
+    // An array of all enterprises
     enterprises: Array<Enterprise> = [];
     isLoading = false;
 
@@ -45,10 +45,10 @@ export class EnterprisesComponent implements OnInit
         this.refresh();
     }
 
-    //Request password if required by enterprise
-    //If enterprise already downloaded, enters it
-    //If enterprise not downloaded, tries to download it.
-    //Enters the enterprise if password is correct, or no password required
+    // Request password if required by enterprise
+    // If enterprise already downloaded, enters it
+    // If enterprise not downloaded, tries to download it.
+    // Enters the enterprise if password is correct, or no password required
     selectEnterprise(args)
     {
         var enterprise = this.enterprises[args.index];
@@ -96,13 +96,13 @@ export class EnterprisesComponent implements OnInit
             });
         }
     }
-
+    
     openEnterprise(enterprise)
     {
-        //TODO
-        dialogs.alert("Entering enterprise...");
+        this.router.navigate(["/participants", enterprise.id]);
     }
-
+    
+    // Saves the selected enterprise to the device
     downloadEnterprise(enterprise, password)
     {
         enterprise.busy = true;
@@ -224,8 +224,8 @@ export class EnterprisesComponent implements OnInit
     }
 
     public onItemLoading(args: ListViewEventData) {
-        const colours = ["#FFC300", "#FF5733", "#C70039", "#900C3F", "#581845"] //Need to find another way to get colours. This only supports 5 elements.
+        const colours = ["#E5DBE1", "#E2EEE5", "#F7E6E3", "#F8F7F2"];
         
-        args.view.backgroundColor = new Color(colours[args.index]);
+        args.view.backgroundColor = new Color(colours[args.index % colours.length]);
     }
 }

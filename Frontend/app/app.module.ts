@@ -5,6 +5,7 @@ import { NativeScriptRouterModule } from "nativescript-angular/router";
 import { LISTVIEW_DIRECTIVES } from "nativescript-telerik-ui/listview/angular";
 import { AppComponent } from "./app.component";
 import { registerElement } from "nativescript-angular/element-registry";
+import { LocalDatabaseService } from"./shared/localDatabaseService";
 
 import { routes, navigatableComponents } from "./app.routing";
 
@@ -25,6 +26,9 @@ registerElement("Mapbox", () => require("nativescript-mapbox").MapboxView);
         AppComponent,
         LISTVIEW_DIRECTIVES,
         ...navigatableComponents
+    ],
+    providers: [
+        LocalDatabaseService
     ]
 })
 export class AppModule { }
