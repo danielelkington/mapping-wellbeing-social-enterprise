@@ -15,7 +15,8 @@ export class LocalDatabaseService{
     }
 
     static readonly initialiseDatabaseStrings : string[] = 
-        ["CREATE TABLE IF NOT EXISTS Enterprise (" +
+        ["PRAGMA foreign_keys = ON",
+        "CREATE TABLE IF NOT EXISTS Enterprise (" +
         "   Id INTEGER PRIMARY KEY," +
         "   Name TEXT NOT NULL," +
         "   CoverImageURL TEXT," +
@@ -29,7 +30,7 @@ export class LocalDatabaseService{
         "   Bio TEXT," +
         "   ImageURL TEXT," +
         "   ImageFilename TEXT," +
-        "   FOREIGN KEY(EnterpriseId) REFERENCES Enterprise(Id))",
+        "   FOREIGN KEY(EnterpriseId) REFERENCES Enterprise(Id) ON DELETE CASCADE)",
         
         "CREATE TABLE IF NOT EXISTS Place (" +
         "   Id INTEGER PRIMARY KEY," +
@@ -39,7 +40,7 @@ export class LocalDatabaseService{
         "   Latitude INTEGER," +
         "   Longitude INTEGER," +
         "   Description TEXT," +
-        "   FOREIGN KEY(ParticipantId) REFERENCES Participant(Id))",
+        "   FOREIGN KEY(ParticipantId) REFERENCES Participant(Id) ON DELETE CASCADE)",
 
         "CREATE TABLE IF NOT EXISTS MediaItem (" +
         "   Id INTEGER PRIMARY KEY," +
@@ -48,7 +49,7 @@ export class LocalDatabaseService{
         "   Name TEXT," +
         "   Filename TEXT," +
         "   URL TEXT," +
-        "   FOREIGN KEY(PlaceId) REFERENCES Place(Id))"
+        "   FOREIGN KEY(PlaceId) REFERENCES Place(Id) ON DELETE CASCADE)"
     ];
 
     initialiseDatabaseIfNotExists(){
@@ -146,6 +147,12 @@ export class LocalDatabaseService{
             }
         }
         
+        promise.catch(this.handleErrors);
+        return promise;
+    }
+
+    deleteEnterprise(enterpriseId: number): Promise<any>{
+        var promise = this.database.execSQL("DELETE FROM Enterprise WHERE Id = ?", [enterpriseId]);
         promise.catch(this.handleErrors);
         return promise;
     }

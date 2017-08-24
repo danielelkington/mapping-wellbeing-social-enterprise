@@ -55,6 +55,12 @@ export class LocalStorageService{
         return promise;
     }
 
+    deleteEnterprise(enterpriseToDelete: Enterprise) : Promise<any>{
+        var promise = this.localDatabaseService.deleteEnterprise(enterpriseToDelete.id);
+        //TODO also delete all media and maps associated with the enterprise.
+        return promise;
+    }
+
     private downloadMaps(enterpriseToSave: Enterprise, promise: Promise<any>) : Promise<any>
     {
         //Download mapbox region

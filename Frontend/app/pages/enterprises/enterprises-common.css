@@ -21,7 +21,7 @@ CSS to style the enterprises list page relevant to all platforms goes here
     background-color: #e4e6e7;
 } /* end bck-grnd*/
 
-.ent-col {
+.end-col {
     background-color: #fafafa;
 } /* end ent-col*/
 
@@ -38,3 +38,12 @@ CSS to style the enterprises list page relevant to all platforms goes here
     margin: 10;
     color: #9B9B9B;
 } /* end n-dwn-txt */
+
+.listItemSwipeGridLayout {
+    background-color: red;
+}
+
+.delete {
+    background-color: red;
+    padding: 16;
+}
