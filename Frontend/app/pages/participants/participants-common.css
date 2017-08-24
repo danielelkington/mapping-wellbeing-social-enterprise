@@ -1,3 +1,45 @@
 /*
 CSS to style the enterprises list page relevant to all platforms goes here
 */
+
+.text {
+    font-size: 17;
+    vertical-align: middle;
+    margin: 10;
+    color: #212121;
+} /* end text */
+
+.text-head {
+    font-size: 17;
+    font-weight: bold;
+    margin: 10;
+    color: #212121;
+} /* end text-head */
+
+.bck-grnd {
+    background-color: #e4e6e7;
+} /* end bck-grnd*/
+
+.rows-1 {
+    background-color: lightblue;/*#e6e6ff;*/
+} /* end rows-1*/
+
+.rows-2 {
+    background-color: lightgreen;/*#b3b3ff;*/
+} /* end rows-2*/
+
+.rows-3 {
+    background-color: lightyellow/*#8080ff;*/
+} /* end rows-3*/
+
+.rows-4 {
+    background-color: lightcoral;/*#6666ff;*/
+} /* end rows-4*/
+
+.rows-5 {
+    background-color: lightskyblue;/*#4d4dff;*/
+} /* end rows-5*/
+
+.rows-6 {
+    background-color: lightcyan;/*#3333ff;*/
+} /* end rows-5*/

@@ -61,4 +61,20 @@ export class Participant{
         }
         return maxWest;
     }
+
+    getNumStories() : string {
+        var numStories = "";
+        var count = 0;
+        this.places.forEach(element => {
+            count++;
+        });
+
+        numStories = "(" + count + " stories)";
+
+        return numStories;
+    }
+
+    getIcon() {
+        return "http://i.imgur.com/sk5jAas.png";
+    }
 }

@@ -1,9 +1,13 @@
-<GridLayout>
-	<ListView [items]="participants" row="0" class="small-spacing" (itemTap)="openMap()">
+<ActionBar title="Participants" class="bck-grnd">
+	<Label text="Participants" class="text-head"></Label>
+</ActionBar>
+<GridLayout class="bck-grnd">
+	<ListView [items]="participants" row="0" class="small-spacing">
 		<ng-template let-item="item" let-i="index">
-			<GridLayout columns="100, *, 50" height="100">
-				<Image col="0" [src]="userIcon" width="100" height="100"></Image>
+			<GridLayout columns="100, *, *" rows="auto auto" [ngClass]="getStyle(item.id)">
+				<Image col="0" row="0" [src]="item.getIcon()" width="100" height="100"></Image>
 				<Label [text]="item.name" col="1" class="text"></Label>
+				<Label [text]="item.getNumStories()" col="2" class="text"></Label>
 			</GridLayout><!-- end GridLayout -->
 		</ng-template><!-- end ng-template -->
 	</ListView><!-- end ListView -->
