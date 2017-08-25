@@ -24,10 +24,8 @@ export class LocalStorageService{
     getImagePath(filename: string, url: string) : string{
         //Preference will be to load it from a local file
         if (filename){
-            console.log("mediaFolder: ", LocalStorageService.mediaFolder.path);
             var filePath = path.join(LocalStorageService.mediaFolder.path, filename);
             if (File.exists(filePath)){
-                console.log("Image path is ", path);
                 return filePath;
             }
         }

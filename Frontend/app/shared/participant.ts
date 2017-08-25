@@ -1,8 +1,10 @@
 import {Place} from "./place";
+import {PathPoint} from "./pathPoint";
 import {SimpleMediaItem} from "./simpleMediaItem";
 
 export class Participant{
     public places: Array<Place> = [];
+    public pathPoints: Array<PathPoint> = [];
 
     constructor(public id: number, public name: string, public bio: string){
 
@@ -24,6 +26,11 @@ export class Participant{
                 maxNorth = place.latitude;
             }
         }
+        for (let pathPoint of this.pathPoints){
+            if (pathPoint.latitude > maxNorth){
+                maxNorth = pathPoint.latitude;
+            }
+        }
         return maxNorth;
     }
 
@@ -32,6 +39,11 @@ export class Participant{
         for (let place of this.places){
             if (place.latitude < maxSouth){
                 maxSouth = place.latitude;
+            }
+        }
+        for (let pathPoint of this.pathPoints){
+            if (pathPoint.latitude < maxSouth){
+                maxSouth = pathPoint.latitude;
             }
         }
         return maxSouth;
@@ -48,6 +60,11 @@ export class Participant{
                 maxEast = place.longitude;
             }
         }
+        for (let pathPoint of this.pathPoints){
+            if (pathPoint.longitude > maxEast){
+                maxEast = pathPoint.longitude;
+            }
+        }
         return maxEast;
     }
 
@@ -57,6 +74,11 @@ export class Participant{
         for (let place of this.places){
             if (place.longitude < maxWest){
                 maxWest = place.longitude;
+            }
+        }
+        for (let pathPoint of this.pathPoints){
+            if (pathPoint.longitude < maxWest){
+                maxWest = pathPoint.longitude;
             }
         }
         return maxWest;

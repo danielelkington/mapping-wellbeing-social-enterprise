@@ -12,7 +12,8 @@ namespace Backend.WebServices.DataTransferObjects
             EnterpriseId = participant.EnterpriseId;
             Name = participant.Name;
             Bio = participant.Bio;
-            Places = participant.Places.Select(x => new PlaceDTO(x)).ToList();    
+            Places = participant.Places.Select(x => new PlaceDTO(x)).ToList();
+            PathPoints = participant.PathPoints.Select(x => new PathPointDTO(x)).ToList();
         }
 
         public int Id { get; set; }
@@ -20,5 +21,6 @@ namespace Backend.WebServices.DataTransferObjects
         public string Name { get; set; }
         public string Bio { get; set; }
         public virtual ICollection<PlaceDTO> Places { get; set; }
-}
+        public virtual ICollection<PathPointDTO> PathPoints { get; set; }
+    }
 }

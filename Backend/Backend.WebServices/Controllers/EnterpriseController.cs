@@ -1,5 +1,4 @@
-﻿
-using System.Collections.Generic;
+﻿using System.Collections.Generic;
 using System.Web;
 using System.Web.Http;
 using System;
@@ -73,6 +72,8 @@ namespace Backend.WebServices.Controllers
                                 .Include(x => x.Participants.Select(
                                          p => p.Places.Select(
                                          m => m.MediaItems)))
+                                .Include(x => x.Participants.Select(
+                                    p => p.PathPoints))
                                 .SingleOrDefault();
 
             if (enterprise == null)

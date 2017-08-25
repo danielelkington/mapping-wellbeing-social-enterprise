@@ -5,6 +5,7 @@ import { Participant } from "../shared/participant";
 import { Place } from "../shared/place";
 import { MediaItem } from "../shared/mediaItem";
 import { MediaItemType } from "../shared/mediaItemType";
+import { PathPoint } from "../shared/pathPoint";
 var Sqlite = require("nativescript-sqlite");
 
 function setupTests(databaseName: string) : LocalDatabaseService{
@@ -81,7 +82,7 @@ QUnit.test("getSavedEnterprises returns enterprises if enterprises in DB", funct
 });
 
 QUnit.test("getSavedEnterprise returns full details of saved enterprise", function(assert){
-    assert.expect(19);
+    assert.expect(25);
     var databaseName = "testBackOnTrack.db";
     var target = setupTests(databaseName);
 
@@ -105,7 +106,11 @@ QUnit.test("getSavedEnterprise returns full details of saved enterprise", functi
         .then(x => database.execSQL("INSERT INTO MediaItem(Id, PlaceId, MediaItemTypeId, Name, Filename, URL) " +
                                     "VALUES(1, 1, 1, 'pic1', 'pic1filename', 'pic1url')"))
         .then(x => database.execSQL("INSERT INTO MediaItem(Id, PlaceId, MediaItemTypeId, Name, Filename, URL) " +
-                                    "VALUES(2, 1, 1, 'pic2', 'pic2filename', 'pic2url')"));
+                                    "VALUES(2, 1, 1, 'pic2', 'pic2filename', 'pic2url')"))
+        .then(x => database.execSQL("INSERT INTO PathPoint(Id, ParticipantId, SequenceNumber, Latitude, Longitude) " +
+                                    "VALUES(1, 2, 2, 9, 10)"))
+        .then(x => database.execSQL("INSERT INTO PathPoint(Id, ParticipantId, SequenceNumber, Latitude, Longitude) " +
+                                    "VALUES(2, 2, 1, 7, 8)"));
     
     promise = promise.then(x => target.getSavedEnterprise(1))
         .then(enterprise => {
@@ -131,12 +136,19 @@ QUnit.test("getSavedEnterprise returns full details of saved enterprise", functi
             assert.equal('pic1url', enterprise.participants[1].places[1].mediaItems[0].url);
             assert.equal('pic2', enterprise.participants[1].places[1].mediaItems[1].name);
             assert.equal(1, enterprise.participants[1].places[1].mediaItems[1].mediaItemType);
+
+            assert.equal(0, enterprise.participants[0].pathPoints.length);
+            assert.equal(2, enterprise.participants[1].pathPoints.length);
+            assert.equal(7, enterprise.participants[1].pathPoints[0].latitude);
+            assert.equal(8, enterprise.participants[1].pathPoints[0].longitude);
+            assert.equal(9, enterprise.participants[1].pathPoints[1].latitude);
+            assert.equal(10, enterprise.participants[1].pathPoints[1].longitude);
         });
     return promise;
 });
 
 QUnit.test("saveEnterprise saves full details of enterprise", function(assert){
-    assert.expect(21);
+    assert.expect(26);
     var databaseName = "testBackOnTrack.db";
     var target = setupTests(databaseName);
 
@@ -149,6 +161,7 @@ QUnit.test("saveEnterprise saves full details of enterprise", function(assert){
     enterprise.participants[0].places.push(new Place(2, 2, 'placename2', 3, 5, 'placeDesc2'));
     enterprise.participants[0].places[0].mediaItems.push(new MediaItem(1, 'mediaItem1', 'img.png', 'a.com/img.png', MediaItemType.Image));
     enterprise.participants[0].places[0].mediaItems.push(new MediaItem(2, 'mediaItem2', 'img.mp4', 'a.com/img.mp4', MediaItemType.Video));
+    enterprise.participants[0].pathPoints.push(new PathPoint(1, 1, 1, 1));
 
     promise = promise.then(x => target.saveEnterprise(enterprise));
     promise = promise.then(x => target.getSavedEnterprise(1))
@@ -177,6 +190,12 @@ QUnit.test("saveEnterprise saves full details of enterprise", function(assert){
             assert.equal('img.png', savedEnterprise.participants[0].places[0].mediaItems[0].filename);
             assert.equal('a.com/img.png', savedEnterprise.participants[0].places[0].mediaItems[0].url);
             assert.equal(MediaItemType.Image, savedEnterprise.participants[0].places[0].mediaItems[0].id);
+
+            assert.equal(1, savedEnterprise.participants[0].pathPoints.length);
+            assert.equal(1, savedEnterprise.participants[0].pathPoints[0].id);
+            assert.equal(1, savedEnterprise.participants[0].pathPoints[0].sequenceNumber);
+            assert.equal(1, savedEnterprise.participants[0].pathPoints[0].latitude);
+            assert.equal(1, savedEnterprise.participants[0].pathPoints[0].longitude);
         });
     return promise;
 });
