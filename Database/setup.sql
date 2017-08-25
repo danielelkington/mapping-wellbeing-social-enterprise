@@ -38,7 +38,8 @@ CREATE TABLE Place (
 	[ParticipantId] int NOT NULL, 
 	[SequenceNumber] int NOT NULL,
 	[Name] nvarchar(255),
-	[Coordinate] geography,
+	[Latitude] decimal(10,7),
+	[Longitude] decimal(10,7),
 	[Description] nvarchar(max),
 	FOREIGN KEY (ParticipantId) REFERENCES Participant(Id)
 );

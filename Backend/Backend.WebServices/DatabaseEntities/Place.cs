@@ -23,7 +23,9 @@ namespace Backend.WebServices.DatabaseEntities
         [StringLength(255)]
         public string Name { get; set; }
 
-        public DbGeography Coordinate { get; set; }
+        public decimal? Latitude { get; set; }
+
+        public decimal? Longitude { get; set; }
 
         public string Description { get; set; }
 

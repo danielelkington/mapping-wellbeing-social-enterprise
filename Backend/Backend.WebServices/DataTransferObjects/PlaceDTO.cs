@@ -1,6 +1,5 @@
 ﻿using Backend.WebServices.DatabaseEntities;
 using System.Collections.Generic;
-using System.Data.Entity.Spatial;
 using System.Linq;
 
 namespace Backend.WebServices.DataTransferObjects
@@ -13,8 +12,8 @@ namespace Backend.WebServices.DataTransferObjects
             ParticipantId = place.ParticipantId;
             SequenceNumber = place.SequenceNumber;
             Name = place.Name;
-            Latitude = place.Coordinate?.Latitude;
-            Longitude = place.Coordinate?.Longitude;
+            Latitude = place.Latitude;
+            Longitude = place.Longitude;
             MediaItems = place.MediaItems.Select(x => new MediaItemDTO(x)).ToList();
         }
 
@@ -22,8 +21,8 @@ namespace Backend.WebServices.DataTransferObjects
         public int ParticipantId { get; set; }
         public int SequenceNumber { get; set; }
         public string Name { get; set; }
-        public double? Latitude { get; set; }
-        public double? Longitude { get; set; }
+        public decimal? Latitude { get; set; }
+        public decimal? Longitude { get; set; }
         public virtual ICollection<MediaItemDTO> MediaItems { get; set; }
     }
 }

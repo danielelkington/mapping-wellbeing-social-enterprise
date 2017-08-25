@@ -12,12 +12,12 @@ insert into Participant(EnterpriseId, Name, Bio)
 insert into Participant(EnterpriseId, Name, Bio) 
 	values ((select Id from Enterprise where Name = 'Hawthorn'), 'Sarah', 'Has dreams to making it big.'); 
 
-insert into Place(ParticipantId, SequenceNumber, Name, Coordinate, Description)
-	values ((select Id from Participant where Name = 'John'), 1, 'Home', geography::Point(-38.8046, 144.9834, 4326), 'Where he grew up');
-insert into Place(ParticipantId, SequenceNumber, Name, Coordinate, Description)
-	values ((select Id from Participant where Name = 'John'), 2, 'School', geography::Point(-38.8049, 144.9835, 4326), 'Met some dodgey friends');
-insert into Place(ParticipantId, SequenceNumber, Name, Coordinate, Description)
-	values ((select Id from Participant where Name = 'John'), 3, 'Work', geography::Point(-38.8043, 144.9836, 4326), 'Working har to pay bills');
+insert into Place(ParticipantId, SequenceNumber, Name, Latitude, Longitude, Description)
+	values ((select Id from Participant where Name = 'John'), 1, 'Home', -38.8046, 144.9834, 'Where he grew up');
+insert into Place(ParticipantId, SequenceNumber, Name, Latitude, Longitude, Description)
+	values ((select Id from Participant where Name = 'John'), 2, 'School', -38.8049, 144.9835, 'Met some dodgey friends');
+insert into Place(ParticipantId, SequenceNumber, Name, Latitude, Longitude, Description)
+	values ((select Id from Participant where Name = 'John'), 3, 'Work', -38.8043, 144.9836, 'Working hard to pay bills');
 
 insert into PathPoint(ParticipantId, SequenceNumber, Latitude, Longitude)
 	values ((select Id from Participant where Name = 'John'), 1, -38.8046, 144.9834);
