@@ -14,8 +14,6 @@ QUnit.test("EnterpriseFromJSON constructs enterprise from JSON correctly", funct
               "\"EnterpriseId\": 1,"+
               "\"Name\": \"John\","+
               "\"Bio\": \"John is a builder.\","+
-              "\"ImageUrl\": \"abc.net.au\","+
-              "\"ImageFilename\": \"test.jpg\","+
               "\"Places\": ["+
                   "{"+
                       "\"Id\": 1,"+
@@ -52,8 +50,6 @@ QUnit.test("EnterpriseFromJSON constructs enterprise from JSON correctly", funct
               "\"EnterpriseId\": 1,"+
               "\"Name\": \"Jess\","+
               "\"Bio\": \"Jess is back on her own again\","+
-              "\"ImageUrl\": \"\","+
-              "\"ImageFilename\": null,"+
               "\"Places\": []"+
           "}"+
       "]"+
@@ -71,8 +67,6 @@ QUnit.test("EnterpriseFromJSON constructs enterprise from JSON correctly", funct
   assert.equal(1, participant.id);
   assert.equal("John", participant.name);
   assert.equal("John is a builder.", participant.bio);
-  assert.equal("abc.net.au", participant.imageURL);
-  assert.equal("test.jpg", participant.imageFileName);
   assert.equal(2, participant.places.length);
 
   var place = participant.places[0];

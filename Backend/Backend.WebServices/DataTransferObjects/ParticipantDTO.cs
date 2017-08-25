@@ -12,8 +12,6 @@ namespace Backend.WebServices.DataTransferObjects
             EnterpriseId = participant.EnterpriseId;
             Name = participant.Name;
             Bio = participant.Bio;
-            ImageUrl = participant.ImageURL;
-            ImageFilename = participant.ImageFilename;
             Places = participant.Places.Select(x => new PlaceDTO(x)).ToList();    
         }
 
@@ -21,8 +19,6 @@ namespace Backend.WebServices.DataTransferObjects
         public int EnterpriseId { get; set; }
         public string Name { get; set; }
         public string Bio { get; set; }
-        public string ImageUrl { get; set; }
-        public string ImageFilename { get; set; }
         public virtual ICollection<PlaceDTO> Places { get; set; }
 }
 }

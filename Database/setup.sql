@@ -22,7 +22,6 @@ CREATE TABLE Enterprise (
 	[Password] nvarchar(255), 
 	[CoverImageURL] nvarchar(255),
 	[CoverImageFilename] nvarchar(255),
-	[CoverCoordinate] geography,
 	[ModifiedUTC] datetime2 NOT NULL
 );
 
@@ -31,8 +30,6 @@ CREATE TABLE Participant (
 	[EnterpriseId] int NOT NULL,
 	[Name] nvarchar(255) NOT NULL,
 	[Bio] nvarchar(max),
-	[ImageURL] nvarchar(255),
-	[ImageFilename] nvarchar(255),
 	FOREIGN KEY (EnterpriseId) REFERENCES Enterprise(Id)
 );
 

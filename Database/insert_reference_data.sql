@@ -1,16 +1,16 @@
-insert into Enterprise(Name, Password, CoverImageURL, CoverImageFilename, CoverCoordinate, ModifiedUTC) 
-	values ('Lilydale', NULL, 'https://backontrack.blob.core.windows.net/blobs/512e154d-10b7-4598-abff-73f1abc27d13.jpg', '512e154d-10b7-4598-abff-73f1abc27d13.jpg', geography::Point(-37.756277, 145.347447, 4326), GETUTCDATE());  
-insert into Enterprise(Name, Password, CoverImageURL, CoverImageFilename, CoverCoordinate, ModifiedUTC) 
-	values ('Hawthorn', '1234', 'https://backontrack.blob.core.windows.net/blobs/aa4da771-b20b-48f8-93ca-2b38fe5c0ff1.png', 'aa4da771-b20b-48f8-93ca-2b38fe5c0ff1.png', geography::Point(-37.822603, 145.035383, 4326), GETUTCDATE());  
+insert into Enterprise(Name, Password, CoverImageURL, CoverImageFilename, ModifiedUTC) 
+	values ('Lilydale', NULL, 'https://backontrack.blob.core.windows.net/blobs/512e154d-10b7-4598-abff-73f1abc27d13.jpg', '512e154d-10b7-4598-abff-73f1abc27d13.jpg', GETUTCDATE());  
+insert into Enterprise(Name, Password, CoverImageURL, CoverImageFilename, ModifiedUTC) 
+	values ('Hawthorn', '1234', 'https://backontrack.blob.core.windows.net/blobs/aa4da771-b20b-48f8-93ca-2b38fe5c0ff1.png', 'aa4da771-b20b-48f8-93ca-2b38fe5c0ff1.png', GETUTCDATE());  
 
-insert into Participant(EnterpriseId, Name, Bio, ImageURL, ImageFilename) 
-	values ((select Id from Enterprise where Name = 'Lilydale'), 'John', 'John is a builder.', '', '');   
-insert into Participant(EnterpriseId, Name, Bio, ImageURL, ImageFilename) 
-	values ((select Id from Enterprise where Name = 'Lilydale'), 'Jess', 'Jess is back on her own again', '', '');
-insert into Participant(EnterpriseId, Name, Bio, ImageURL, ImageFilename) 
-	values ((select Id from Enterprise where Name = 'Hawthorn'), 'Bill', 'Bill is happier with his life now', '', '');  
-insert into Participant(EnterpriseId, Name, Bio, ImageURL, ImageFilename) 
-	values ((select Id from Enterprise where Name = 'Hawthorn'), 'Sarah', 'Has dreams to making it big.', '', ''); 
+insert into Participant(EnterpriseId, Name, Bio) 
+	values ((select Id from Enterprise where Name = 'Lilydale'), 'John', 'John is a builder.');   
+insert into Participant(EnterpriseId, Name, Bio) 
+	values ((select Id from Enterprise where Name = 'Lilydale'), 'Jess', 'Jess is back on her own again');
+insert into Participant(EnterpriseId, Name, Bio) 
+	values ((select Id from Enterprise where Name = 'Hawthorn'), 'Bill', 'Bill is happier with his life now');  
+insert into Participant(EnterpriseId, Name, Bio) 
+	values ((select Id from Enterprise where Name = 'Hawthorn'), 'Sarah', 'Has dreams to making it big.'); 
 
 insert into Place(ParticipantId, SequenceNumber, Name, Coordinate, Description)
 	values ((select Id from Participant where Name = 'John'), 1, 'Home', geography::Point(-38.8046, 144.9834, 4326), 'Where he grew up');

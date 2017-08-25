@@ -4,13 +4,13 @@ import {SimpleMediaItem} from "./simpleMediaItem";
 export class Participant{
     public places: Array<Place> = [];
 
-    constructor(public id: number, public name: string, public bio: string, public imageURL: string, public imageFileName: string){
+    constructor(public id: number, public name: string, public bio: string){
 
     }
 
     getMediaToDownload() : Array<SimpleMediaItem>
     {
-        var result = [new SimpleMediaItem(this.imageFileName, this.imageURL)];
+        var result = [];
         for (let place of this.places){
             result = result.concat(place.getMediaToDownload());
         }

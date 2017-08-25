@@ -28,8 +28,6 @@ export class LocalDatabaseService{
         "   EnterpriseId INTEGER NOT NULL," +
         "   Name TEXT NOT NULL," +
         "   Bio TEXT," +
-        "   ImageURL TEXT," +
-        "   ImageFilename TEXT," +
         "   FOREIGN KEY(EnterpriseId) REFERENCES Enterprise(Id) ON DELETE CASCADE)",
         
         "CREATE TABLE IF NOT EXISTS Place (" +
@@ -93,7 +91,7 @@ export class LocalDatabaseService{
             enterprise = new Enterprise(row[0], row[1], /*downloaded*/true, /*haspassword*/false, row[2], row[3], row[4]);
         });
         promise = promise.then(x => this.database.each(
-            "SELECT Id, Name, Bio, ImageURL, ImageFilename " +
+            "SELECT Id, Name, Bio " +
             "FROM Participant " +
             "WHERE EnterpriseId = ? " +
             "ORDER BY Name", [enterpriseId],
@@ -101,7 +99,7 @@ export class LocalDatabaseService{
                 if (error){
                     this.handleErrors(error);
                 }
-                enterprise.participants.push(new Participant(row[0], row[1], row[2], row[3], row[4]));
+                enterprise.participants.push(new Participant(row[0], row[1], row[2]));
             }
         ));
         promise = promise.then(x => {
@@ -126,9 +124,9 @@ export class LocalDatabaseService{
         
         for(let participant of enterprise.participants){
             promise = promise.then(x => this.database.execSQL(
-                "INSERT INTO Participant(Id, EnterpriseId, Name, Bio, ImageURL, ImageFilename) " +
-                "VALUES(?,?,?,?,?,?)",
-                [participant.id, enterprise.id, participant.name, participant.bio, participant.imageURL, participant.imageFileName]
+                "INSERT INTO Participant(Id, EnterpriseId, Name, Bio) " +
+                "VALUES(?,?,?,?)",
+                [participant.id, enterprise.id, participant.name, participant.bio]
             ));
             
             for (let place of participant.places){

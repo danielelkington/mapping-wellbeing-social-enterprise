@@ -32,7 +32,7 @@ export class Enterprise
         //Participants
         enterpriseJSON.Participants.forEach(participantJSON => {
             var participant = new Participant(participantJSON.Id, participantJSON.Name, 
-                participantJSON.Bio, participantJSON.ImageUrl, participantJSON.ImageFilename);
+                participantJSON.Bio);
             
             //Places
             participantJSON.Places.forEach(placeJSON => {
