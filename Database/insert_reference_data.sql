@@ -1,7 +1,7 @@
-insert into Enterprise(Name, Password, CoverImageURL, CoverCoordinate, ModifiedUTC) 
-	values ('Lilydale', NULL, 'https://i.imgur.com/7gX1F3d.png', geography::Point(-37.756277, 145.347447, 4326), GETUTCDATE());  
-insert into Enterprise(Name, Password, CoverImageURL, CoverCoordinate, ModifiedUTC) 
-	values ('Hawthorn', '1234', 'https://i.imgur.com/7gX1F3d.png', geography::Point(-37.822603, 145.035383, 4326), GETUTCDATE());  
+insert into Enterprise(Name, Password, CoverImageURL, CoverImageFilename, CoverCoordinate, ModifiedUTC) 
+	values ('Lilydale', NULL, 'https://backontrack.blob.core.windows.net/blobs/512e154d-10b7-4598-abff-73f1abc27d13.jpg', '512e154d-10b7-4598-abff-73f1abc27d13.jpg', geography::Point(-37.756277, 145.347447, 4326), GETUTCDATE());  
+insert into Enterprise(Name, Password, CoverImageURL, CoverImageFilename, CoverCoordinate, ModifiedUTC) 
+	values ('Hawthorn', '1234', 'https://backontrack.blob.core.windows.net/blobs/aa4da771-b20b-48f8-93ca-2b38fe5c0ff1.png', 'aa4da771-b20b-48f8-93ca-2b38fe5c0ff1.png', geography::Point(-37.822603, 145.035383, 4326), GETUTCDATE());  
 
 insert into Participant(EnterpriseId, Name, Bio, ImageURL, ImageFilename) 
 	values ((select Id from Enterprise where Name = 'Lilydale'), 'John', 'John is a builder.', '', '');   
@@ -20,8 +20,8 @@ insert into Place(ParticipantId, SequenceNumber, Name, Coordinate, Description)
 	values ((select Id from Participant where Name = 'John'), 3, 'Work', geography::Point(-38.8043, 144.9836, 4326), 'Working har to pay bills');
 
 insert into MediaItem(PlaceId, MediaItemTypeId, Name, Filename, URL)
-	values ((select Id from Place where SequenceNumber = 1), (select Id from MediaItemType where Name = 'Image'), 'House', '', '');
+	values ((select Id from Place where SequenceNumber = 1), (select Id from MediaItemType where Name = 'Image'), 'House', 'f0103c37-5ae9-4d43-bf66-4c07d751214e.png', 'https://backontrack.blob.core.windows.net/blobs/f0103c37-5ae9-4d43-bf66-4c07d751214e.png');
 insert into MediaItem(PlaceId, MediaItemTypeId, Name, Filename, URL)
-	values ((select Id from Place where SequenceNumber = 2), (select Id from MediaItemType where Name = 'Image'), 'School', '', '');
+	values ((select Id from Place where SequenceNumber = 2), (select Id from MediaItemType where Name = 'Image'), 'School', 'c640bb79-8a62-440c-bbe6-0b46e498d674.jpg', 'https://backontrack.blob.core.windows.net/blobs/c640bb79-8a62-440c-bbe6-0b46e498d674.jpg');
 insert into MediaItem(PlaceId, MediaItemTypeId, Name, Filename, URL)
-	values ((select Id from Place where SequenceNumber = 3), (select Id from MediaItemType where Name = 'Video'), 'Work', '', '');
+	values ((select Id from Place where SequenceNumber = 3), (select Id from MediaItemType where Name = 'Video'), 'Work', '9640688a-591a-43e1-8ff7-9da7d82f650d.jpeg', 'https://backontrack.blob.core.windows.net/blobs/9640688a-591a-43e1-8ff7-9da7d82f650d.jpeg');
