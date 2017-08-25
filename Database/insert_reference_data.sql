@@ -19,6 +19,25 @@ insert into Place(ParticipantId, SequenceNumber, Name, Coordinate, Description)
 insert into Place(ParticipantId, SequenceNumber, Name, Coordinate, Description)
 	values ((select Id from Participant where Name = 'John'), 3, 'Work', geography::Point(-38.8043, 144.9836, 4326), 'Working har to pay bills');
 
+insert into PathPoint(ParticipantId, SequenceNumber, Latitude, Longitude)
+	values ((select Id from Participant where Name = 'John'), 1, -38.8046, 144.9834);
+insert into PathPoint(ParticipantId, SequenceNumber, Latitude, Longitude)
+	values ((select Id from Participant where Name = 'John'), 2, -38.8047, 144.9840);
+insert into PathPoint(ParticipantId, SequenceNumber, Latitude, Longitude)
+	values ((select Id from Participant where Name = 'John'), 3, -38.8049, 144.9835);
+insert into PathPoint(ParticipantId, SequenceNumber, Latitude, Longitude)
+	values ((select Id from Participant where Name = 'Jess'), 1, -38.8047, 144.9840);
+insert into PathPoint(ParticipantId, SequenceNumber, Latitude, Longitude)
+	values ((select Id from Participant where Name = 'Jess'), 2, -38.8047, 144.9840);
+insert into PathPoint(ParticipantId, SequenceNumber, Latitude, Longitude)
+	values ((select Id from Participant where Name = 'Jess'), 3, -38.8049, 144.9835);
+insert into PathPoint(ParticipantId, SequenceNumber, Latitude, Longitude)
+	values ((select Id from Participant where Name = 'Sarah'), 1, -38.8047, 144.9840);
+insert into PathPoint(ParticipantId, SequenceNumber, Latitude, Longitude)
+	values ((select Id from Participant where Name = 'Sarah'), 2, -38.8047, 144.9840);
+insert into PathPoint(ParticipantId, SequenceNumber, Latitude, Longitude)
+	values ((select Id from Participant where Name = 'Sarah'), 3, -38.8046, 144.9830);
+
 insert into MediaItem(PlaceId, MediaItemTypeId, Name, Filename, URL)
 	values ((select Id from Place where SequenceNumber = 1), (select Id from MediaItemType where Name = 'Image'), 'House', 'f0103c37-5ae9-4d43-bf66-4c07d751214e.png', 'https://backontrack.blob.core.windows.net/blobs/f0103c37-5ae9-4d43-bf66-4c07d751214e.png');
 insert into MediaItem(PlaceId, MediaItemTypeId, Name, Filename, URL)

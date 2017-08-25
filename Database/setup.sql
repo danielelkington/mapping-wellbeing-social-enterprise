@@ -4,6 +4,9 @@ IF OBJECT_ID('dbo.MediaItem', 'U') IS NOT NULL
 IF OBJECT_ID('dbo.MediaItemType', 'U') IS NOT NULL
 	DROP TABLE MediaItemType;
 
+IF OBJECT_ID('dbo.PathPoint', 'U') IS NOT NULL
+	DROP TABLE PathPoint;
+
 IF OBJECT_ID('dbo.Place', 'U') IS NOT NULL
 	DROP TABLE Place;
 
@@ -40,6 +43,15 @@ CREATE TABLE Place (
 	[Name] nvarchar(255),
 	[Coordinate] geography,
 	[Description] nvarchar(max),
+	FOREIGN KEY (ParticipantId) REFERENCES Participant(Id)
+);
+
+CREATE TABLE PathPoint (
+	[Id] int NOT NULL IDENTITY(1,1) PRIMARY KEY,
+	[ParticipantId] int NOT NULL,
+	[SequenceNumber] int NOT NULL,
+	[Latitude] decimal(10,7),
+	[Longitude] decimal(10,7),
 	FOREIGN KEY (ParticipantId) REFERENCES Participant(Id)
 );
 
