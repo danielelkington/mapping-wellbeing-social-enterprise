@@ -1,30 +1,22 @@
 ﻿using Backend.WebServices.DatabaseEntities;
-using System.Collections.Generic;
-using System.Linq;
 
 namespace Backend.WebServices.DataTransferObjects
 {
-    public class PlaceDTO
+    public class PathPointDTO
     {
-        public PlaceDTO(Place place)
+        public PathPointDTO(PathPoint place)
         {
             Id = place.Id;
             ParticipantId = place.ParticipantId;
             SequenceNumber = place.SequenceNumber;
-            Name = place.Name;
             Latitude = place.Latitude;
             Longitude = place.Longitude;
-            Description = place.Description;
-            MediaItems = place.MediaItems.Select(x => new MediaItemDTO(x)).ToList();
         }
 
         public int Id { get; set; }
         public int ParticipantId { get; set; }
         public int SequenceNumber { get; set; }
-        public string Name { get; set; }
         public decimal? Latitude { get; set; }
         public decimal? Longitude { get; set; }
-        public string Description { get; set; }
-        public virtual ICollection<MediaItemDTO> MediaItems { get; set; }
     }
 }

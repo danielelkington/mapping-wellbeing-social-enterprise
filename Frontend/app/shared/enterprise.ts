@@ -1,6 +1,7 @@
 import { Participant } from "./participant";
 import { Place } from "./place";
 import { MediaItem } from "./mediaItem";
+import { PathPoint } from "./pathPoint";
 import { SimpleMediaItem } from "./simpleMediaItem";
 
 export class Enterprise
@@ -32,7 +33,7 @@ export class Enterprise
         //Participants
         enterpriseJSON.Participants.forEach(participantJSON => {
             var participant = new Participant(participantJSON.Id, participantJSON.Name, 
-                participantJSON.Bio, participantJSON.ImageUrl, participantJSON.ImageFilename);
+                participantJSON.Bio);
             
             //Places
             participantJSON.Places.forEach(placeJSON => {
@@ -46,6 +47,13 @@ export class Enterprise
                     place.mediaItems.push(mediaItem);
                 });
                 participant.places.push(place);
+            });
+
+            //PathPoints
+            participantJSON.PathPoints.forEach(pathPointJSON => {
+                var pathPoint = new PathPoint(pathPointJSON.Id, pathPointJSON.SequenceNumber, 
+                    pathPointJSON.Latitude, pathPointJSON.Longitude);
+                participant.pathPoints.push(pathPoint);
             });
             enterprise.participants.push(participant);
         });

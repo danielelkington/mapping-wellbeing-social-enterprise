@@ -3,6 +3,7 @@ import {Observable} from "rxjs/Rx";
 import {Enterprise} from "./enterprise"
 import {Participant} from "./participant";
 import {Place} from "./place";
+import {PathPoint} from "./pathPoint";
 import {MediaItem} from "./mediaItem";
 var Sqlite = require("nativescript-sqlite");
 
@@ -28,8 +29,6 @@ export class LocalDatabaseService{
         "   EnterpriseId INTEGER NOT NULL," +
         "   Name TEXT NOT NULL," +
         "   Bio TEXT," +
-        "   ImageURL TEXT," +
-        "   ImageFilename TEXT," +
         "   FOREIGN KEY(EnterpriseId) REFERENCES Enterprise(Id) ON DELETE CASCADE)",
         
         "CREATE TABLE IF NOT EXISTS Place (" +
@@ -37,9 +36,17 @@ export class LocalDatabaseService{
         "   ParticipantId INTEGER NOT NULL," +
         "   SequenceNumber INTEGER NOT NULL," +
         "   Name TEXT," +
-        "   Latitude INTEGER," +
-        "   Longitude INTEGER," +
+        "   Latitude REAL," +
+        "   Longitude REAL," +
         "   Description TEXT," +
+        "   FOREIGN KEY(ParticipantId) REFERENCES Participant(Id) ON DELETE CASCADE)",
+
+        "CREATE TABLE IF NOT EXISTS PathPoint (" +
+        "   Id INTEGER PRIMARY KEY," +
+        "   ParticipantId INTEGER NOT NULL," +
+        "   SequenceNumber INTEGER NOT NULL," +
+        "   Latitude REAL," +
+        "   Longitude REAL," +
         "   FOREIGN KEY(ParticipantId) REFERENCES Participant(Id) ON DELETE CASCADE)",
 
         "CREATE TABLE IF NOT EXISTS MediaItem (" +
@@ -93,7 +100,7 @@ export class LocalDatabaseService{
             enterprise = new Enterprise(row[0], row[1], /*downloaded*/true, /*haspassword*/false, row[2], row[3], row[4]);
         });
         promise = promise.then(x => this.database.each(
-            "SELECT Id, Name, Bio, ImageURL, ImageFilename " +
+            "SELECT Id, Name, Bio " +
             "FROM Participant " +
             "WHERE EnterpriseId = ? " +
             "ORDER BY Name", [enterpriseId],
@@ -101,7 +108,7 @@ export class LocalDatabaseService{
                 if (error){
                     this.handleErrors(error);
                 }
-                enterprise.participants.push(new Participant(row[0], row[1], row[2], row[3], row[4]));
+                enterprise.participants.push(new Participant(row[0], row[1], row[2]));
             }
         ));
         promise = promise.then(x => {
@@ -110,6 +117,13 @@ export class LocalDatabaseService{
                 placePromises.push(this.populatePlacesInParticipant(participant));
             }
             return Promise.all(placePromises);
+        });
+        promise = promise.then(x => {
+            var pathPointPromises : Array<Promise<any>> = [];
+            for (let participant of enterprise.participants){
+                pathPointPromises.push(this.populatePathPointsInParticipant(participant));
+            }
+            return Promise.all(pathPointPromises);
         });
         promise = promise.then(x => enterprise);
         promise.catch(this.handleErrors);
@@ -126,9 +140,9 @@ export class LocalDatabaseService{
         
         for(let participant of enterprise.participants){
             promise = promise.then(x => this.database.execSQL(
-                "INSERT INTO Participant(Id, EnterpriseId, Name, Bio, ImageURL, ImageFilename) " +
-                "VALUES(?,?,?,?,?,?)",
-                [participant.id, enterprise.id, participant.name, participant.bio, participant.imageURL, participant.imageFileName]
+                "INSERT INTO Participant(Id, EnterpriseId, Name, Bio) " +
+                "VALUES(?,?,?,?)",
+                [participant.id, enterprise.id, participant.name, participant.bio]
             ));
             
             for (let place of participant.places){
@@ -144,6 +158,14 @@ export class LocalDatabaseService{
                         [mediaItem.id, place.id, mediaItem.mediaItemType, mediaItem.name, mediaItem.filename, mediaItem.url]
                     ));
                 }
+            }
+
+            for (let pathPoint of participant.pathPoints){
+                promise = promise.then(x => this.database.execSQL(
+                    "INSERT INTO PathPoint(Id, ParticipantId, SequenceNumber, Latitude, Longitude) " +
+                    "VALUES(?,?,?,?,?)",
+                    [pathPoint.id, participant.id, pathPoint.sequenceNumber, pathPoint.latitude, pathPoint.longitude]
+                ));
             }
         }
         
@@ -195,6 +217,22 @@ export class LocalDatabaseService{
                     this.handleErrors(error);
                 }
                 place.mediaItems.push(new MediaItem(row[0], row[1], row[2], row[3], row[4]));
+            }
+        );
+        return promise;
+    }
+
+    private populatePathPointsInParticipant(participant : Participant):Promise<any>{
+        var promise = this.database.each(
+            "SELECT Id, SequenceNumber, Latitude, Longitude " +
+            "FROM PathPoint " +
+            "WHERE ParticipantId = ? " +
+            "ORDER BY SequenceNumber", [participant.id],
+            function(error, row) {
+                if (error){
+                    this.handleErrors(error);
+                }
+                participant.pathPoints.push(new PathPoint(row[0], row[1], row[2], row[3]));
             }
         );
         return promise;

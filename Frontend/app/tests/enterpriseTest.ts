@@ -14,8 +14,6 @@ QUnit.test("EnterpriseFromJSON constructs enterprise from JSON correctly", funct
               "\"EnterpriseId\": 1,"+
               "\"Name\": \"John\","+
               "\"Bio\": \"John is a builder.\","+
-              "\"ImageUrl\": \"abc.net.au\","+
-              "\"ImageFilename\": \"test.jpg\","+
               "\"Places\": ["+
                   "{"+
                       "\"Id\": 1,"+
@@ -45,16 +43,31 @@ QUnit.test("EnterpriseFromJSON constructs enterprise from JSON correctly", funct
                       "\"MediaItems\": ["+
                       "]"+
                   "}"+
-              "]"+
+              "],"+
+              "\"PathPoints\": ["+
+                "{"+
+                    "\"Id\": 1,"+
+                    "\"ParticipantId\": 1,"+
+                    "\"SequenceNumber\": 1,"+
+                    "\"Latitude\": -2.1,"+
+                    "\"Longitude\": 4.1"+
+                "},"+
+                "{"+
+                    "\"Id\": 2,"+
+                    "\"ParticipantId\": 1,"+
+                    "\"SequenceNumber\": 2,"+
+                    "\"Latitude\": -38.8047,"+
+                    "\"Longitude\": 144.984"+
+                "}"+
+            "]"+
           "},"+
           "{"+
               "\"Id\": 2,"+
               "\"EnterpriseId\": 1,"+
               "\"Name\": \"Jess\","+
               "\"Bio\": \"Jess is back on her own again\","+
-              "\"ImageUrl\": \"\","+
-              "\"ImageFilename\": null,"+
-              "\"Places\": []"+
+              "\"Places\": [],"+
+              "\"PathPoints\": []"+
           "}"+
       "]"+
   "}";
@@ -71,9 +84,8 @@ QUnit.test("EnterpriseFromJSON constructs enterprise from JSON correctly", funct
   assert.equal(1, participant.id);
   assert.equal("John", participant.name);
   assert.equal("John is a builder.", participant.bio);
-  assert.equal("abc.net.au", participant.imageURL);
-  assert.equal("test.jpg", participant.imageFileName);
   assert.equal(2, participant.places.length);
+  assert.equal(2, participant.pathPoints.length);
 
   var place = participant.places[0];
   assert.equal(1, place.id);
@@ -89,4 +101,10 @@ QUnit.test("EnterpriseFromJSON constructs enterprise from JSON correctly", funct
   assert.equal("House", mediaItem.name);
   assert.equal("ack.png", mediaItem.filename);
   assert.equal("nytimes.com", mediaItem.url);
+
+  var pathPoint = participant.pathPoints[0];
+  assert.equal(1, pathPoint.id);
+  assert.equal(1, pathPoint.sequenceNumber);
+  assert.equal(-2.1, pathPoint.latitude);
+  assert.equal(4.1, pathPoint.longitude);
 });

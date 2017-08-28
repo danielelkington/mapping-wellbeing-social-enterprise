@@ -5,7 +5,6 @@ using System.Linq;
 using Backend.WebServices.DatabaseEntities;
 using System.Collections.Generic;
 using System.Net.Http;
-using System.Web;
 using System;
 using System.Web.Http;
 using System.Net;
@@ -71,8 +70,9 @@ namespace Backend.UnitTest
             //Arrange                           --Is there an easier way?
             MediaItemType mediaItemType = new MediaItemType { Id = 25, Name = "newMediaItemType" };
             MediaItem mediaItem = new MediaItem { Id = 20, Name = "newMediaItem", PlaceId = 15, MediaItemType = mediaItemType };
-            Place place = new Place { Id = 15, Name = "newPlace", ParticipantId = 10, MediaItems = new List<MediaItem>() { mediaItem } };
-            Participant participant = new Participant { Id = 10, Name = "newParticipant", EnterpriseId = 5, Places = new List<Place>() { place } };
+            Place place = new Place { Id = 15, Name = "newPlace", Description = "desc", ParticipantId = 10, MediaItems = new List<MediaItem>() { mediaItem } };
+            PathPoint pathPoint = new PathPoint { Id = 2, SequenceNumber = 3, Latitude = 2, Longitude = 3 };
+            Participant participant = new Participant { Id = 10, Name = "newParticipant", EnterpriseId = 5, Places = new List<Place>() { place }, PathPoints = new List<PathPoint> { pathPoint } };
             Enterprise enterprise = new Enterprise { Id = 5, Name = "Enterprise1", Password = "abc", CoverImageURL = "myimage.com", ModifiedUTC = DateTime.UtcNow, Participants = new List<Participant>() { participant } };
 
             _fakeContext.EnterpriseList.Add(enterprise);
@@ -87,6 +87,8 @@ namespace Backend.UnitTest
             response.Participants.First()
                     .Places.First()
                     .MediaItems.First().Name.Should().Be("newMediaItem");
+            response.Participants.First().Places.First().Description.Should().Be("desc");
+            response.Participants.First().PathPoints.First().Latitude.Should().Be(2);
         }
 
         [TestMethod]
