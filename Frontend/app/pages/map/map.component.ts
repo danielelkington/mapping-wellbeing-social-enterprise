@@ -42,6 +42,7 @@ export class MapComponent implements OnInit
 					if (participant.id == participantId)
 					{
 						this.places = participant.places;
+						this.pathPoints = participant.pathPoints;
 
 						this.mapLatitude = (participant.getMaxNorthBound() + participant.getMaxSouthBound())/2;
 						this.mapLongitude = (participant.getMaxWestBound() + participant.getMaxEastBound())/2;
@@ -68,7 +69,9 @@ export class MapComponent implements OnInit
 			])
 		});
 
-		this.drawLines();
+		if (this.pathPoints && this.pathPoints.length > 0){
+			this.drawLines();
+		}
 	}
 
 	onTap(id: number)
@@ -79,34 +82,15 @@ export class MapComponent implements OnInit
 
 	drawLines()
 	{
-		var coordinates : Array<Array<String>>;
+		var coordinates = [];
 
 		this.pathPoints.forEach((points) => {
-			coordinates.push([String(points.latitude), String(points.longitude)]);
+			coordinates.push({'lat': points.latitude, 'lng': points.longitude});
 		});
 
-		this.map.addLayer({
-			"id": "route",
-			"type": "line",
-			"source": {
-				"type": "geojson",
-				"data": {
-					"type": "Feature",
-					"properties": {},
-					"geometry": {
-						"type": "LineString",
-						"coordinates": coordinates
-					}
-				}
-			},
-			"layout": {
-				"line-join": "round",
-				"line-cap": "round"
-			},
-			"paint": {
-				"line-colour": "red",
-				"line-width": 8
-			}
+		this.map.addPolyline({
+			color: '#ff0000',
+			points: coordinates
 		});
 	}
 }

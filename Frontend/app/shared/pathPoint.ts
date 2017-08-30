@@ -6,6 +6,5 @@ export class PathPoint
         public latitude: number, 
         public longitude: number)
     {
-        console.log("constructing a path point with sequence number ", sequenceNumber);
     }
 }
