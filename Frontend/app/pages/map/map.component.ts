@@ -67,11 +67,46 @@ export class MapComponent implements OnInit
 				}
 			])
 		});
+
+		this.drawLines();
 	}
 
 	onTap(id: number)
 	{	
 		console.log("Place tapped");
 		//this.router.navigate(["/place", id]);
+	}
+
+	drawLines()
+	{
+		var coordinates : Array<Array<String>>;
+
+		this.pathPoints.forEach((points) => {
+			coordinates.push([String(points.latitude), String(points.longitude)]);
+		});
+
+		this.map.addLayer({
+			"id": "route",
+			"type": "line",
+			"source": {
+				"type": "geojson",
+				"data": {
+					"type": "Feature",
+					"properties": {},
+					"geometry": {
+						"type": "LineString",
+						"coordinates": coordinates
+					}
+				}
+			},
+			"layout": {
+				"line-join": "round",
+				"line-cap": "round"
+			},
+			"paint": {
+				"line-colour": "red",
+				"line-width": 8
+			}
+		});
 	}
 }
