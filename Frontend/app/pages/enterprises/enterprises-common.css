@@ -47,3 +47,18 @@ CSS to style the enterprises list page relevant to all platforms goes here
     background-color: red;
     padding: 16;
 }
+
+.drawerStackLayout {
+    background-color: #ECEFF1;
+}
+
+.drawerTitleStackLayout {
+    height: 56;
+    text-align: center;
+    vertical-align: center;
+    background-color: #CFD8DC;
+}
+
+.drawerLabel {
+    padding: 10;
+}
