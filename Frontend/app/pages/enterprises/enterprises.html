@@ -1,6 +1,14 @@
 <ActionBar title="Enterprises" class="bck-grnd">
 	<Label text="Enterprises" class="text-head" horizontalAlignment="center"></Label>
 </ActionBar> 
+<RadSideDrawer drawerLocation="Bottom">
+    <StackLayout tkDrawerContent class="drawer-background">
+        <StackLayout>
+        </StackLayout>
+        <StackLayout>
+        </StackLayout>
+    </StackLayout>
+</RadSideDrawer>
 <GridLayout class="bck-grnd">
 	<RadListView [items]="enterprises" id="listView" row="0" class="small-spacing" (itemTap)="selectEnterprise($event)" pullToRefresh="true" (pullToRefreshInitiated)="onPullToRefreshInitiated($event)" 
 		(itemSwipeProgressStarted)="onSwipeCellStarted($event)" itemSwipe="true" (itemLoading)="onItemLoading($event)">

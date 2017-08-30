@@ -3,6 +3,7 @@ import { NativeScriptHttpModule } from "nativescript-angular/http";
 import { NativeScriptModule } from "nativescript-angular/nativescript.module";
 import { NativeScriptRouterModule } from "nativescript-angular/router";
 import { LISTVIEW_DIRECTIVES } from "nativescript-telerik-ui/listview/angular";
+import { SIDEDRAWER_DIRECTIVES } from "nativescript-telerik-ui/sidedrawer/angular";
 import { AppComponent } from "./app.component";
 import { registerElement } from "nativescript-angular/element-registry";
 import { LocalDatabaseService } from"./shared/localDatabaseService";
@@ -25,6 +26,7 @@ registerElement("Mapbox", () => require("nativescript-mapbox").MapboxView);
     declarations: [
         AppComponent,
         LISTVIEW_DIRECTIVES,
+        SIDEDRAWER_DIRECTIVES,
         ...navigatableComponents
     ],
     providers: [

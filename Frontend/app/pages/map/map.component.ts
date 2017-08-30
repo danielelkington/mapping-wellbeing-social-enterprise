@@ -62,7 +62,7 @@ export class MapComponent implements OnInit
 					id: place.id,
 					title: place.name,
 					subtitle: place.description,
-					icon: '',
+					icon: 'res://ic_map_marker_' + place.id,
 					onCalloutTap: (marker) => { this.onTap(marker.id); }
 				}
 			])
