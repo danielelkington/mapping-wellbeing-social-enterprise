@@ -99,7 +99,7 @@ export class LocalStorageService{
                             accessToken: SecretConfig.mapboxAccessToken,
                             name: "E" + enterpriseToSave.id + "P" + participant.id,
                             style: MapStyle.EMERALD,
-                            minZoom: 15,
+                            minZoom: 16,
                             maxZoom: 16,
                             bounds : {
                                 north : participant.getMaxNorthBound() + LocalStorageService.mapBoundaryDegrees,
