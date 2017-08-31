@@ -42,6 +42,7 @@ export class MapComponent implements OnInit
 					if (participant.id == participantId)
 					{
 						this.places = participant.places;
+						this.pathPoints = participant.pathPoints;
 
 						this.mapLatitude = (participant.getMaxNorthBound() + participant.getMaxSouthBound())/2;
 						this.mapLongitude = (participant.getMaxWestBound() + participant.getMaxEastBound())/2;
@@ -67,11 +68,29 @@ export class MapComponent implements OnInit
 				}
 			])
 		});
+
+		if (this.pathPoints && this.pathPoints.length > 0){
+			this.drawLines();
+		}
 	}
 
 	onTap(id: number)
 	{	
 		console.log("Place tapped");
 		//this.router.navigate(["/place", id]);
+	}
+
+	drawLines()
+	{
+		var coordinates = [];
+
+		this.pathPoints.forEach((points) => {
+			coordinates.push({'lat': points.latitude, 'lng': points.longitude});
+		});
+
+		this.map.addPolyline({
+			color: '#ff0000',
+			points: coordinates
+		});
 	}
 }

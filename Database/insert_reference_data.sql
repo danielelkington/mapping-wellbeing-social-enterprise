@@ -19,24 +19,58 @@ insert into Place(ParticipantId, SequenceNumber, Name, Latitude, Longitude, Desc
 insert into Place(ParticipantId, SequenceNumber, Name, Latitude, Longitude, Description)
 	values ((select Id from Participant where Name = 'John'), 3, 'Work', -38.8043, 144.9836, 'Working hard to pay bills');
 
-insert into PathPoint(ParticipantId, SequenceNumber, Latitude, Longitude)
-	values ((select Id from Participant where Name = 'John'), 1, -38.8046, 144.9834);
-insert into PathPoint(ParticipantId, SequenceNumber, Latitude, Longitude)
-	values ((select Id from Participant where Name = 'John'), 2, -38.8047, 144.9840);
-insert into PathPoint(ParticipantId, SequenceNumber, Latitude, Longitude)
-	values ((select Id from Participant where Name = 'John'), 3, -38.8049, 144.9835);
-insert into PathPoint(ParticipantId, SequenceNumber, Latitude, Longitude)
-	values ((select Id from Participant where Name = 'Jess'), 1, -38.8047, 144.9840);
-insert into PathPoint(ParticipantId, SequenceNumber, Latitude, Longitude)
-	values ((select Id from Participant where Name = 'Jess'), 2, -38.8047, 144.9840);
-insert into PathPoint(ParticipantId, SequenceNumber, Latitude, Longitude)
-	values ((select Id from Participant where Name = 'Jess'), 3, -38.8049, 144.9835);
-insert into PathPoint(ParticipantId, SequenceNumber, Latitude, Longitude)
-	values ((select Id from Participant where Name = 'Sarah'), 1, -38.8047, 144.9840);
-insert into PathPoint(ParticipantId, SequenceNumber, Latitude, Longitude)
-	values ((select Id from Participant where Name = 'Sarah'), 2, -38.8047, 144.9840);
-insert into PathPoint(ParticipantId, SequenceNumber, Latitude, Longitude)
-	values ((select Id from Participant where Name = 'Sarah'), 3, -38.8046, 144.9830);
+insert into PathPoint(ParticipantId, SequenceNumber, Latitude, Longitude)	
+	values ((select Id from Participant where Name = 'John'), 1, -37.821690, 145.036450);
+insert into PathPoint(ParticipantId, SequenceNumber, Latitude, Longitude)	
+	values ((select Id from Participant where Name = 'John'), 2, -37.821752, 145.037308);
+insert into PathPoint(ParticipantId, SequenceNumber, Latitude, Longitude)	
+	values ((select Id from Participant where Name = 'John'), 3, -37.821769, 145.038105);
+insert into PathPoint(ParticipantId, SequenceNumber, Latitude, Longitude)	
+	values ((select Id from Participant where Name = 'John'), 4, -37.822031, 145.038175);
+insert into PathPoint(ParticipantId, SequenceNumber, Latitude, Longitude)	
+	values ((select Id from Participant where Name = 'John'), 5, -37.822207, 145.037944);
+insert into PathPoint(ParticipantId, SequenceNumber, Latitude, Longitude)	
+	values ((select Id from Participant where Name = 'John'), 6, -37.822360, 145.038046);
+insert into PathPoint(ParticipantId, SequenceNumber, Latitude, Longitude)	
+	values ((select Id from Participant where Name = 'John'), 7, -37.822379, 145.038427);
+insert into PathPoint(ParticipantId, SequenceNumber, Latitude, Longitude)	
+	values ((select Id from Participant where Name = 'John'), 8, -37.822466, 145.038907);
+insert into PathPoint(ParticipantId, SequenceNumber, Latitude, Longitude)	
+	values ((select Id from Participant where Name = 'John'), 9, -37.822226, 145.039003);
+insert into PathPoint(ParticipantId, SequenceNumber, Latitude, Longitude)	
+	values ((select Id from Participant where Name = 'John'), 10, -37.822224, 145.039304);
+insert into PathPoint(ParticipantId, SequenceNumber, Latitude, Longitude)	
+	values ((select Id from Participant where Name = 'John'), 11, -37.822366, 145.039221);
+insert into PathPoint(ParticipantId, SequenceNumber, Latitude, Longitude)	
+	values ((select Id from Participant where Name = 'Jess'), 1, -37.821690, 145.036450);
+insert into PathPoint(ParticipantId, SequenceNumber, Latitude, Longitude)	
+	values ((select Id from Participant where Name = 'Jess'), 2, -37.821752, 145.037308);
+insert into PathPoint(ParticipantId, SequenceNumber, Latitude, Longitude)	
+	values ((select Id from Participant where Name = 'Jess'), 3, -37.821769, 145.038105);
+insert into PathPoint(ParticipantId, SequenceNumber, Latitude, Longitude)	
+	values ((select Id from Participant where Name = 'Jess'), 4, -37.821889, 145.039017);
+insert into PathPoint(ParticipantId, SequenceNumber, Latitude, Longitude)	
+	values ((select Id from Participant where Name = 'Jess'), 5, -37.821163, 145.039151);
+insert into PathPoint(ParticipantId, SequenceNumber, Latitude, Longitude)	
+	values ((select Id from Participant where Name = 'Jess'), 6, -37.820983, 145.039194);
+insert into PathPoint(ParticipantId, SequenceNumber, Latitude, Longitude)	
+	values ((select Id from Participant where Name = 'Jess'), 7, -37.821023, 145.039352);
+insert into PathPoint(ParticipantId, SequenceNumber, Latitude, Longitude)	
+	values ((select Id from Participant where Name = 'Jess'), 8, -37.820546, 145.039408);
+insert into PathPoint(ParticipantId, SequenceNumber, Latitude, Longitude)	
+	values ((select Id from Participant where Name = 'Sarah'), 1, -37.821690, 145.036450);
+insert into PathPoint(ParticipantId, SequenceNumber, Latitude, Longitude)	
+	values ((select Id from Participant where Name = 'Sarah'), 2, -37.821752, 145.037308);
+insert into PathPoint(ParticipantId, SequenceNumber, Latitude, Longitude)	
+	values ((select Id from Participant where Name = 'Sarah'), 3, -37.821769, 145.038105);
+insert into PathPoint(ParticipantId, SequenceNumber, Latitude, Longitude)	
+	values ((select Id from Participant where Name = 'Sarah'), 4, -37.821889, 145.039017);
+insert into PathPoint(ParticipantId, SequenceNumber, Latitude, Longitude)	
+	values ((select Id from Participant where Name = 'Sarah'), 5, -37.822226, 145.039003);
+insert into PathPoint(ParticipantId, SequenceNumber, Latitude, Longitude)	
+	values ((select Id from Participant where Name = 'Sarah'), 6, -37.822466, 145.038907);
+insert into PathPoint(ParticipantId, SequenceNumber, Latitude, Longitude)	
+	values ((select Id from Participant where Name = 'Sarah'), 7, -37.821470, 145.039103);
 
 insert into MediaItem(PlaceId, MediaItemTypeId, Name, Filename, URL)
 	values ((select Id from Place where SequenceNumber = 1), (select Id from MediaItemType where Name = 'Image'), 'House', 'f0103c37-5ae9-4d43-bf66-4c07d751214e.png', 'https://backontrack.blob.core.windows.net/blobs/f0103c37-5ae9-4d43-bf66-4c07d751214e.png');
