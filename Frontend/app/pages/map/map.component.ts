@@ -55,6 +55,10 @@ export class MapComponent implements OnInit
 	onMapReady(args) {
 		this.map = args.map;
 
+		if (this.pathPoints && this.pathPoints.length > 0){
+			this.drawLines();
+		}
+
 		this.places.forEach((place) => {
 			args.map.addMarkers([
 				{
@@ -63,15 +67,11 @@ export class MapComponent implements OnInit
 					id: place.id,
 					title: place.name,
 					subtitle: place.description,
-					icon: '',
+					icon: 'res://ic_map_marker_' + place.sequenceNumber,
 					onCalloutTap: (marker) => { this.onTap(marker.id); }
 				}
 			])
 		});
-
-		if (this.pathPoints && this.pathPoints.length > 0){
-			this.drawLines();
-		}
 	}
 
 	onTap(id: number)
