@@ -15,9 +15,25 @@ insert into Participant(EnterpriseId, Name, Bio)
 insert into Place(ParticipantId, SequenceNumber, Name, Latitude, Longitude, Description)
 	values ((select Id from Participant where Name = 'John'), 1, 'Home', -37.821628, 145.036412, 'Where he grew up');
 insert into Place(ParticipantId, SequenceNumber, Name, Latitude, Longitude, Description)
-	values ((select Id from Participant where Name = 'John'), 2, 'School', -37.822437, 145.038436, 'Met some dodgey friends');
+	values ((select Id from Participant where Name = 'John'), 2, 'School', -37.822356, 145.038050, 'Met some friends');
 insert into Place(ParticipantId, SequenceNumber, Name, Latitude, Longitude, Description)
-	values ((select Id from Participant where Name = 'John'), 3, 'Work', -37.821470, 145.039103, 'Working hard to pay bills');
+	values ((select Id from Participant where Name = 'John'), 3, 'Work', -37.822370, 145.039542, 'Working hard to pay bills');
+	
+insert into Place(ParticipantId, SequenceNumber, Name, Latitude, Longitude, Description)
+	values ((select Id from Participant where Name = 'Sarah'), 1, 'Train Station', -37.821690, 145.036450, '');
+insert into Place(ParticipantId, SequenceNumber, Name, Latitude, Longitude, Description)
+	values ((select Id from Participant where Name = 'Sarah'), 2, 'Bookshop', -37.822755, 145.038584, '');
+insert into Place(ParticipantId, SequenceNumber, Name, Latitude, Longitude, Description)
+	values ((select Id from Participant where Name = 'Sarah'), 3, 'TAFE', -37.821278, 145.039274, '');
+
+insert into Place(ParticipantId, SequenceNumber, Name, Latitude, Longitude, Description)
+	values ((select Id from Participant where Name = 'Jess'), 1, 'Train Station', -37.821690, 145.036450, '');
+insert into Place(ParticipantId, SequenceNumber, Name, Latitude, Longitude, Description)
+	values ((select Id from Participant where Name = 'Jess'), 2, 'The Corner', -37.821792, 145.038815, '');
+insert into Place(ParticipantId, SequenceNumber, Name, Latitude, Longitude, Description)
+	values ((select Id from Participant where Name = 'Jess'), 3, 'Student Lounge', -37.820919, 145.039075, '');
+insert into Place(ParticipantId, SequenceNumber, Name, Latitude, Longitude, Description)
+	values ((select Id from Participant where Name = 'Jess'), 4, 'Learning Centre', -37.820524, 145.039575, '');
 
 insert into PathPoint(ParticipantId, SequenceNumber, Latitude, Longitude)	
 	values ((select Id from Participant where Name = 'John'), 1, -37.821690, 145.036450);
