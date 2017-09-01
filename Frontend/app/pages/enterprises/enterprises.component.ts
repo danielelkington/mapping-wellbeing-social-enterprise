@@ -137,7 +137,7 @@ export class EnterprisesComponent implements AfterViewInit, OnInit
             }
             else{
                 console.log(JSON.stringify(err));
-                dialogs.alert({title: "Failed to download enterprise", message: "Please try again later"});
+                dialogs.alert({title: "Failed to download enterprise", message: "Please try again later", okButtonText: "OK"});
             }
             enterprise.busy = false;
         });
@@ -146,7 +146,7 @@ export class EnterprisesComponent implements AfterViewInit, OnInit
     // refreshes the current page
     refresh() : Promise<any>
     {
-        if (this.isLoading)
+        if (this.isLoading || (this.enterprises && this.enterprises.some(x => x.busy)))
             return Promise.resolve(0);
         //Keep track of enterprises that have been downloaded
         var downloadedEnterprisesId: Array<number> = [];
@@ -178,7 +178,8 @@ export class EnterprisesComponent implements AfterViewInit, OnInit
             console.log(err);
             this.isLoading = false;
             if (this.enterprises.length == 0)
-                dialogs.alert("Failed to load enterprises");
+                dialogs.alert({title: "Failed to load enterprises", message: "Please make sure you have a working internet connection.", okButtonText: "OK"});
+            throw(err);
         });
         return promise;
     }
@@ -188,6 +189,11 @@ export class EnterprisesComponent implements AfterViewInit, OnInit
         var listView = args.object;    
         this.refresh()
             .then(x => {
+                if (app.ios){
+                    listView.notifyPullToRefreshFinished();
+                }
+            })
+            .catch(x => {
                 if (app.ios){
                     listView.notifyPullToRefreshFinished();
                 }

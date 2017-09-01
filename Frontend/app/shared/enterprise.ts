@@ -9,7 +9,7 @@ export class Enterprise
     passwordImageSrc: String;
     downloadedImageSrc: String;
     iconImagePath: string;
-    public busy: Boolean = false;
+    public busy: boolean = false;
     public totalThingsToDownload: number = 10;
     public numberDownloaded: number = 0;
     public participants: Array<Participant> = [];    
