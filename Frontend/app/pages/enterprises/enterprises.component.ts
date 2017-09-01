@@ -234,17 +234,31 @@ export class EnterprisesComponent implements AfterViewInit, OnInit
 
         var index = this.enterprises.findIndex(x => x.id === tappedItemData.id)
         var enterprise = this.enterprises[index];
-        //Delete enterprise data - need to keep enterprise in list but have it greyed-out
-        this.isLoading = true;
-        this.localStorageService.deleteEnterprise(enterprise)
-            .then(x => {
+
+        dialogs.confirm({
+            title: "Delete " + enterprise.name,
+            message: "Are you sure you want to delete the enterprise " + enterprise.name + " and all of its content?",
+            okButtonText: "Yes",
+            cancelButtonText: "No"
+        })
+        .then(result =>
+        {
+            if (!result){
                 listView.notifySwipeToExecuteFinished();
-                this.isLoading = false;
-                this.refresh();
-            })
-            .catch(x => {
-                this.isLoading = false;
-            });
+                return;
+            }
+            //Delete enterprise data - need to keep enterprise in list but have it greyed-out
+            this.isLoading = true;
+            this.localStorageService.deleteEnterprise(enterprise)
+                .then(x => {
+                    listView.notifySwipeToExecuteFinished();
+                    this.isLoading = false;
+                    this.refresh();
+                })
+                .catch(x => {
+                    this.isLoading = false;
+                });
+        });
     }
 
     public onItemLoading(args: ListViewEventData) {
