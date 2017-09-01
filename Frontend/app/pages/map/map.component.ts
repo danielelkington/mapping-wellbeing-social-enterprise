@@ -66,7 +66,7 @@ export class MapComponent implements OnInit
 					lng: place.longitude,
 					id: place.id,
 					title: place.name,
-					subtitle: place.description,
+					subtitle: "tap for details",
 					icon: 'res://ic_map_marker_' + place.sequenceNumber,
 					onCalloutTap: (marker) => { this.onTap(marker.id); }
 				}
