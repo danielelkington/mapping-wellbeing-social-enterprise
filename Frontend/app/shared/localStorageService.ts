@@ -7,7 +7,7 @@ import {MediaItem} from "./mediaItem";
 import {SimpleMediaItem} from "./simpleMediaItem";
 import {LocalDatabaseService} from "./localDatabaseService";
 import {knownFolders, File, Folder, path} from "file-system";
-import {Mapbox, MapStyle} from "nativescript-mapbox";
+import {Mapbox, MapStyle, OfflineRegion} from "nativescript-mapbox";
 import {SecretConfig} from "../secretConfig";
 var http = require("http");
 
@@ -55,7 +55,6 @@ export class LocalStorageService{
         promise = promise.then(x => console.log("Looks like downloading worked!"));
 
         //Save to local DB last, because this is harder to recover from
-        //TODO: think of how to make all this more ACID. :)
         promise = promise.then(x => this.localDatabaseService.saveEnterprise(enterpriseToSave));
 
         promise.catch(err => {
@@ -67,8 +66,50 @@ export class LocalStorageService{
     }
 
     deleteEnterprise(enterpriseToDelete: Enterprise) : Promise<any>{
-        var promise = this.localDatabaseService.deleteEnterprise(enterpriseToDelete.id);
-        //TODO also delete all media and maps associated with the enterprise.
+        var enterprise: Enterprise;
+        var mediaItems: Array<SimpleMediaItem>;
+        var promise: Promise<any> = this.localDatabaseService.getSavedEnterprise(enterpriseToDelete.id)
+            .then(e => enterprise = e);
+        //Delete from local database
+        promise = promise.then(x => this.localDatabaseService.deleteEnterprise(enterpriseToDelete.id));
+        
+        //Delete media
+        promise = promise.then(x => {
+            mediaItems = enterprise.getMediaToDownload();
+            var promiseList: Array<Promise<any>> = [];
+            for (let m of mediaItems){
+                (function(mediaItem: SimpleMediaItem){
+                    let filePath = path.join(LocalStorageService.mediaFolder.path, mediaItem.filename);
+                    if (mediaItem.filename 
+                        && File.exists(filePath)){
+                            var file = LocalStorageService.mediaFolder.getFile(mediaItem.filename);
+                            promiseList.push(file.remove());
+                    }
+                })(m);
+            }
+            return Promise.all(promiseList);
+        });
+
+        //Delete maps
+        var mapbox = new Mapbox();
+        var savedMapRegions: Array<OfflineRegion>;
+        promise = promise.then(x => mapbox.listOfflineRegions())
+            .then(regions => {
+                savedMapRegions = regions; 
+            });
+        promise = promise.then(x => {
+            var promiseList : Array<Promise<any>> = [];
+            for (let p of enterprise.participants){
+                (function(participant: Participant){
+                    let regionName = "E" + enterprise.id + "P" + participant.id;
+                    if (savedMapRegions.some(r => r.name === regionName)){
+                        promiseList.push(mapbox.deleteOfflineRegion({name: regionName}));
+                    }
+                })(p);
+            }
+            return Promise.all(promiseList);
+        });
+
         return promise;
     }
 
