@@ -31,15 +31,18 @@ export class MapComponent implements OnInit
 	places: Array<Place>;
 	pathPoints: Array<PathPoint>;
 
+	enterpriseId: number;
+	participantId: number;
+
 	ngOnInit()
   	{
 		this.route.params.subscribe(params => {
-			let enterpriseId = +params['eId'];
-            let participantId = +params['pId'];
+			this.enterpriseId = +params['eId'];
+            this.participantId = +params['pId'];
 
-            this.localDatabaseService.getSavedEnterprise(enterpriseId).then(enterprise => {
+            this.localDatabaseService.getSavedEnterprise(this.enterpriseId).then(enterprise => {
 				enterprise.participants.forEach((participant) => {
-					if (participant.id == participantId)
+					if (participant.id == this.participantId)
 					{
 						this.places = participant.places;
 						this.pathPoints = participant.pathPoints;
@@ -74,10 +77,9 @@ export class MapComponent implements OnInit
 		});
 	}
 
-	onTap(id: number)
+	onTap(placeId: number)
 	{	
-		console.log("Place tapped");
-		//this.router.navigate(["/place", id]);
+		this.router.navigate(["/place", this.enterpriseId, this.participantId, placeId]);
 	}
 
 	drawLines()

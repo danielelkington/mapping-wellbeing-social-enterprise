@@ -17,7 +17,7 @@ import { LocalDatabaseService } from"../../shared/localDatabaseService";
 export class ParticipantsComponent {
 
     participants: Array<Participant> = [];
-    enterpriseId;
+    enterpriseId: number;
 
     constructor(private router: Router,
         private route: ActivatedRoute,
