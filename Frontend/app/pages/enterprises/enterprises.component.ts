@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild, NgModule, AfterViewInit, ChangeDetectorRef } from "@angular/core";
+import { Component, ElementRef, OnInit, ViewChild, NgModule, AfterViewInit, ChangeDetectorRef, NgZone } from "@angular/core";
 import { Router } from "@angular/router";
 import { Enterprise } from "../../shared/enterprise";
 import { TextField } from "ui/text-field";
@@ -42,6 +42,7 @@ export class EnterprisesComponent implements AfterViewInit, OnInit
         private enterpriseService: EnterpriseService,
         private localStorageService : LocalStorageService,
         private localDatabaseService : LocalDatabaseService,
+        private zone : NgZone,
         private _changeDetectionRef: ChangeDetectorRef) { }
 
     @ViewChild(RadSideDrawerComponent) public drawerComponent: RadSideDrawerComponent;
@@ -117,9 +118,10 @@ export class EnterprisesComponent implements AfterViewInit, OnInit
     }
     
     // Saves the selected enterprise to the device
-    downloadEnterprise(enterprise, password)
+    downloadEnterprise(enterprise : Enterprise, password : string)
     {
         enterprise.busy = true;
+        enterprise.setZone(this.zone);
 
         this.enterpriseService.getEnterprise(enterprise.id, password)
         .subscribe(downloadedEnterprise =>

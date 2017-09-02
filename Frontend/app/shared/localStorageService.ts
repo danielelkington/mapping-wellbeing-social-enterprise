@@ -39,20 +39,20 @@ export class LocalStorageService{
         let mediaItems = enterpriseToSave.getMediaToDownload();
         enterpriseWithoutDetail.totalThingsToDownload = 
             mediaItems.length + enterpriseToSave.participants.length; //media plus a map per participant
-
+        
         //Download media, updating progress bar after each one
         for(let m of mediaItems){
             (function(mediaItem : SimpleMediaItem){
                 if (mediaItem.url && mediaItem.filename){
                     promise = promise.then(x =>
                     http.getFile(mediaItem.url, path.join(LocalStorageService.mediaFolder.path, mediaItem.filename)))
-                    .then(y => enterpriseWithoutDetail.numberDownloaded ++);
+                    .then(y => enterpriseWithoutDetail.setNumberDownloaded(enterpriseWithoutDetail.numberDownloaded + 1));
                 }
             })(m);
         }
-        
-        promise = this.downloadMaps(enterpriseToSave, promise);
-        promise = promise.then(x => console.log("Looks like downloading worked!"));
+
+        //Download maps
+        promise = this.downloadMaps(enterpriseWithoutDetail, enterpriseToSave, promise);
 
         //Save to local DB last, because this is harder to recover from
         promise = promise.then(x => this.localDatabaseService.saveEnterprise(enterpriseToSave));
@@ -113,30 +113,15 @@ export class LocalStorageService{
         return promise;
     }
 
-    private downloadMaps(enterpriseToSave: Enterprise, promise: Promise<any>) : Promise<any>
+    private downloadMaps(enterpriseWithoutDetail: Enterprise, enterpriseToSave: Enterprise, promise: Promise<any>) : Promise<any>
     {
-        //Download mapbox region
-        var mapbox = new Mapbox();
-
-        //Yeah, so there are bugs with Mapbox that will stop this working out of the mapbox (haha).
-        //I've submitted a pull request, but in the meantime you need to do this! Soz :(
-        //To get mapbox to work: after installing node packages, in mapbox.android.js add the following starting at line 767
-        // if (!_accessToken){
-        //     _accessToken = options.accessToken;
-        // }
-        // com.mapbox.mapboxsdk.Mapbox.getInstance(application.android.context, _accessToken);
-
-        //And in mapbox.ios.js, add the folloing starting at line 507
-        // if (options.accessToken){
-        //     MGLAccountManager.setAccessToken(options.accessToken);
-        // }
-        
+        //Download mapbox region        
         for(let p of enterpriseToSave.participants){
             (function(participant : Participant){
                 if (participant.places.length > 0){
                     promise = promise.then(x =>{
-                        console.log("About to download a region...");
-                        return mapbox.downloadOfflineRegion({
+                        var progressToDate = enterpriseWithoutDetail.numberDownloaded;
+                        return new Mapbox().downloadOfflineRegion({
                             accessToken: SecretConfig.mapboxAccessToken,
                             name: "E" + enterpriseToSave.id + "P" + participant.id,
                             style: MapStyle.EMERALD,
@@ -149,7 +134,12 @@ export class LocalStorageService{
                                 west: participant.getMaxWestBound() - LocalStorageService.mapBoundaryDegrees
                             },
                             onProgress: function (progress) {
-                                //Weird things seem to happen if you leave this out...
+                                //This 'if' condition is needed because of a bug in Mapbox
+                                //where it doesn't seem to unsubscribe from previous onProgress callbacks,
+                                //meaning that it will keep calling onProgress for ALL maps you've recently downloaded...
+                                if (enterpriseWithoutDetail.numberDownloaded < (progressToDate + 1)){
+                                    enterpriseWithoutDetail.setNumberDownloaded(progressToDate + (progress.percentage/100.0));
+                                }
                             }
                         });
                     });

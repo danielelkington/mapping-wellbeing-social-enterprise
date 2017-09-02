@@ -1,3 +1,4 @@
+import { NgZone } from "@angular/core";
 import { Participant } from "./participant";
 import { Place } from "./place";
 import { MediaItem } from "./mediaItem";
@@ -13,6 +14,7 @@ export class Enterprise
     public totalThingsToDownload: number = 10;
     public numberDownloaded: number = 0;
     public participants: Array<Participant> = [];    
+    private zone : NgZone;
 
     // creates an Enterprise object
     constructor(public id: number, public name: string, public downloaded: Boolean,
@@ -91,6 +93,19 @@ export class Enterprise
             result = result.concat(participant.getMediaToDownload());
         }
         return result;
+    }
+
+    setZone(zone: NgZone){
+        this.zone = zone;
+    }
+    setNumberDownloaded(numberDownloaded: number){
+        if (this.zone){
+            //Running in a zone will ensure the change event gets triggered and the UI updates.
+            this.zone.run(()=>{this.numberDownloaded = numberDownloaded});
+        }
+        else{
+            this.numberDownloaded = numberDownloaded;
+        }
     }
 
 }
