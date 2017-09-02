@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { SecretConfig } from "../../secretConfig";
-import { Router, ActivatedRoute, NavigationExtras } from "@angular/router";
+import { RouterExtensions, PageRoute } from "nativescript-angular/router";
+import "rxjs/add/operator/switchMap";
 import { LocalStorageService } from "../../shared/localStorageService";
 import { LocalDatabaseService } from "../../shared/localDatabaseService";
 import { Place } from "../../shared/place";
@@ -24,8 +25,8 @@ export class MapComponent implements OnInit
 	private mapLatitude: Number;
 	private mapLongitude: Number;
 
-	constructor(private router : Router,
-		private route: ActivatedRoute,
+	constructor(private router : RouterExtensions,
+		private route: PageRoute,
 		private localDatabaseService: LocalDatabaseService)
 	{}
 
@@ -34,7 +35,9 @@ export class MapComponent implements OnInit
 
 	ngOnInit()
   	{
-		this.route.params.subscribe(params => {
+		this.route.activatedRoute
+			.switchMap(activatedRoute => activatedRoute.params)
+			.forEach((params) => {
 			let enterpriseId = +params['eId'];
             let participantId = +params['pId'];
 

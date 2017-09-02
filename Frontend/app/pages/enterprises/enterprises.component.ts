@@ -1,5 +1,5 @@
 import { Component, ElementRef, OnInit, ViewChild, NgModule, AfterViewInit, ChangeDetectorRef, NgZone } from "@angular/core";
-import { Router } from "@angular/router";
+import { RouterExtensions } from "nativescript-angular/router";
 import { Enterprise } from "../../shared/enterprise";
 import { TextField } from "ui/text-field";
 import { ItemEventData } from "ui/list-view";
@@ -38,7 +38,7 @@ export class EnterprisesComponent implements AfterViewInit, OnInit
     enterprises: Array<Enterprise> = [];
     isLoading = false;
 
-    constructor(private router: Router,
+    constructor(private router: RouterExtensions,
         private enterpriseService: EnterpriseService,
         private localStorageService : LocalStorageService,
         private localDatabaseService : LocalDatabaseService,
@@ -114,7 +114,11 @@ export class EnterprisesComponent implements AfterViewInit, OnInit
     
     openEnterprise(enterprise)
     {
-        this.router.navigate(["/participants", enterprise.id]);
+        this.router.navigate(["/participants", enterprise.id], {
+            transition: {
+                name: "slide"
+            }
+        });
     }
     
     // Saves the selected enterprise to the device

@@ -22,3 +22,7 @@ components that have the btn class name.
 .btn {
     font-size: 18;
 }
+
+.bck-grnd {
+    background-color: #e4e6e7;
+} /* end bck-grnd*/
