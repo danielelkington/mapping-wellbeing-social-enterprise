@@ -16,6 +16,7 @@ import { PathPoint } from "../../shared/pathPoint";
 export class MapComponent implements OnInit
 {
 	mapboxAccessToken = SecretConfig.mapboxAccessToken;
+	participantName: string;
 
 	private map: any
 
@@ -42,6 +43,7 @@ export class MapComponent implements OnInit
 					if (participant.id == participantId)
 					{
 						this.places = participant.places;
+						this.participantName = participant.name;
 						this.pathPoints = participant.pathPoints;
 
 						this.mapLatitude = (participant.getMaxNorthBound() + participant.getMaxSouthBound())/2;

@@ -1,5 +1,4 @@
 <ActionBar title="Participants" class="bck-grnd">
-	<Label text="Participants" class="text-head"></Label>
 </ActionBar>
 <GridLayout class="bck-grnd">
 	<RadListView [items]="participants" row="0" class="small-spacing" (itemLoading)="onItemLoading($event)" (itemTap)="selectParticipant($event)">
