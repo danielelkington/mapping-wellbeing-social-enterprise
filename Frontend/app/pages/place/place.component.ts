@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { Router, ActivatedRoute } from '@angular/router';
 import { LocalDatabaseService } from "../../shared/localDatabaseService";
+import { TabView, SelectedIndexChangedEventData, TabViewItem } from "tns-core-modules/ui/tab-view";
 import { Place } from "../../shared/place";
 import "rxjs/add/operator/switchMap";
 import * as application from "application";
@@ -54,5 +55,11 @@ export class PlaceComponent implements OnInit {
     {
         var a = this.router;
         a.navigate(["/map", this.enterpriseId, this.participantId]);
+    }
+
+    public onIndexChanged(args) {
+        let tabView = <TabView>args.object;
+
+        console.log("Selected index changed! New inxed: " + tabView.selectedIndex);
     }
 }
