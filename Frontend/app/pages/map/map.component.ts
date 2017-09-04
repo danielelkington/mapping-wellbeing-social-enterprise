@@ -1,6 +1,7 @@
 import { Component, OnInit } from "@angular/core";
 import { SecretConfig } from "../../secretConfig";
-import { Router, ActivatedRoute, NavigationExtras } from "@angular/router";
+import { RouterExtensions, PageRoute } from "nativescript-angular/router";
+import "rxjs/add/operator/switchMap";
 import { LocalStorageService } from "../../shared/localStorageService";
 import { LocalDatabaseService } from "../../shared/localDatabaseService";
 import { Place } from "../../shared/place";
@@ -16,6 +17,7 @@ import { PathPoint } from "../../shared/pathPoint";
 export class MapComponent implements OnInit
 {
 	mapboxAccessToken = SecretConfig.mapboxAccessToken;
+	participantName: string;
 
 	private map: any
 
@@ -23,8 +25,8 @@ export class MapComponent implements OnInit
 	private mapLatitude: Number;
 	private mapLongitude: Number;
 
-	constructor(private router : Router,
-		private route: ActivatedRoute,
+	constructor(private router : RouterExtensions,
+		private route: PageRoute,
 		private localDatabaseService: LocalDatabaseService)
 	{}
 
@@ -33,7 +35,9 @@ export class MapComponent implements OnInit
 
 	ngOnInit()
   	{
-		this.route.params.subscribe(params => {
+		this.route.activatedRoute
+			.switchMap(activatedRoute => activatedRoute.params)
+			.forEach((params) => {
 			let enterpriseId = +params['eId'];
             let participantId = +params['pId'];
 
@@ -42,6 +46,7 @@ export class MapComponent implements OnInit
 					if (participant.id == participantId)
 					{
 						this.places = participant.places;
+						this.participantName = participant.name;
 						this.pathPoints = participant.pathPoints;
 
 						this.mapLatitude = (participant.getMaxNorthBound() + participant.getMaxSouthBound())/2;
@@ -66,7 +71,7 @@ export class MapComponent implements OnInit
 					lng: place.longitude,
 					id: place.id,
 					title: place.name,
-					subtitle: place.description,
+					subtitle: "tap for details",
 					icon: 'res://ic_map_marker_' + place.sequenceNumber,
 					onCalloutTap: (marker) => { this.onTap(marker.id); }
 				}

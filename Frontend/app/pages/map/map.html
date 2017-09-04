@@ -1,3 +1,5 @@
+<ActionBar [title]="participantName" class="bck-grnd">
+</ActionBar>
 <Mapbox [accessToken]="mapboxAccessToken"
   [latitude]="mapLatitude"
   [longitude]="mapLongitude"
@@ -5,5 +7,6 @@
   mapStyle="emerald"
   hideLogo="true"
   hideAttribution="true"
+  showUserLocation="true"
   (mapReady)="onMapReady($event)">
 </Mapbox>

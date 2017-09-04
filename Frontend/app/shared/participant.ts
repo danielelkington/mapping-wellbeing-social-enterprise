@@ -87,12 +87,4 @@ export class Participant{
     getNumStories() : string {
         return "(" + this.places.length + ((this.places.length == 1) ? " story" : " stories") + ")";
     }
-
-    getIcon() {
-        return "http://i.imgur.com/sk5jAas.png";
-    }
-
-    getArrow() {
-        return "http://i.imgur.com/leZvrFM.png";
-    }
 }
