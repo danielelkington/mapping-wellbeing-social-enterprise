@@ -1,5 +1,6 @@
 import { Component } from "@angular/core";
-import { Router, ActivatedRoute } from "@angular/router";
+import { RouterExtensions, PageRoute } from "nativescript-angular/router";
+import "rxjs/add/operator/switchMap";
 import { Participant } from "../../shared/participant";
 import { Observable } from "data/observable";
 import { Color } from "tns-core-modules/color";
@@ -19,16 +20,18 @@ export class ParticipantsComponent {
     participants: Array<Participant> = [];
     enterpriseId: number;
 
-    constructor(private router: Router,
-        private route: ActivatedRoute,
+    constructor(private router: RouterExtensions,
+        private route: PageRoute,
         private localDatabaseService : LocalDatabaseService) { }
 
     ngOnInit()
-    {      
-        this.route.params.subscribe(params => {
-            this.enterpriseId = +params['id'];
-            this.localDatabaseService.getSavedEnterprise(this.enterpriseId).then(enterprise => this.participants = enterprise.participants);
-        });
+    {     
+        this.route.activatedRoute.switchMap(activatedRoute => activatedRoute.params) 
+            .forEach((params) => {
+                this.enterpriseId = +params['id'];
+                this.localDatabaseService.getSavedEnterprise(this.enterpriseId)
+                    .then(enterprise => this.participants = enterprise.participants);
+            });
     }
 
     onItemLoading(args: ListViewEventData)
@@ -40,6 +43,10 @@ export class ParticipantsComponent {
     selectParticipant(args)
     {
         var participant = this.participants[args.index];
-        this.router.navigate(["/map", this.enterpriseId, participant.id]);
+        this.router.navigate(["/map", this.enterpriseId, participant.id],{
+            transition: {
+                name: "slide"
+            }
+        });
     }
 }

@@ -1,5 +1,5 @@
-import { Component, ElementRef, OnInit, ViewChild, NgModule, AfterViewInit, ChangeDetectorRef } from "@angular/core";
-import { Router } from "@angular/router";
+import { Component, ElementRef, OnInit, ViewChild, NgModule, AfterViewInit, ChangeDetectorRef, NgZone } from "@angular/core";
+import { RouterExtensions } from "nativescript-angular/router";
 import { Enterprise } from "../../shared/enterprise";
 import { TextField } from "ui/text-field";
 import { ItemEventData } from "ui/list-view";
@@ -38,10 +38,11 @@ export class EnterprisesComponent implements AfterViewInit, OnInit
     enterprises: Array<Enterprise> = [];
     isLoading = false;
 
-    constructor(private router: Router,
+    constructor(private router: RouterExtensions,
         private enterpriseService: EnterpriseService,
         private localStorageService : LocalStorageService,
         private localDatabaseService : LocalDatabaseService,
+        private zone : NgZone,
         private _changeDetectionRef: ChangeDetectorRef) { }
 
     @ViewChild(RadSideDrawerComponent) public drawerComponent: RadSideDrawerComponent;
@@ -113,13 +114,18 @@ export class EnterprisesComponent implements AfterViewInit, OnInit
     
     openEnterprise(enterprise)
     {
-        this.router.navigate(["/participants", enterprise.id]);
+        this.router.navigate(["/participants", enterprise.id], {
+            transition: {
+                name: "slide"
+            }
+        });
     }
     
     // Saves the selected enterprise to the device
-    downloadEnterprise(enterprise, password)
+    downloadEnterprise(enterprise : Enterprise, password : string)
     {
         enterprise.busy = true;
+        enterprise.setZone(this.zone);
 
         this.enterpriseService.getEnterprise(enterprise.id, password)
         .subscribe(downloadedEnterprise =>
@@ -137,7 +143,7 @@ export class EnterprisesComponent implements AfterViewInit, OnInit
             }
             else{
                 console.log(JSON.stringify(err));
-                dialogs.alert({title: "Failed to download enterprise", message: "Please try again later"});
+                dialogs.alert({title: "Failed to download enterprise", message: "Please try again later", okButtonText: "OK"});
             }
             enterprise.busy = false;
         });
@@ -146,7 +152,7 @@ export class EnterprisesComponent implements AfterViewInit, OnInit
     // refreshes the current page
     refresh() : Promise<any>
     {
-        if (this.isLoading)
+        if (this.isLoading || (this.enterprises && this.enterprises.some(x => x.busy)))
             return Promise.resolve(0);
         //Keep track of enterprises that have been downloaded
         var downloadedEnterprisesId: Array<number> = [];
@@ -178,7 +184,8 @@ export class EnterprisesComponent implements AfterViewInit, OnInit
             console.log(err);
             this.isLoading = false;
             if (this.enterprises.length == 0)
-                dialogs.alert("Failed to load enterprises");
+                dialogs.alert({title: "Failed to load enterprises", message: "Please make sure you have a working internet connection.", okButtonText: "OK"});
+            throw(err);
         });
         return promise;
     }
@@ -188,6 +195,11 @@ export class EnterprisesComponent implements AfterViewInit, OnInit
         var listView = args.object;    
         this.refresh()
             .then(x => {
+                if (app.ios){
+                    listView.notifyPullToRefreshFinished();
+                }
+            })
+            .catch(x => {
                 if (app.ios){
                     listView.notifyPullToRefreshFinished();
                 }
@@ -228,17 +240,31 @@ export class EnterprisesComponent implements AfterViewInit, OnInit
 
         var index = this.enterprises.findIndex(x => x.id === tappedItemData.id)
         var enterprise = this.enterprises[index];
-        //Delete enterprise data - need to keep enterprise in list but have it greyed-out
-        this.isLoading = true;
-        this.localStorageService.deleteEnterprise(enterprise)
-            .then(x => {
+
+        dialogs.confirm({
+            title: "Delete " + enterprise.name,
+            message: "Are you sure you want to delete the enterprise " + enterprise.name + " and all of its content?",
+            okButtonText: "Yes",
+            cancelButtonText: "No"
+        })
+        .then(result =>
+        {
+            if (!result){
                 listView.notifySwipeToExecuteFinished();
-                this.isLoading = false;
-                this.refresh();
-            })
-            .catch(x => {
-                this.isLoading = false;
-            });
+                return;
+            }
+            //Delete enterprise data - need to keep enterprise in list but have it greyed-out
+            this.isLoading = true;
+            this.localStorageService.deleteEnterprise(enterprise)
+                .then(x => {
+                    listView.notifySwipeToExecuteFinished();
+                    this.isLoading = false;
+                    this.refresh();
+                })
+                .catch(x => {
+                    this.isLoading = false;
+                });
+        });
     }
 
     public onItemLoading(args: ListViewEventData) {

@@ -73,4 +73,5 @@ CREATE TABLE MediaItem (
 SET IDENTITY_INSERT MediaItemType ON
 INSERT INTO MediaItemType(Id, Name) VALUES (1, 'Image')
 INSERT INTO MediaItemType(Id, Name) VALUES (2, 'Video')
+INSERT INTO MediaItemType(Id, Name) VALUES (3, 'Audio')
 SET IDENTITY_INSERT MediaItemType OFF
