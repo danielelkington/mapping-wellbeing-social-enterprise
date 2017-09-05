@@ -41,8 +41,8 @@ export class MapComponent implements OnInit
 		this.route.activatedRoute
 			.switchMap(activatedRoute => activatedRoute.params)
 			.forEach((params) => {
-			let enterpriseId = +params['eId'];
-            let participantId = +params['pId'];
+			this.enterpriseId = +params['eId'];
+            this.participantId = +params['pId'];
 
             this.localDatabaseService.getSavedEnterprise(this.enterpriseId).then(enterprise => {
 				enterprise.participants.forEach((participant) => {
