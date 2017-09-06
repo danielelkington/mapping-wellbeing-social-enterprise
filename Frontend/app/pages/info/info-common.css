@@ -1,0 +1,16 @@
+/*
+CSS to style the info page relevant to all platforms goes here
+*/
+
+.headerText{
+    margin: 10;
+    vertical-align: top;
+    font-size: 22;
+    font-weight: bold;
+}
+
+.infoText{
+    margin: 10;
+    vertical-align: top;
+    font-size: 18;
+}
