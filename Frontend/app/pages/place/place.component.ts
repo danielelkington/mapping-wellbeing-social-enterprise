@@ -1,10 +1,11 @@
 import { Component, OnInit } from "@angular/core";
 import { Router, ActivatedRoute } from '@angular/router';
 import { LocalDatabaseService } from "../../shared/localDatabaseService";
-import { TabView, SelectedIndexChangedEventData, TabViewItem } from "tns-core-modules/ui/tab-view";
 import { Place } from "../../shared/place";
+import { MediaItem } from "../../shared/mediaItem"
 import "rxjs/add/operator/switchMap";
 import * as application from "application";
+import * as repeaterModule from "tns-core-modules/ui/repeater";
 
 // Displays details of a place to the user
 @Component({
@@ -16,10 +17,12 @@ import * as application from "application";
 export class PlaceComponent implements OnInit {
     
     private place: Place;
+    private selectedMedia: MediaItem;
 
     enterpriseId: number;
     participantId: number;
     placeId: number
+    isDataAvailable: boolean = false;
 
     constructor(private router: Router,
 		private route: ActivatedRoute,
@@ -39,7 +42,11 @@ export class PlaceComponent implements OnInit {
 					{
                         participant.places.forEach((place) => {
                             if (place.id == this.placeId)
+                            {
                                 this.place = place;
+                                this.selectMedia(0);
+                                this.isDataAvailable = true;
+                            }
                         });
                     }
                 });
@@ -57,9 +64,8 @@ export class PlaceComponent implements OnInit {
         a.navigate(["/map", this.enterpriseId, this.participantId]);
     }
 
-    public onIndexChanged(args) {
-        let tabView = <TabView>args.object;
-
-        console.log("Selected index changed! New inxed: " + tabView.selectedIndex);
+    selectMedia(index)
+    {
+        this.selectedMedia = this.place.mediaItems[index];
     }
 }

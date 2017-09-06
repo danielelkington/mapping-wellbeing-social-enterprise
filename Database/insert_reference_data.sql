@@ -91,6 +91,10 @@ insert into PathPoint(ParticipantId, SequenceNumber, Latitude, Longitude)
 insert into MediaItem(PlaceId, MediaItemTypeId, Name, Filename, URL)
 	values ((select Id from Place where SequenceNumber = 1 and Name = 'Home'), (select Id from MediaItemType where Name = 'Image'), 'House', 'f0103c37-5ae9-4d43-bf66-4c07d751214e.png', 'https://backontrack.blob.core.windows.net/blobs/f0103c37-5ae9-4d43-bf66-4c07d751214e.png');
 insert into MediaItem(PlaceId, MediaItemTypeId, Name, Filename, URL)
+	values ((select Id from Place where SequenceNumber = 1 and Name = 'Home'), (select Id from MediaItemType where Name = 'Image'), 'School', 'c640bb79-8a62-440c-bbe6-0b46e498d674.jpg', 'https://backontrack.blob.core.windows.net/blobs/c640bb79-8a62-440c-bbe6-0b46e498d674.jpg');
+insert into MediaItem(PlaceId, MediaItemTypeId, Name, Filename, URL)
+	values ((select Id from Place where SequenceNumber = 1 and Name = 'Home'), (select Id from MediaItemType where Name = 'Video'), 'Work', '9640688a-591a-43e1-8ff7-9da7d82f650d.jpeg', 'https://backontrack.blob.core.windows.net/blobs/9640688a-591a-43e1-8ff7-9da7d82f650d.jpeg');
+insert into MediaItem(PlaceId, MediaItemTypeId, Name, Filename, URL)
 	values ((select Id from Place where SequenceNumber = 2 and Name = 'School'), (select Id from MediaItemType where Name = 'Image'), 'School', 'c640bb79-8a62-440c-bbe6-0b46e498d674.jpg', 'https://backontrack.blob.core.windows.net/blobs/c640bb79-8a62-440c-bbe6-0b46e498d674.jpg');
 insert into MediaItem(PlaceId, MediaItemTypeId, Name, Filename, URL)
 	values ((select Id from Place where SequenceNumber = 3 and Name = 'Work'), (select Id from MediaItemType where Name = 'Video'), 'Work', '9640688a-591a-43e1-8ff7-9da7d82f650d.jpeg', 'https://backontrack.blob.core.windows.net/blobs/9640688a-591a-43e1-8ff7-9da7d82f650d.jpeg');
