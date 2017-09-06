@@ -1,5 +1,10 @@
 .mediaButton {
-    padding: 1 5;
+    padding: 1 10;
+}
+
+.nameBar {
+    background-color: #DCDFE2;
+    text-align: center;
 }
 
 .menuBar {

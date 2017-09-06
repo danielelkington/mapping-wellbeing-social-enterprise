@@ -1,10 +1,13 @@
-<GridLayout rows="*, auto, *">
+<GridLayout rows="*, auto, auto, *">
     <StackLayout row="0" orientation="horizontal" horizontalAlignment="center" width="100%">
-            <Image src="{{ selectedMedia.url }}" stretch="aspectFill"></Image> <!-- Won't always be an image -->
+        <Image src="{{ selectedMedia.url }}" stretch="aspectFill"></Image> <!-- Won't always be an image -->
     </StackLayout>
-    <StackLayout row="1" horizontalAlignment="center" width="100%">
-        <StackLayout orientation="horizontal" *ngIf="isDataAvailable">
-            <ScrollView orientation="horizontal" class="menuBar" *ngFor="let item of place.mediaItems; let i = index;">
+    <StackLayout row="1" orientation="horizontal" width="100%" class="nameBar">
+        <Label text="{{ selectedMedia.name }}" width="100%"></Label>
+    </StackLayout>
+    <ScrollView row="2" orientation="horizontal" width="100%" class="menuBar">
+        <StackLayout orientation="horizontal" *ngIf="isDataAvailable" horizontalAlignment="center">
+            <StackLayout orientation="horizontal"  *ngFor="let item of place.mediaItems; let i = index;">
                 <StackLayout [ngSwitch]="item.mediaItemType" class="mediaButton" (tap)="selectMedia(i)">
                     <GridLayout *ngSwitchCase="'1'">
                         <Image src="res://ic_photo_camera_black_24dp" stretch="none" horizontalAlignment="center" verticalAlignment="center"></Image>
@@ -16,12 +19,12 @@
                         <Image src="res://ic_mic_black_24dp" stretch="none" horizontalAlignment="center" verticalAlignment="center"></Image>
                     </GridLayout>
                 </StackLayout>
-            </ScrollView>
+            </StackLayout>
         </StackLayout>
-    </StackLayout>
-    <StackLayout row="2" orientation="horizontal" horizontalAlignment="left" width="100%">
+    </ScrollView>
+    <StackLayout row="3" orientation="horizontal" horizontalAlignment="left" width="100%">
         <ScrollView>
-            <Label text="{{ place.description }}"></Label> <!-- place description -->
+            <Label text="{{ place.description }}"></Label>
         </ScrollView>     
     </StackLayout>
 </GridLayout>
