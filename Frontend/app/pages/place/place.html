@@ -1,6 +1,15 @@
 <GridLayout rows="*, auto, auto, *">
-    <StackLayout row="0" orientation="horizontal" horizontalAlignment="center" width="100%">
-        <Image src="{{ selectedMedia.url }}" stretch="aspectFill"></Image> <!-- Won't always be an image -->
+    <StackLayout [ngSwitch]="selectedMedia.mediaItemType" row="0" orientation="horizontal" horizontalAlignment="center" width="100%">
+        <GridLayout *ngSwitchCase="'1'">
+            <Image src="{{ selectedMedia.url }}" stretch="aspectFill"></Image>
+        </GridLayout>
+        <GridLayout *ngSwitchCase="'2'">
+            <VideoPlayer src="{{ testVideo }}" stretch="aspectFill"></VideoPlayer>
+        </GridLayout>
+        <GridLayout *ngSwitchCase="'3'">
+            <Button text="Start Audio" (tap)="playAudio()"></Button>
+            <Button text="Stop Audio" (tap)="stopAudio()"></Button>
+        </GridLayout>
     </StackLayout>
     <StackLayout row="1" orientation="horizontal" width="100%" class="nameBar">
         <Label text="{{ selectedMedia.name }}" width="100%"></Label>

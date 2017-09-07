@@ -1,8 +1,12 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
 import { Router, ActivatedRoute } from '@angular/router';
 import { LocalDatabaseService } from "../../shared/localDatabaseService";
 import { Place } from "../../shared/place";
 import { MediaItem } from "../../shared/mediaItem"
+import { registerElement } from "nativescript-angular/element-registry";
+registerElement("VideoPlayer", () => require("nativescript-videoplayer").Video);
+import { TNSPlayer } from "nativescript-audio";
+import { Observable } from "tns-core-modules/data/observable";
 import "rxjs/add/operator/switchMap";
 import * as application from "application";
 import * as repeaterModule from "tns-core-modules/ui/repeater";
@@ -18,11 +22,16 @@ export class PlaceComponent implements OnInit {
     
     private place: Place;
     private selectedMedia: MediaItem;
+    private audioPlayer: TNSPlayer;
 
     enterpriseId: number;
     participantId: number;
-    placeId: number
+    placeId: number;
     isDataAvailable: boolean = false;
+
+    testVideo: string = "https://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4";
+    
+    @ViewChild("videoPlayer") videoPlayer: ElementRef;
 
     constructor(private router: Router,
 		private route: ActivatedRoute,
@@ -51,6 +60,8 @@ export class PlaceComponent implements OnInit {
                     }
                 });
             });
+
+            this.audioPlayer = new TNSPlayer();
         });
 
         /*Buggy attempt at fixing back navigation*/
@@ -67,5 +78,29 @@ export class PlaceComponent implements OnInit {
     selectMedia(index)
     {
         this.selectedMedia = this.place.mediaItems[index];
+    }
+
+    playVideo()
+    {
+        if (this.selectedMedia.mediaItemType === 2)
+        {
+            this.videoPlayer.nativeElement.play();
+        }
+    }
+
+    playAudio()
+    {
+        // res://Voice001 does not exist
+        this.audioPlayer.playFromUrl({
+            audioFile: "res://Voice001",
+            loop: false
+        }).then(() => {
+            console.log("playing audio"); // + this.selectedMedia.name);
+        });
+    }
+
+    stopAudio()
+    {
+        this.audioPlayer.pause();
     }
 }
