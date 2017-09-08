@@ -1,39 +1,34 @@
-<GridLayout rows="*, auto, auto, *">
-    <StackLayout [ngSwitch]="selectedMedia.mediaItemType" row="0" orientation="horizontal" horizontalAlignment="center" width="100%">
+<ActionBar [title]="place.name" class="bck-grnd">
+</ActionBar>
+<GridLayout rows="*, auto, *">
+    <StackLayout [ngSwitch]="selectedMedia.mediaItemType" row="0" orientation="horizontal" horizontalAlignment="center" width="100%"
+        class="mediaItemArea">
         <GridLayout *ngSwitchCase="'1'">
-            <Image src="{{ selectedMedia.url }}" stretch="aspectFill"></Image>
+            <Image src="{{ selectedMedia.mediaPath }}" stretch="aspectFill"></Image>
         </GridLayout>
         <GridLayout *ngSwitchCase="'2'">
-            <VideoPlayer src="{{ testVideo }}" stretch="aspectFill"></VideoPlayer>
+            <VideoPlayer src="{{ selectedMedia.mediaPath }}" stretch="aspectFill"></VideoPlayer>
         </GridLayout>
         <GridLayout *ngSwitchCase="'3'">
-            <Button text="Start Audio" (tap)="playAudio()"></Button>
-            <Button text="Stop Audio" (tap)="stopAudio()"></Button>
+            <Image *ngIf="!selectedMedia.audioPlaying" (tap)="playAudio()" src="res://ic_play_circle_outline_white" width="30%"></Image>
+            <Image *ngIf="selectedMedia.audioPlaying" (tap)="stopAudio()" src="res://ic_stop_white" width="30%"></Image>
         </GridLayout>
     </StackLayout>
-    <StackLayout row="1" orientation="horizontal" width="100%" class="nameBar">
-        <Label text="{{ selectedMedia.name }}" width="100%"></Label>
-    </StackLayout>
-    <ScrollView row="2" orientation="horizontal" width="100%" class="menuBar">
+    <ScrollView row="1" orientation="horizontal" width="100%" class="menuBar">
         <StackLayout orientation="horizontal" *ngIf="isDataAvailable" horizontalAlignment="center">
             <StackLayout orientation="horizontal"  *ngFor="let item of place.mediaItems; let i = index;">
                 <StackLayout [ngSwitch]="item.mediaItemType" class="mediaButton" (tap)="selectMedia(i)">
-                    <GridLayout *ngSwitchCase="'1'">
-                        <Image src="res://ic_photo_camera_black_24dp" stretch="none" horizontalAlignment="center" verticalAlignment="center"></Image>
-                    </GridLayout>
-                    <GridLayout *ngSwitchCase="'2'">
-                        <Image src="res://ic_videocam_black_24dp" stretch="none" horizontalAlignment="center" verticalAlignment="center"></Image>
-                    </GridLayout>
-                    <GridLayout *ngSwitchCase="'3'">
-                        <Image src="res://ic_mic_black_24dp" stretch="none" horizontalAlignment="center" verticalAlignment="center"></Image>
-                    </GridLayout>
+                    <Image *ngSwitchCase="'1'" src="res://ic_photo_camera_black_24dp" stretch="none" horizontalAlignment="center" verticalAlignment="center"></Image>
+                    <Image *ngSwitchCase="'2'" src="res://ic_videocam_black_24dp" stretch="none" horizontalAlignment="center" verticalAlignment="center"></Image>
+                    <Image *ngSwitchCase="'3'" src="res://ic_mic_black_24dp" stretch="none" horizontalAlignment="center" verticalAlignment="center"></Image>
+                    <Label text="{{item.name}}"></Label>
                 </StackLayout>
             </StackLayout>
         </StackLayout>
     </ScrollView>
-    <StackLayout row="3" orientation="horizontal" horizontalAlignment="left" width="100%">
+    <StackLayout row="2" orientation="horizontal" width="100%">
         <ScrollView>
-            <Label text="{{ place.description }}"></Label>
+            <Label class="infoText" textWrap="true" text="{{ place.description }}"></Label>
         </ScrollView>     
     </StackLayout>
 </GridLayout>

@@ -7,6 +7,7 @@ import { SIDEDRAWER_DIRECTIVES } from "nativescript-telerik-ui/sidedrawer/angula
 import { AppComponent } from "./app.component";
 import { registerElement } from "nativescript-angular/element-registry";
 import { LocalDatabaseService } from"./shared/localDatabaseService";
+import { LocalStorageService } from"./shared/localStorageService";
 
 import { routes, navigatableComponents } from "./app.routing";
 
@@ -30,7 +31,8 @@ registerElement("Mapbox", () => require("nativescript-mapbox").MapboxView);
         ...navigatableComponents
     ],
     providers: [
-        LocalDatabaseService
+        LocalDatabaseService,
+        LocalStorageService
     ]
 })
 export class AppModule { }

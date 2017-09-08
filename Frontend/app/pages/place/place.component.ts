@@ -1,6 +1,7 @@
-import { Component, OnInit, ViewChild, ElementRef } from "@angular/core";
+import { Component, OnInit, ViewChild, ElementRef, NgZone } from "@angular/core";
 import { Router, ActivatedRoute } from '@angular/router';
 import { LocalDatabaseService } from "../../shared/localDatabaseService";
+import { LocalStorageService } from "../../shared/localStorageService";
 import { Place } from "../../shared/place";
 import { MediaItem } from "../../shared/mediaItem"
 import { registerElement } from "nativescript-angular/element-registry";
@@ -29,13 +30,11 @@ export class PlaceComponent implements OnInit {
     placeId: number;
     isDataAvailable: boolean = false;
 
-    testVideo: string = "https://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4";
-    
-    @ViewChild("videoPlayer") videoPlayer: ElementRef;
-
     constructor(private router: Router,
 		private route: ActivatedRoute,
-		private localDatabaseService: LocalDatabaseService)
+        private localDatabaseService: LocalDatabaseService,
+        private localStorageService: LocalStorageService,
+        private zone: NgZone)
 	{}
 
     ngOnInit()
@@ -55,6 +54,7 @@ export class PlaceComponent implements OnInit {
                                 this.place = place;
                                 this.selectMedia(0);
                                 this.isDataAvailable = true;
+                                this.place.mediaItems.forEach(x => x.mediaPath = this.localStorageService.getImagePath(x.filename, x.url));
                             }
                         });
                     }
@@ -80,27 +80,29 @@ export class PlaceComponent implements OnInit {
         this.selectedMedia = this.place.mediaItems[index];
     }
 
-    playVideo()
-    {
-        if (this.selectedMedia.mediaItemType === 2)
-        {
-            this.videoPlayer.nativeElement.play();
-        }
-    }
-
     playAudio()
     {
-        // res://Voice001 does not exist
-        this.audioPlayer.playFromUrl({
-            audioFile: "res://Voice001",
-            loop: false
-        }).then(() => {
-            console.log("playing audio"); // + this.selectedMedia.name);
-        });
+        let audioMediaItem = this.selectedMedia;
+        audioMediaItem.audioPlaying = true;
+        if (audioMediaItem.mediaPath == audioMediaItem.url){
+            this.audioPlayer.playFromUrl({
+                audioFile: this.selectedMedia.mediaPath, 
+                loop: false, 
+                completeCallback: ()=>this.zone.run(()=>audioMediaItem.audioPlaying = false)
+            });
+        }
+        else{
+            this.audioPlayer.playFromFile({
+                audioFile: audioMediaItem.mediaPath, 
+                loop: false,
+                completeCallback: ()=>this.zone.run(()=>audioMediaItem.audioPlaying = false)
+            });
+        }
     }
 
     stopAudio()
     {
         this.audioPlayer.pause();
+        this.selectedMedia.audioPlaying = false;
     }
 }
