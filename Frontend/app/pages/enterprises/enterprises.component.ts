@@ -1,4 +1,4 @@
-import { Component, ElementRef, OnInit, ViewChild, NgModule, AfterViewInit, ChangeDetectorRef, NgZone } from "@angular/core";
+import { Component, ElementRef, OnInit, ViewChild, NgModule, ChangeDetectorRef, NgZone } from "@angular/core";
 import { RouterExtensions } from "nativescript-angular/router";
 import { Enterprise } from "../../shared/enterprise";
 import { TextField } from "ui/text-field";
@@ -10,8 +10,6 @@ import { LocalDatabaseService } from"../../shared/localDatabaseService";
 import { Config } from "./config";
 import { View } from "tns-core-modules/ui/core/view";
 import { ListViewEventData, RadListView, SwipeActionsEventData } from "nativescript-telerik-ui/listview";
-import { RadSideDrawer } from 'nativescript-telerik-ui/sidedrawer';
-import { RadSideDrawerComponent, SideDrawerType } from "nativescript-telerik-ui/sidedrawer/angular";
 
 import dialogs = require("ui/dialogs");
 import timer = require("timer");
@@ -32,7 +30,7 @@ var Color = colorModule.Color;
     templateUrl: "pages/enterprises/enterprises.html",
     styleUrls: ["pages/enterprises/enterprises-common.css", "pages/enterprises/enterprises.css"]
 })
-export class EnterprisesComponent implements AfterViewInit, OnInit
+export class EnterprisesComponent implements OnInit
 {
     // An array of all enterprises
     enterprises: Array<Enterprise> = [];
@@ -44,15 +42,6 @@ export class EnterprisesComponent implements AfterViewInit, OnInit
         private localDatabaseService : LocalDatabaseService,
         private zone : NgZone,
         private _changeDetectionRef: ChangeDetectorRef) { }
-
-    @ViewChild(RadSideDrawerComponent) public drawerComponent: RadSideDrawerComponent;
-    private drawer: RadSideDrawer;
-
-    ngAfterViewInit() {
-        this.drawer = this.drawerComponent.sideDrawer;
-        this.drawer.drawerContentSize = (platform.screen.mainScreen.heightDIPs / 100) * 80;  
-        this._changeDetectionRef.detectChanges();
-    }
 
     // Initialize the enterprise list with values
     ngOnInit()
@@ -271,5 +260,13 @@ export class EnterprisesComponent implements AfterViewInit, OnInit
         const colours = ["#E5DBE1", "#E2EEE5", "#F7E6E3", "#F8F7F2"];
         
         args.view.backgroundColor = new Color(colours[args.index % colours.length]);
+    }
+
+    gotoInfo(){
+        this.router.navigate(["/info"], {
+            transition: {
+                name: "fade"
+            }
+        });
     }
 }
