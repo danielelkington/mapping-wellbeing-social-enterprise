@@ -26,7 +26,7 @@ var Color = colorModule.Color;
 // them to select one.
 @Component({
     selector: "enterprises",
-    providers:  [EnterpriseService, LocalStorageService],
+    providers:  [EnterpriseService],
     templateUrl: "pages/enterprises/enterprises.html",
     styleUrls: ["pages/enterprises/enterprises-common.css", "pages/enterprises/enterprises.css"]
 })

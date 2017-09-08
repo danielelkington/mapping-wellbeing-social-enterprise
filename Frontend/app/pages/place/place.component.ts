@@ -1,10 +1,16 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit, ViewChild, ElementRef, NgZone } from "@angular/core";
 import { Router, ActivatedRoute } from '@angular/router';
 import { LocalDatabaseService } from "../../shared/localDatabaseService";
-import { TabView, SelectedIndexChangedEventData, TabViewItem } from "tns-core-modules/ui/tab-view";
+import { LocalStorageService } from "../../shared/localStorageService";
 import { Place } from "../../shared/place";
+import { MediaItem } from "../../shared/mediaItem"
+import { registerElement } from "nativescript-angular/element-registry";
+registerElement("VideoPlayer", () => require("nativescript-videoplayer").Video);
+import { TNSPlayer } from "nativescript-audio";
+import { Observable } from "tns-core-modules/data/observable";
 import "rxjs/add/operator/switchMap";
 import * as application from "application";
+import * as repeaterModule from "tns-core-modules/ui/repeater";
 
 // Displays details of a place to the user
 @Component({
@@ -16,14 +22,19 @@ import * as application from "application";
 export class PlaceComponent implements OnInit {
     
     private place: Place;
+    private selectedMedia: MediaItem;
+    private audioPlayer: TNSPlayer;
 
     enterpriseId: number;
     participantId: number;
-    placeId: number
+    placeId: number;
+    isDataAvailable: boolean = false;
 
     constructor(private router: Router,
 		private route: ActivatedRoute,
-		private localDatabaseService: LocalDatabaseService)
+        private localDatabaseService: LocalDatabaseService,
+        private localStorageService: LocalStorageService,
+        private zone: NgZone)
 	{}
 
     ngOnInit()
@@ -39,11 +50,18 @@ export class PlaceComponent implements OnInit {
 					{
                         participant.places.forEach((place) => {
                             if (place.id == this.placeId)
+                            {
                                 this.place = place;
+                                this.selectMedia(0);
+                                this.isDataAvailable = true;
+                                this.place.mediaItems.forEach(x => x.mediaPath = this.localStorageService.getImagePath(x.filename, x.url));
+                            }
                         });
                     }
                 });
             });
+
+            this.audioPlayer = new TNSPlayer();
         });
 
         /*Buggy attempt at fixing back navigation*/
@@ -57,9 +75,34 @@ export class PlaceComponent implements OnInit {
         a.navigate(["/map", this.enterpriseId, this.participantId]);
     }
 
-    public onIndexChanged(args) {
-        let tabView = <TabView>args.object;
+    selectMedia(index)
+    {
+        this.selectedMedia = this.place.mediaItems[index];
+    }
 
-        console.log("Selected index changed! New inxed: " + tabView.selectedIndex);
+    playAudio()
+    {
+        let audioMediaItem = this.selectedMedia;
+        audioMediaItem.audioPlaying = true;
+        if (audioMediaItem.mediaPath == audioMediaItem.url){
+            this.audioPlayer.playFromUrl({
+                audioFile: this.selectedMedia.mediaPath, 
+                loop: false, 
+                completeCallback: ()=>this.zone.run(()=>audioMediaItem.audioPlaying = false)
+            });
+        }
+        else{
+            this.audioPlayer.playFromFile({
+                audioFile: audioMediaItem.mediaPath, 
+                loop: false,
+                completeCallback: ()=>this.zone.run(()=>audioMediaItem.audioPlaying = false)
+            });
+        }
+    }
+
+    stopAudio()
+    {
+        this.audioPlayer.pause();
+        this.selectedMedia.audioPlaying = false;
     }
 }

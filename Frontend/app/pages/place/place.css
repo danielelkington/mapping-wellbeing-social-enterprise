@@ -1,0 +1,22 @@
+.mediaButton {
+    padding: 1 10;
+}
+
+.nameBar {
+    background-color: #DCDFE2;
+    text-align: center;
+}
+
+.menuBar {
+    background-color: #ECEFF1;
+}
+
+.infoText {
+    margin: 10;
+    vertical-align: top;
+    font-size: 18;
+}
+
+.mediaItemArea{
+    background-color: #000000;
+}
