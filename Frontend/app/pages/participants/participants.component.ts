@@ -53,5 +53,10 @@ export class ParticipantsComponent {
     viewAllParticipants()
     {
         console.log("View all tapped");
+        this.router.navigate(["/enterpriseMap", this.enterpriseId],{
+            transition: {
+                name: "slide"
+            }
+        });
     }
 }

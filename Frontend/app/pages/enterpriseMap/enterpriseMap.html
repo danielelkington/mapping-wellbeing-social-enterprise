@@ -1,0 +1,12 @@
+<ActionBar [title]="enterpriseName" class="bck-grnd">
+</ActionBar>
+<Mapbox [accessToken]="mapboxAccessToken"
+  [latitude]="mapLatitude"
+  [longitude]="mapLongitude"
+  zoomLevel="12.5"
+  mapStyle="emerald"
+  hideLogo="true"
+  hideAttribution="true"
+  showUserLocation="true"
+  (mapReady)="onMapReady($event)">
+</Mapbox>
