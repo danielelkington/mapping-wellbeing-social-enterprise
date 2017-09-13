@@ -1,6 +1,6 @@
 <ActionBar title="Enterprises" class="bck-grnd">
 	<ActionItem icon="res://ic_info_outline" ios.position="right" android.position="actionBar"
-		(tap)="gotoInfo()"></ActionItem>
+		(tap)="gotoSettings()"></ActionItem>
 </ActionBar>	
 <GridLayout class="bck-grnd">
 	<RadListView [items]="enterprises" id="listView" row="0" class="small-spacing" (itemTap)="selectEnterprise($event)" pullToRefresh="true" (pullToRefreshInitiated)="onPullToRefreshInitiated($event)" 

@@ -1,0 +1,7 @@
+<ActionBar title="Settings">
+</ActionBar>
+<GridLayout rows="auto auto" columns="200 *">
+    <Label text="Stream Media" row="0" col="0"></Label>
+    <Switch checked="{{ getStream() }}" (checkedChange)="switchChanged($event)" row="0" col="1"></Switch>
+    <Label text="Stream media and map rather than downloading" textWrap="true" row="1" col="0"></Label>
+</GridLayout>

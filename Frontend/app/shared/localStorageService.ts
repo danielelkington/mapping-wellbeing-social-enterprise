@@ -9,6 +9,7 @@ import {LocalDatabaseService} from "./localDatabaseService";
 import {knownFolders, File, Folder, path} from "file-system";
 import {Mapbox, MapStyle, OfflineRegion} from "nativescript-mapbox";
 import {SecretConfig} from "../secretConfig";
+import appSettings = require("application-settings");
 var http = require("http");
 
 @Injectable()
@@ -147,5 +148,24 @@ export class LocalStorageService{
             })(p);
         }
         return promise;
+    }
+
+    /**
+     * set whether media and map is streamed or downloaded.
+     * true for streamed, false for downloaded.
+     */
+    public saveStream = function(stream: boolean)
+    {
+        appSettings.setBoolean("isStream", stream);
+    }
+
+    /**
+     * gets whether the media and map is streamed/downloaded.
+     * true for stream, false for downloaded. First ever use
+     * is true.
+     */
+    public loadStream()
+    {
+        return appSettings.getBoolean("isStream", true);
     }
 }
