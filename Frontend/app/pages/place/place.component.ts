@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, ElementRef, NgZone } from "@angular/core";
-import { Router, ActivatedRoute } from '@angular/router';
+import { RouterExtensions, PageRoute } from "nativescript-angular/router";
 import { LocalDatabaseService } from "../../shared/localDatabaseService";
 import { LocalStorageService } from "../../shared/localStorageService";
 import { Place } from "../../shared/place";
@@ -9,8 +9,8 @@ registerElement("VideoPlayer", () => require("nativescript-videoplayer").Video);
 import { TNSPlayer } from "nativescript-audio";
 import { Observable } from "tns-core-modules/data/observable";
 import "rxjs/add/operator/switchMap";
-import * as application from "application";
 import * as repeaterModule from "tns-core-modules/ui/repeater";
+import * as application from "application";
 
 // Displays details of a place to the user
 @Component({
@@ -30,8 +30,8 @@ export class PlaceComponent implements OnInit {
     placeId: number;
     isDataAvailable: boolean = false;
 
-    constructor(private router: Router,
-		private route: ActivatedRoute,
+    constructor(private router: RouterExtensions,
+		private route: PageRoute,
         private localDatabaseService: LocalDatabaseService,
         private localStorageService: LocalStorageService,
         private zone: NgZone)
@@ -39,7 +39,9 @@ export class PlaceComponent implements OnInit {
 
     ngOnInit()
     {
-        this.route.params.subscribe(params => {
+        this.route.activatedRoute
+        .switchMap(activatedRoute => activatedRoute.params)
+        .forEach((params) => {
             this.enterpriseId = +params['eId'];
             this.participantId = +params['pId'];
             this.placeId = +params['sId'];
@@ -63,16 +65,15 @@ export class PlaceComponent implements OnInit {
 
             this.audioPlayer = new TNSPlayer();
         });
-
-        /*Buggy attempt at fixing back navigation*/
-        //if (application.android)
-            //application.android.on(application.AndroidApplication.activityBackPressedEvent, this.goBack);
-    }
-
-    goBack() 
-    {
-        var a = this.router;
-        a.navigate(["/map", this.enterpriseId, this.participantId]);
+        // application.android.on(application.AndroidApplication.activityBackPressedEvent, (data: application.AndroidActivityBackPressedEventData) => {
+        //     console.log("Pressed back!");
+        //     this.router.navigate(["/map", this.enterpriseId, this.participantId],{
+        //         transition: {
+        //             name: "slide"
+        //         }
+        //     });
+        //     data.cancel = true;
+        // });
     }
 
     selectMedia(index)
