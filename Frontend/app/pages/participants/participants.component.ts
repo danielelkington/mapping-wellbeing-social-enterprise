@@ -3,9 +3,11 @@ import { RouterExtensions, PageRoute } from "nativescript-angular/router";
 import "rxjs/add/operator/switchMap";
 import { Participant } from "../../shared/participant";
 import { Observable } from "data/observable";
+import { Page } from "tns-core-modules/ui/page";
 import { Color } from "tns-core-modules/color";
 import { ListViewEventData } from "nativescript-telerik-ui/listview";
-import { LocalDatabaseService } from"../../shared/localDatabaseService";
+import { LocalDatabaseService } from "../../shared/localDatabaseService";
+import { Common } from "../../shared/common";
 
 // Displays a list of participants to the user and allows
 // them to select one.
@@ -22,7 +24,9 @@ export class ParticipantsComponent {
 
     constructor(private router: RouterExtensions,
         private route: PageRoute,
-        private localDatabaseService : LocalDatabaseService) { }
+        private localDatabaseService : LocalDatabaseService,
+        private page: Page,
+        private common : Common) { }
 
     ngOnInit()
     {     
@@ -42,6 +46,7 @@ export class ParticipantsComponent {
 
     selectParticipant(args)
     {
+        this.common.setActionBarHeight(this.page.actionBar.getMeasuredHeight());
         var participant = this.participants[args.index];
         this.router.navigate(["/map", this.enterpriseId, participant.id],{
             transition: {
