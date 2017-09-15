@@ -5,11 +5,11 @@
   "repository": "<fill-your-repository-here>",
   "nativescript": {
     "id": "au.edu.swinburne.backontrack",
-    "tns-ios": {
-      "version": "3.1.0"
-    },
     "tns-android": {
       "version": "3.1.1"
+    },
+    "tns-ios": {
+      "version": "3.1.0"
     }
   },
   "dependencies": {
@@ -24,6 +24,7 @@
     "@angular/router": "~4.2.0",
     "nativescript-angular": "~4.2.0",
     "nativescript-audio": "^4.0.3",
+    "nativescript-geolocation": "^3.0.1",
     "nativescript-mapbox": "^3.1.0",
     "nativescript-sqlite": "^1.1.7",
     "nativescript-telerik-ui": "3.0.3",

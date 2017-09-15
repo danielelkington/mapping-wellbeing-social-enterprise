@@ -45,5 +45,7 @@
 	</array>
 	<key>NSCalendarsUsageDescription</key>
 	<string>UIRequiresDateTimeInformation</string>
+	<key>NSLocationWhenInUseUsageDescription</key>
+	<string>Show your location on map and open places when you are near them</string>
 </dict>
 </plist>
