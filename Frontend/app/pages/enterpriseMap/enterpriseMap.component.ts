@@ -93,7 +93,7 @@ export class EnterpriseMapComponent implements OnInit
 					id: place.id,
 					title: place.name,
 					subtitle: "tap for details",
-					icon: 'res://ic_coloured_marker_' + (this.placesParticipant[place.id] * 3 - 3) % 13 + 1,
+					icon: 'res://ic_coloured_marker_' + (((this.placesParticipant[place.id] * 3 - 3) % 13) + 1),
 					onCalloutTap: (marker) => { this.onTap(marker.id); }
 				}
 			])
