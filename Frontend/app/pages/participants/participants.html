@@ -1,7 +1,10 @@
 <ActionBar title="Participants" class="bck-grnd">
 </ActionBar>
-<GridLayout class="bck-grnd">
-	<RadListView [items]="participants" row="0" class="small-spacing" (itemLoading)="onItemLoading($event)" (itemTap)="selectParticipant($event)">
+<GridLayout rows="auto, *" class="bck-grnd">
+	<StackLayout row="0" class="view-all-container" (tap)="viewAllParticipants()">
+		<Label text="View All" class="view-all"></Label>
+	</StackLayout>
+	<RadListView [items]="participants" row="1" class="small-spacing" (itemLoading)="onItemLoading($event)" (itemTap)="selectParticipant($event)">
 		<ng-template let-item="item" let-i="index">
 			<GridLayout columns="75, auto, *, auto" rows="auto">
 				<Image col="0" src="res://ic_account_circle" width="100" height="100"></Image>
