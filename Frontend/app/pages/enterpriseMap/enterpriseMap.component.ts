@@ -80,14 +80,14 @@ export class EnterpriseMapComponent implements OnInit
 				var maxEast: number;
 				var maxWest: number;
 
+				var numOfParticipants = 0;
+
 				enterprise.participants.forEach((participant) => {
 
 					participant.places.forEach((place) => {
 						this.places.push(place);
 						this.placesParticipant[place.id] = participant.id;
 					})
-
-					var numOfParticipants = 0;
 
 					if (numOfParticipants < 1)
 					{
