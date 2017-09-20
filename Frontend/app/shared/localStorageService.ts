@@ -27,11 +27,9 @@ export class LocalStorageService{
         if (filename){
             var filePath = path.join(LocalStorageService.mediaFolder.path, filename);
             if (File.exists(filePath)){
-                console.log("Getting local file ", filename);
                 return filePath;
             }
         }
-        console.log("Getting remote file ", url);
         return url;
     }
 
