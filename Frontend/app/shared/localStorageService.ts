@@ -9,6 +9,7 @@ import {LocalDatabaseService} from "./localDatabaseService";
 import {knownFolders, File, Folder, path} from "file-system";
 import {Mapbox, MapStyle, OfflineRegion} from "nativescript-mapbox";
 import {SecretConfig} from "../secretConfig";
+import * as app from "tns-core-modules/application";
 var http = require("http");
 
 @Injectable()
@@ -26,13 +27,16 @@ export class LocalStorageService{
         if (filename){
             var filePath = path.join(LocalStorageService.mediaFolder.path, filename);
             if (File.exists(filePath)){
+                console.log("Getting local file ", filename);
                 return filePath;
             }
         }
+        console.log("Getting remote file ", url);
         return url;
     }
 
     saveEnterprise(enterpriseWithoutDetail : Enterprise, enterpriseToSave : Enterprise) : Promise<any>{
+        let localStorageService = this;
         //Empty promise makes chaining easier.
         var promise : Promise<any> = Promise.resolve(0);
 
@@ -44,8 +48,15 @@ export class LocalStorageService{
         for(let m of mediaItems){
             (function(mediaItem : SimpleMediaItem){
                 if (mediaItem.url && mediaItem.filename){
-                    promise = promise.then(x =>
-                    http.getFile(mediaItem.url, path.join(LocalStorageService.mediaFolder.path, mediaItem.filename)))
+                    promise = promise.then(x =>{
+                        let mediaItemPath = path.join(LocalStorageService.mediaFolder.path, mediaItem.filename);
+                        if (app.ios){
+                            return localStorageService.saveMediaItemIOS(mediaItem.url, mediaItemPath);
+                        }
+                        else {
+                            return localStorageService.saveMediaItemAndroid(mediaItem.url,mediaItemPath);
+                        }
+                    })
                     .then(y => enterpriseWithoutDetail.setNumberDownloaded(enterpriseWithoutDetail.numberDownloaded + 1));
                 }
             })(m);
@@ -63,6 +74,28 @@ export class LocalStorageService{
         });
 
         return promise;
+    }
+
+    private saveMediaItemIOS(url: string, destinationPath: string) : Promise<any>{
+        return http.getFile(url, destinationPath);
+    }
+
+    private saveMediaItemAndroid(url: string, destinationPath: string) : Promise<any>{
+        return new Promise<any>((resolve, reject) => {
+            var worker = new Worker('./androidDownloadMediaItemWorker');
+            worker.postMessage({url: url, destination: destinationPath});
+            worker.onmessage = function(msg){
+                if (msg.data.success){
+                    resolve();
+                }
+                reject();
+            }
+            worker.onerror = function(err){
+                console.log(`An unhandled error occurred in worker: ${err.filename}, line: ${err.lineno} :`);
+                console.log(err.message);
+                reject();
+            }
+        });
     }
 
     deleteEnterprise(enterpriseToDelete: Enterprise) : Promise<any>{
