@@ -17,6 +17,7 @@ import dialogs = require("ui/dialogs");
 import timer = require("timer");
 import platform = require("platform");
 import pages = require("ui/page");
+import appSettings = require("application-settings");
 
 import * as frameModule from "tns-core-modules/ui/frame";
 import * as utilsModule from "tns-core-modules/utils/utils";
@@ -89,6 +90,10 @@ export class EnterprisesComponent implements OnInit
                 }
                 this.downloadEnterprise(enterprise, r.text);
             });
+        }
+        else if (appSettings.getBoolean("isStream", true))
+        {
+            this.downloadEnterprise(enterprise, null);
         }
         else
         {
@@ -285,6 +290,7 @@ export class EnterprisesComponent implements OnInit
     }
 }
 
+/*
 export function pageLoaded(args: EventData)
 {
     const page = args.object as pages.Page;
@@ -301,7 +307,7 @@ export function pageLoaded(args: EventData)
 
     /*items.push({ value: '1', display: 'Settings'});
     items.push({ value: '2', display: 'Disclaimer'});*/
-
+/*
     viewModel.set("items", items);
     viewModel.set("selectedIndex", null);
 
@@ -336,4 +342,4 @@ export function changeIndex(args: SelectedIndexChangedEventData)
 export function menuOpen()
 {
     dd.open();
-}
+}*/
