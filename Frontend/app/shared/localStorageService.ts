@@ -41,20 +41,23 @@ export class LocalStorageService{
         enterpriseWithoutDetail.totalThingsToDownload = 
             mediaItems.length + enterpriseToSave.participants.length; //media plus a map per participant
         
-        //Download media, updating progress bar after each one
-        for(let m of mediaItems){
-            (function(mediaItem : SimpleMediaItem){
-                if (mediaItem.url && mediaItem.filename){
-                    promise = promise.then(x =>
-                    http.getFile(mediaItem.url, path.join(LocalStorageService.mediaFolder.path, mediaItem.filename)))
-                    .then(y => enterpriseWithoutDetail.setNumberDownloaded(enterpriseWithoutDetail.numberDownloaded + 1));
-                }
-            })(m);
+        if (!this.loadStream())
+        {
+            //Download media, updating progress bar after each one
+            for(let m of mediaItems){
+                (function(mediaItem : SimpleMediaItem){
+                    if (mediaItem.url && mediaItem.filename){
+                        promise = promise.then(x =>
+                        http.getFile(mediaItem.url, path.join(LocalStorageService.mediaFolder.path, mediaItem.filename)))
+                        .then(y => enterpriseWithoutDetail.setNumberDownloaded(enterpriseWithoutDetail.numberDownloaded + 1));
+                    }
+                })(m);
+            }
+
+            //Download maps
+            promise = this.downloadMaps(enterpriseWithoutDetail, enterpriseToSave, promise);
         }
-
-        //Download maps
-        promise = this.downloadMaps(enterpriseWithoutDetail, enterpriseToSave, promise);
-
+            
         //Save to local DB last, because this is harder to recover from
         promise = promise.then(x => this.localDatabaseService.saveEnterprise(enterpriseToSave));
 
@@ -62,7 +65,7 @@ export class LocalStorageService{
             console.log("Error: ", JSON.stringify(err));
             return Observable.throw(err);
         });
-
+        
         return promise;
     }
 

@@ -14,6 +14,11 @@ import { ListViewEventData, RadListView, SwipeActionsEventData } from "nativescr
 import dialogs = require("ui/dialogs");
 import timer = require("timer");
 import platform = require("platform");
+<<<<<<< HEAD
+=======
+import pages = require("ui/page");
+import appSettings = require("application-settings");
+>>>>>>> origin/stream-media
 
 import * as frameModule from "tns-core-modules/ui/frame";
 import * as utilsModule from "tns-core-modules/utils/utils";
@@ -83,6 +88,10 @@ export class EnterprisesComponent implements OnInit
                 }
                 this.downloadEnterprise(enterprise, r.text);
             });
+        }
+        else if (appSettings.getBoolean("isStream", true))
+        {
+            this.downloadEnterprise(enterprise, null);
         }
         else
         {
@@ -277,4 +286,62 @@ export class EnterprisesComponent implements OnInit
             }
         })
     }
+<<<<<<< HEAD
 }
+=======
+}
+
+/*
+export function pageLoaded(args: EventData)
+{
+    const page = args.object as pages.Page;
+    const items: Array<string> = ["Settings", "Disclaimer"];
+    //const items = new ValueList<string>();
+
+    page.observe(GestureTypes.tap, () => {
+        console.log("page tap");
+    });
+
+    dd = page.getViewById("dd");
+
+    viewModel = new Observable();
+
+    /*items.push({ value: '1', display: 'Settings'});
+    items.push({ value: '2', display: 'Disclaimer'});*/
+/*
+    viewModel.set("items", items);
+    viewModel.set("selectedIndex", null);
+
+    page.bindingContext = viewModel;
+}
+
+export function openedMenu(args: EventData)
+{
+    console.log("menu opened");
+}
+
+export function closedMenu(args: EventData)
+{
+    console.log("menu closed");
+}
+
+export function changeIndex(args: SelectedIndexChangedEventData)
+{
+    console.log("index changed from " + args.oldIndex + " to " + args.newIndex + ". Value is "
+        + viewModel.get("items").getValue(args.newIndex));
+
+    if (args.newIndex === 1)
+    {
+        this.gotoSettings();
+    }
+    else if (args.newIndex === 2)
+    {
+        this.gotoInfo();
+    }
+}
+
+export function menuOpen()
+{
+    dd.open();
+}*/
+>>>>>>> origin/stream-media
