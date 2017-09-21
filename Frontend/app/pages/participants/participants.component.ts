@@ -49,4 +49,12 @@ export class ParticipantsComponent {
             }
         });
     }
+
+    gotoSettings() {
+        this.router.navigate(["/settings"], {
+            transition: {
+                name: "slide"
+            }
+        })
+    }
 }

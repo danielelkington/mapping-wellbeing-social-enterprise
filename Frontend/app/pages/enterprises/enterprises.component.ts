@@ -10,13 +10,10 @@ import { LocalDatabaseService } from"../../shared/localDatabaseService";
 import { Config } from "./config";
 import { View } from "tns-core-modules/ui/core/view";
 import { ListViewEventData, RadListView, SwipeActionsEventData } from "nativescript-telerik-ui/listview";
-import { DropDown, SelectedIndexChangedEventData } from "nativescript-drop-down";
-import { GestureTypes } from "ui/gestures";
 
 import dialogs = require("ui/dialogs");
 import timer = require("timer");
 import platform = require("platform");
-import pages = require("ui/page");
 
 import * as frameModule from "tns-core-modules/ui/frame";
 import * as utilsModule from "tns-core-modules/utils/utils";
@@ -24,9 +21,6 @@ import * as app from "tns-core-modules/application";
 
 import * as colorModule from "tns-core-modules/color";
 var Color = colorModule.Color;
-
-let viewModel: Observable;
-let dd: DropDown;
 
 // Displays a list of enterprises to the user and allows
 // them to select one.
@@ -283,57 +277,4 @@ export class EnterprisesComponent implements OnInit
             }
         })
     }
-}
-
-export function pageLoaded(args: EventData)
-{
-    const page = args.object as pages.Page;
-    const items: Array<string> = ["Settings", "Disclaimer"];
-    //const items = new ValueList<string>();
-
-    page.observe(GestureTypes.tap, () => {
-        console.log("page tap");
-    });
-
-    dd = page.getViewById("dd");
-
-    viewModel = new Observable();
-
-    /*items.push({ value: '1', display: 'Settings'});
-    items.push({ value: '2', display: 'Disclaimer'});*/
-
-    viewModel.set("items", items);
-    viewModel.set("selectedIndex", null);
-
-    page.bindingContext = viewModel;
-}
-
-export function openedMenu(args: EventData)
-{
-    console.log("menu opened");
-}
-
-export function closedMenu(args: EventData)
-{
-    console.log("menu closed");
-}
-
-export function changeIndex(args: SelectedIndexChangedEventData)
-{
-    console.log("index changed from " + args.oldIndex + " to " + args.newIndex + ". Value is "
-        + viewModel.get("items").getValue(args.newIndex));
-
-    if (args.newIndex === 1)
-    {
-        this.gotoSettings();
-    }
-    else if (args.newIndex === 2)
-    {
-        this.gotoInfo();
-    }
-}
-
-export function menuOpen()
-{
-    dd.open();
 }

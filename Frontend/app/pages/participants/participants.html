@@ -1,4 +1,6 @@
 <ActionBar title="Participants" class="bck-grnd">
+	<ActionItem icon="res://ic_settings_black_24dp" ios.position="right" android.position="actionBar"
+		(tap)="gotoSettings()"></ActionItem>
 </ActionBar>
 <GridLayout class="bck-grnd">
 	<RadListView [items]="participants" row="0" class="small-spacing" (itemLoading)="onItemLoading($event)" (itemTap)="selectParticipant($event)">

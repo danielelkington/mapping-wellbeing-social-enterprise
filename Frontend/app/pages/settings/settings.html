@@ -1,7 +1,12 @@
-<ActionBar title="Settings">
+<ActionBar title="Settings" class="bck-grnd">
 </ActionBar>
-<GridLayout rows="auto auto" columns="200 *">
-    <Label text="Stream Media" row="0" col="0"></Label>
-    <Switch checked="{{ getStream() }}" (checkedChange)="switchChanged($event)" row="0" col="1"></Switch>
-    <Label text="Stream media and map rather than downloading" textWrap="true" row="1" col="0"></Label>
-</GridLayout>
+<StackLayout class="bck-grnd">
+    <StackLayout class="bck-grnd-set">
+        <GridLayout rows="auto auto" columns="200 *" class="bck-grnd-set">
+            <Label text="Stream Media" row="0" col="0" class="text"></Label>
+            <Switch checked="{{ getStream() }}" (checkedChange)="switchChanged($event)" row="0" col="1"></Switch>
+        </GridLayout>
+        <Label text="Stream media and map rather than downloading" textWrap="true" row="1" col="0 1"
+            class="text-hint lbl-des"></Label>
+    </StackLayout>
+</StackLayout>
