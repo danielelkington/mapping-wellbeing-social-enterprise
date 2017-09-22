@@ -17,7 +17,12 @@ export class SettingsComponent
         return this.localStorageService.loadStream();
     }
 
-    public switchChanged(args)
+    getPlaceAutoOpen()
+    {
+        return this.localStorageService.loadAutoOpenPlace();
+    }
+
+    public streamSwitchChanged(args)
     {
         let streamSwitch = <Switch>args.object;
         
@@ -29,7 +34,19 @@ export class SettingsComponent
         {
             this.localStorageService.saveStream(false);
         }
+    }
 
-        console.log("switch is " + this.localStorageService.loadStream());
+    public autoOpenPlaceSwitchChanged(args)
+    {
+        let streamSwitch = <Switch>args.object;
+        
+        if (streamSwitch.checked)
+        {
+            this.localStorageService.saveAutoOpenPlace(true);
+        }
+        else
+        {
+            this.localStorageService.saveAutoOpenPlace(false);
+        }
     }
 }

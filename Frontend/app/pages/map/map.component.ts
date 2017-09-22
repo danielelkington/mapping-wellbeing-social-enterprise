@@ -36,6 +36,7 @@ export class MapComponent implements OnInit
 	constructor(private router : RouterExtensions,
 		private route: PageRoute,
 		private localDatabaseService: LocalDatabaseService,
+		private localStorageService: LocalStorageService,
 		private common: Common,
 		private page: Page)
 	{}
@@ -55,7 +56,9 @@ export class MapComponent implements OnInit
 			if (app.ios && this.map && x.isBackNavigation){
 				this.map.unhide();
 				let mapComponent = this;
-				timer.setTimeout(()=>mapComponent.setupAutoPlaceOpen(), 1000);
+				if (this.localStorageService.loadAutoOpenPlace()){
+					timer.setTimeout(()=>mapComponent.setupAutoPlaceOpen(), 1000);
+				}
 			}
 		});
 		this.page.on("navigatingFrom", args => {
@@ -173,13 +176,9 @@ export class MapComponent implements OnInit
 	//and compare it to distance between all map locations.
 	//If distance is less than smallThreshold, open place.
 	private setupAutoPlaceOpen(){
-		if (isEnabled()){
+		if (isEnabled() && this.localStorageService.loadAutoOpenPlace()){
 			this.monitorLocation();
 		}
-		// else{
-		// 	enableLocationRequest(true)
-		// 		.then(x => this.monitorLocation());
-		// }
 	}
 
 	private monitorLocation(){

@@ -279,7 +279,7 @@ export class EnterprisesComponent implements OnInit
     gotoSettings() {
         this.router.navigate(["/settings"], {
             transition: {
-                name: "slide"
+                name: "fade"
             }
         })
     }

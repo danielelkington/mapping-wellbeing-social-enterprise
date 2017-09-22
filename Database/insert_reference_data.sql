@@ -15,9 +15,9 @@ insert into Participant(EnterpriseId, Name, Bio)
 insert into Place(ParticipantId, SequenceNumber, Name, Latitude, Longitude, Description)
 	values ((select Id from Participant where Name = 'John'), 1, 'Home', -37.821628, 145.036412, 'John''s house by the train station contains many memories for him. It was the place where he would play with his many brothers and sisters, and it is also the place where he first came to grips with his disability. "It kind of feels strange coming back after so long," he says. "Again, seeing those nicely painted walls...it brings back so many memories. Most of them good, but some of them...a bit sad. Makes me quite emotional." John would eventually be forced out of home when his parents died in a terrible car accident and the bank repossessed the house. He spent time living on the street, before eventually workers from the local youth centre found him.');
 insert into Place(ParticipantId, SequenceNumber, Name, Latitude, Longitude, Description)
-	values ((select Id from Participant where Name = 'John'), 2, 'School', -37.822356, 145.038050, 'Met some friends');
+	values ((select Id from Participant where Name = 'John'), 2, 'School', -37.822341, 145.038099, 'Met some friends');
 insert into Place(ParticipantId, SequenceNumber, Name, Latitude, Longitude, Description)
-	values ((select Id from Participant where Name = 'John'), 3, 'Work', -37.822370, 145.039542, 'Now I work here');
+	values ((select Id from Participant where Name = 'John'), 3, 'Work', -37.822392, 145.038770, 'Now I work here');
 	
 insert into Place(ParticipantId, SequenceNumber, Name, Latitude, Longitude, Description)
 	values ((select Id from Participant where Name = 'Sarah'), 1, 'Train Station', -37.821690, 145.036450, '');

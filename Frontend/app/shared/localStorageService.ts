@@ -198,8 +198,24 @@ export class LocalStorageService{
      * true for stream, false for downloaded. First ever use
      * is true.
      */
-    public loadStream()
+    public loadStream() : boolean
     {
-        return appSettings.getBoolean("isStream", true);
+        return appSettings.getBoolean("isStream", false);
+    }
+
+    /**
+     * set whether places auto-open
+     */
+    public saveAutoOpenPlace = function(autoOpenPlace: boolean)
+    {
+        appSettings.setBoolean("isAutoOpenPlace", autoOpenPlace);
+    }
+
+    /**
+     * gets whether places auto-open
+     */
+    public loadAutoOpenPlace() : boolean
+    {
+        return appSettings.getBoolean("isAutoOpenPlace", true);
     }
 }

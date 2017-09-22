@@ -27,3 +27,7 @@ CSS to style the settings page relevant to all platforms goes here
 .lbl-des {
     margin-top: -5;
 } /* end lbl-des */
+
+.settingSwitch {
+    margin: 10;
+}
