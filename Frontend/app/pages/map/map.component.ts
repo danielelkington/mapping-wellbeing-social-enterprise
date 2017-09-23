@@ -115,6 +115,8 @@ export class MapComponent implements OnInit
 									this.drawLines();
 									this.setupAutoPlaceOpen();
 								});
+								//why should Android users have to wait half a second for their map?
+								//don't know. But if you don't make them wait it won't work half the time...
 							}, app.android ? 500 : 0);
 						}
 					});
