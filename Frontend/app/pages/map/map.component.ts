@@ -100,20 +100,22 @@ export class MapComponent implements OnInit
 							if (app.ios && this.map)
 								return; //ios is smart enough to cache the map so we can show it again
 							this.map = new Mapbox();
-							this.showMap(mapLatitude, mapLongitude)
-							.then(x => {
-								this.map.setViewport({
-									bounds: {
-										north: participant.getMaxNorthBound() + MapComponent.mapBoundaryDegrees,
-										east: participant.getMaxEastBound() + MapComponent.mapBoundaryDegrees,
-										south: participant.getMaxSouthBound() - MapComponent.mapBoundaryDegrees,
-										west: participant.getMaxWestBound() - MapComponent.mapBoundaryDegrees
-									}
+							timer.setTimeout(()=>{
+								this.showMap(mapLatitude, mapLongitude)
+								.then(x => {
+									this.map.setViewport({
+										bounds: {
+											north: participant.getMaxNorthBound() + MapComponent.mapBoundaryDegrees,
+											east: participant.getMaxEastBound() + MapComponent.mapBoundaryDegrees,
+											south: participant.getMaxSouthBound() - MapComponent.mapBoundaryDegrees,
+											west: participant.getMaxWestBound() - MapComponent.mapBoundaryDegrees
+										}
+									});
+									this.drawMarkers();
+									this.drawLines();
+									this.setupAutoPlaceOpen();
 								});
-								this.drawMarkers();
-								this.drawLines();
-								this.setupAutoPlaceOpen();
-							});
+							}, app.android ? 500 : 0);
 						}
 					});
 				});
