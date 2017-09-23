@@ -1,7 +1,10 @@
 <ActionBar title="Enterprises" class="bck-grnd">
 	<ActionItem icon="res://ic_info_outline" ios.position="right" android.position="actionBar"
 		(tap)="gotoInfo()"></ActionItem>
-</ActionBar>	
+	<ActionItem icon="res://ic_settings" ios.position="right" android.position="actionBar"
+		(tap)="gotoSettings()"></ActionItem>
+</ActionBar>
+
 <GridLayout class="bck-grnd">
 	<RadListView [items]="enterprises" id="listView" row="0" class="small-spacing" (itemTap)="selectEnterprise($event)" pullToRefresh="true" (pullToRefreshInitiated)="onPullToRefreshInitiated($event)" 
 		(itemSwipeProgressStarted)="onSwipeCellStarted($event)" itemSwipe="true" (itemLoading)="onItemLoading($event)">
@@ -29,4 +32,4 @@
 	</RadListView>
 	<ActivityIndicator [busy]="isLoading" [visibility]="isLoading ? 'visible' : 'collapsed'" row="1" 
 		horizontalAlignment="center" verticalAlignment="center"></ActivityIndicator>
-</GridLayout> 
+</GridLayout>

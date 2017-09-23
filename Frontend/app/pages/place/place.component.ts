@@ -114,7 +114,7 @@ export class PlaceComponent implements OnInit {
 
     private monitorLocation(){
         let placeComponent = this;
-        if (!isEnabled()){
+        if (!isEnabled() || !this.localStorageService.loadAutoOpenPlace()){
             return; //location is not enabled
         }
 		this.watchLocationId = watchLocation(function (loc){

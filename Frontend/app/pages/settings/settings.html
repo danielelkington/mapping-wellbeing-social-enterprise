@@ -1,0 +1,18 @@
+<ActionBar title="Settings" class="bck-grnd">
+</ActionBar>
+<StackLayout class="bck-grnd">
+    <StackLayout class="bck-grnd-set">
+        <GridLayout rows="auto auto" columns="* auto" class="bck-grnd-set">
+            <Label text="Stream Media" row="0" col="0" class="text"></Label>
+            <Switch checked="{{ getStream() }}" (checkedChange)="streamSwitchChanged($event)" row="0" col="1" rowSpan="2" class="settingSwitch"></Switch>
+            <Label text="Stream media and map rather than downloading" textWrap="true" row="1" col="0"
+                class="text-hint lbl-des"></Label>
+        </GridLayout>
+        <GridLayout rows="auto auto" columns="* auto" class="bck-grnd-set">
+            <Label text="Auto-open Place" row="0" col="0" class="text"></Label>
+            <Switch checked="{{ getPlaceAutoOpen() }}" (checkedChange)="autoOpenPlaceSwitchChanged($event)" row="0" col="1" rowSpan="2" class="settingSwitch"></Switch>
+            <Label text="When viewing a map, open a place automatically when you are near it, and close it when you move away" textWrap="true" row="1" col="0"
+                class="text-hint lbl-des"></Label>
+        </GridLayout>
+    </StackLayout>
+</StackLayout>

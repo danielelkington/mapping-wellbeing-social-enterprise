@@ -55,6 +55,22 @@ export class ParticipantsComponent {
         });
     }
 
+    gotoSettings() {
+        this.router.navigate(["/settings"], {
+            transition: {
+                name: "fade"
+            }
+        });
+    }
+
+    gotoInfo(){
+        this.router.navigate(["/info"], {
+            transition: {
+                name: "fade"
+            }
+        });
+    }
+
     viewAllParticipants()
     {
         console.log("View all tapped");

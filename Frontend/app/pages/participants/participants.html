@@ -1,4 +1,8 @@
 <ActionBar title="Participants" class="bck-grnd">
+	<ActionItem icon="res://ic_info_outline" ios.position="right" android.position="actionBar"
+		(tap)="gotoInfo()"></ActionItem>
+	<ActionItem icon="res://ic_settings" ios.position="right" android.position="actionBar"
+		(tap)="gotoSettings()"></ActionItem>
 </ActionBar>
 <GridLayout rows="auto, *" class="bck-grnd">
 	<StackLayout row="0" class="view-all-container" (tap)="viewAllParticipants()">

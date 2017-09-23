@@ -13,7 +13,9 @@ import { ListViewEventData, RadListView, SwipeActionsEventData } from "nativescr
 
 import dialogs = require("ui/dialogs");
 import timer = require("timer");
-import platform = require("platform")
+import platform = require("platform");
+import pages = require("ui/page");
+import appSettings = require("application-settings");
 
 import * as frameModule from "tns-core-modules/ui/frame";
 import * as utilsModule from "tns-core-modules/utils/utils";
@@ -83,6 +85,10 @@ export class EnterprisesComponent implements OnInit
                 }
                 this.downloadEnterprise(enterprise, r.text);
             });
+        }
+        else if (appSettings.getBoolean("isStream", true))
+        {
+            this.downloadEnterprise(enterprise, null);
         }
         else
         {
@@ -268,5 +274,13 @@ export class EnterprisesComponent implements OnInit
                 name: "fade"
             }
         });
+    }
+
+    gotoSettings() {
+        this.router.navigate(["/settings"], {
+            transition: {
+                name: "fade"
+            }
+        })
     }
 }

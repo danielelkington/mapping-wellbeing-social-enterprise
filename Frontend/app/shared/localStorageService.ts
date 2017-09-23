@@ -9,6 +9,7 @@ import {LocalDatabaseService} from "./localDatabaseService";
 import {knownFolders, File, Folder, path} from "file-system";
 import {Mapbox, MapStyle, OfflineRegion} from "nativescript-mapbox";
 import {SecretConfig} from "../secretConfig";
+import appSettings = require("application-settings");
 import * as app from "tns-core-modules/application";
 var http = require("http");
 
@@ -42,27 +43,30 @@ export class LocalStorageService{
         enterpriseWithoutDetail.totalThingsToDownload = 
             mediaItems.length + enterpriseToSave.participants.length; //media plus a map per participant
         
-        //Download media, updating progress bar after each one
-        for(let m of mediaItems){
-            (function(mediaItem : SimpleMediaItem){
-                if (mediaItem.url && mediaItem.filename){
-                    promise = promise.then(x =>{
-                        let mediaItemPath = path.join(LocalStorageService.mediaFolder.path, mediaItem.filename);
-                        if (app.ios){
-                            return localStorageService.saveMediaItemIOS(mediaItem.url, mediaItemPath);
-                        }
-                        else {
-                            return localStorageService.saveMediaItemAndroid(mediaItem.url,mediaItemPath);
-                        }
-                    })
-                    .then(y => enterpriseWithoutDetail.setNumberDownloaded(enterpriseWithoutDetail.numberDownloaded + 1));
-                }
-            })(m);
+        if (!this.loadStream())
+        {
+            //Download media, updating progress bar after each one
+            for(let m of mediaItems){
+                (function(mediaItem : SimpleMediaItem){
+                    if (mediaItem.url && mediaItem.filename){
+                        promise = promise.then(x =>{
+                            let mediaItemPath = path.join(LocalStorageService.mediaFolder.path, mediaItem.filename);
+                            if (app.ios){
+                                return localStorageService.saveMediaItemIOS(mediaItem.url, mediaItemPath);
+                            }
+                            else {
+                                return localStorageService.saveMediaItemAndroid(mediaItem.url,mediaItemPath);
+                            }
+                        })
+                        .then(y => enterpriseWithoutDetail.setNumberDownloaded(enterpriseWithoutDetail.numberDownloaded + 1));
+                    }
+                })(m);
+            }
+
+            //Download maps
+            promise = this.downloadMaps(enterpriseWithoutDetail, enterpriseToSave, promise);
         }
-
-        //Download maps
-        promise = this.downloadMaps(enterpriseWithoutDetail, enterpriseToSave, promise);
-
+            
         //Save to local DB last, because this is harder to recover from
         promise = promise.then(x => this.localDatabaseService.saveEnterprise(enterpriseToSave));
 
@@ -70,7 +74,7 @@ export class LocalStorageService{
             console.log("Error: ", JSON.stringify(err));
             return Observable.throw(err);
         });
-
+        
         return promise;
     }
 
@@ -178,5 +182,40 @@ export class LocalStorageService{
             })(p);
         }
         return promise;
+    }
+
+    /**
+     * set whether media and map is streamed or downloaded.
+     * true for streamed, false for downloaded.
+     */
+    public saveStream = function(stream: boolean)
+    {
+        appSettings.setBoolean("isStream", stream);
+    }
+
+    /**
+     * gets whether the media and map is streamed/downloaded.
+     * true for stream, false for downloaded. First ever use
+     * is true.
+     */
+    public loadStream() : boolean
+    {
+        return appSettings.getBoolean("isStream", false);
+    }
+
+    /**
+     * set whether places auto-open
+     */
+    public saveAutoOpenPlace = function(autoOpenPlace: boolean)
+    {
+        appSettings.setBoolean("isAutoOpenPlace", autoOpenPlace);
+    }
+
+    /**
+     * gets whether places auto-open
+     */
+    public loadAutoOpenPlace() : boolean
+    {
+        return appSettings.getBoolean("isAutoOpenPlace", true);
     }
 }

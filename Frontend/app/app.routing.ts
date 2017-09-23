@@ -4,10 +4,12 @@ import { MapComponent } from "./pages/map/map.component";
 import { EnterpriseMapComponent } from "./pages/enterpriseMap/enterpriseMap.component";
 import { PlaceComponent } from "./pages/place/place.component";
 import { InfoComponent } from "./pages/info/info.component";
+import { SettingsComponent } from "./pages/settings/settings.component";
 
 export const routes = [
     { path: "", redirectTo: "/enterprises", pathMatch: "full" },
     { path: "info", component: InfoComponent },
+    { path: "settings", component: SettingsComponent },
     { path: "enterprises", component: EnterprisesComponent },
     { path: "participants/:id", component: ParticipantsComponent },
     { path: "map/:eId/:pId", component: MapComponent },
@@ -21,5 +23,6 @@ export const navigatableComponents = [
     MapComponent,
     EnterpriseMapComponent,
     PlaceComponent,
-    InfoComponent
+    InfoComponent,
+    SettingsComponent
 ];

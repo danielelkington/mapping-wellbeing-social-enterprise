@@ -1,0 +1,33 @@
+/*
+CSS to style the settings page relevant to all platforms goes here
+*/
+
+.bck-grnd-set {
+    background-color: #fafafa;
+} /* end bck-grnd-set*/
+
+.text {
+    font-size: 17;
+    vertical-align: middle;
+    margin: 10;
+    color: #212121;
+} /* end text */
+
+.text-hint {
+    font-size: 15;
+    vertical-align: middle;
+    margin: 10;
+    color: gray;
+} /* text-hint */
+
+.stk-lyt {
+    margin-left: 30;
+} /* end stk-lyt */
+
+.lbl-des {
+    margin-top: -5;
+} /* end lbl-des */
+
+.settingSwitch {
+    margin: 10;
+}
