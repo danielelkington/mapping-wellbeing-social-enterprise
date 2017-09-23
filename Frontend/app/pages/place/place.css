@@ -20,3 +20,7 @@
 .mediaItemArea{
     background-color: #000000;
 }
+
+.selected{
+    background-color: #d3dade;
+}
