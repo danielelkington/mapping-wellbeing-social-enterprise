@@ -7,7 +7,7 @@
             <Image src="{{ selectedMedia.mediaPath }}" stretch="aspectFill"></Image>
         </GridLayout>
         <GridLayout *ngSwitchCase="'2'">
-            <VideoPlayer src="{{ selectedMedia.mediaPath }}" stretch="aspectFill"></VideoPlayer>
+            <VideoPlayer src="{{ selectedMedia.mediaPath }}" stretch="aspectFill" id="videoplayer"></VideoPlayer>
         </GridLayout>
         <GridLayout *ngSwitchCase="'3'">
             <Image *ngIf="!selectedMedia.audioPlaying" (tap)="playAudio()" src="res://ic_play_circle_outline_white" width="30%"></Image>
