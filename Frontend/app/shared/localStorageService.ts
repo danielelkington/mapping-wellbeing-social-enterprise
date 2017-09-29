@@ -19,7 +19,7 @@ export class LocalStorageService{
 
     private static readonly mediaFolder : Folder = Folder.fromPath(path.join(knownFolders.documents().path, "media"));
     //Extra bit of map around all places, in degrees
-    private static readonly mapBoundaryDegrees : number = 0.0001;
+    private static readonly mapBoundaryDegrees : number = 0.0005;
     private haveGivenTokenToMapbox : boolean = false;
 
     constructor(private localDatabaseService:LocalDatabaseService){
@@ -178,7 +178,7 @@ export class LocalStorageService{
                             accessToken: SecretConfig.mapboxAccessToken,
                             name: "E" + enterpriseToSave.id + "P" + participant.id,
                             style: MapStyle.EMERALD,
-                            minZoom: 16,
+                            minZoom: 12,
                             maxZoom: 16,
                             bounds : {
                                 north : participant.getMaxNorthBound() + LocalStorageService.mapBoundaryDegrees,
