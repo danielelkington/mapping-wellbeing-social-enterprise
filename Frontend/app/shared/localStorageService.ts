@@ -11,6 +11,7 @@ import {Mapbox, MapStyle, OfflineRegion} from "nativescript-mapbox";
 import {SecretConfig} from "../secretConfig";
 import appSettings = require("application-settings");
 import * as app from "tns-core-modules/application";
+import * as platformModule from "tns-core-modules/platform";
 var http = require("http");
 
 @Injectable()
@@ -18,7 +19,8 @@ export class LocalStorageService{
 
     private static readonly mediaFolder : Folder = Folder.fromPath(path.join(knownFolders.documents().path, "media"));
     //Extra bit of map around all places, in degrees
-    private static readonly mapBoundaryDegrees : number = 0.0001;
+    private static readonly mapBoundaryDegrees : number = 0.0005;
+    private haveGivenTokenToMapbox : boolean = false;
 
     constructor(private localDatabaseService:LocalDatabaseService){
     }
@@ -128,6 +130,21 @@ export class LocalStorageService{
         //Delete maps
         var mapbox = new Mapbox();
         var savedMapRegions: Array<OfflineRegion>;
+        if (!this.haveGivenTokenToMapbox && app.android){
+            //Android mapbox bug - have to give Mapbox the token somewhere before you can listOfflineRegions.
+            promise = promise.then(x => mapbox.show({
+                accessToken: SecretConfig.mapboxAccessToken,
+                margins: {
+                    top: 0,
+                    right: platformModule.screen.mainScreen.widthPixels,
+                    bottom: platformModule.screen.mainScreen.heightPixels,
+                    left: 0
+                },
+            })).then(x => {
+                this.haveGivenTokenToMapbox = true;
+                mapbox.destroy();
+            });
+        }
         promise = promise.then(x => mapbox.listOfflineRegions())
             .then(regions => {
                 savedMapRegions = regions; 
@@ -151,6 +168,7 @@ export class LocalStorageService{
     private downloadMaps(enterpriseWithoutDetail: Enterprise, enterpriseToSave: Enterprise, promise: Promise<any>) : Promise<any>
     {
         //Download mapbox region        
+        this.haveGivenTokenToMapbox = true;
         for(let p of enterpriseToSave.participants){
             (function(participant : Participant){
                 if (participant.places.length > 0){
@@ -160,7 +178,7 @@ export class LocalStorageService{
                             accessToken: SecretConfig.mapboxAccessToken,
                             name: "E" + enterpriseToSave.id + "P" + participant.id,
                             style: MapStyle.EMERALD,
-                            minZoom: 16,
+                            minZoom: 12,
                             maxZoom: 16,
                             bounds : {
                                 north : participant.getMaxNorthBound() + LocalStorageService.mapBoundaryDegrees,

@@ -9,6 +9,7 @@ import { Common } from  "../../shared/common";
 import { Page } from "tns-core-modules/ui/page";
 import { Mapbox, MapStyle, MapboxView } from "nativescript-mapbox";
 import * as app from "tns-core-modules/application";
+import * as timer from "timer";
  
 // Displays a map associated with an enterprise to the user and allows
 // them to select a place.
@@ -118,18 +119,22 @@ export class EnterpriseMapComponent implements OnInit
 					return; //ios is smart enough to cache the map so we can show it again
 				
 				this.map = new Mapbox();
-				this.showMap(this.mapLatitude, this.mapLongitude)
-				.then(x => {
-					this.map.setViewport({
-						bounds: {
-							north: maxNorth + EnterpriseMapComponent.mapBoundaryDegrees,
-							east: maxEast + EnterpriseMapComponent.mapBoundaryDegrees,
-							south: maxSouth - EnterpriseMapComponent.mapBoundaryDegrees,
-							west: maxWest - EnterpriseMapComponent.mapBoundaryDegrees
-						}
+				timer.setTimeout(()=>{
+					this.showMap(this.mapLatitude, this.mapLongitude)
+					.then(x => {
+						this.map.setViewport({
+							bounds: {
+								north: maxNorth + EnterpriseMapComponent.mapBoundaryDegrees,
+								east: maxEast + EnterpriseMapComponent.mapBoundaryDegrees,
+								south: maxSouth - EnterpriseMapComponent.mapBoundaryDegrees,
+								west: maxWest - EnterpriseMapComponent.mapBoundaryDegrees
+							}
+						});
+						this.drawMarkers();
 					});
-					this.drawMarkers();
-				});
+					//why should Android users have to wait half a second for their map?
+					//don't know. But if you don't make them wait it won't work half the time...
+				}, 500);
 			});
 		});
 	}

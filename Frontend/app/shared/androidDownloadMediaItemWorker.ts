@@ -11,14 +11,12 @@ declare var java:any;
 }
 
 function saveMediaItem(url: string, destinationPath: string) {
-    console.log("Saving ", url, "to ", destinationPath);
     let javaUrl = new java.net.URL(url);
     let javaFile = new java.io.File(destinationPath);
     let inStream = new java.io.BufferedInputStream(javaUrl.openStream());
     let outStream = new java.io.FileOutputStream(javaFile);
     let buffer = new (<any>Array).create("byte", 4096);
     let n = 0;
-    console.log("Downloading ", url, "...");
     try{
         while (-1 != (n = inStream.read(buffer)))
         {
@@ -37,6 +35,5 @@ function saveMediaItem(url: string, destinationPath: string) {
             outStream.close();
         }
     }
-    console.log("Finished downloading ", url, "!");
     (<any>global).postMessage({success:true});
 }

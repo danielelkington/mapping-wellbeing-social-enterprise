@@ -8,6 +8,7 @@ import { Common } from  "../../shared/common";
 import { registerElement } from "nativescript-angular/element-registry";
 registerElement("VideoPlayer", () => require("nativescript-videoplayer").Video);
 import { TNSPlayer } from "nativescript-audio";
+import { Video } from "nativescript-videoplayer";
 import { Observable } from "tns-core-modules/data/observable";
 import "rxjs/add/operator/switchMap";
 import { Page } from "tns-core-modules/ui/page";
@@ -15,6 +16,7 @@ import * as repeaterModule from "tns-core-modules/ui/repeater";
 import * as application from "application";
 import { isEnabled, enableLocationRequest, getCurrentLocation, watchLocation, distance, clearWatch, Location } from "nativescript-geolocation";
 import { Accuracy } from "tns-core-modules/ui/enums";
+import * as frameModule from "tns-core-modules/ui/frame";
 
 // Displays details of a place to the user
 @Component({
@@ -49,7 +51,9 @@ export class PlaceComponent implements OnInit {
 		this.page.on("navigatingFrom", args => {
 			if (this.watchLocationId){
 				clearWatch(this.watchLocationId);
-			}
+            }
+            this.stopAudio();
+            this.stopVideo();
 		});
 
         this.route.activatedRoute
@@ -83,6 +87,8 @@ export class PlaceComponent implements OnInit {
 
     selectMedia(index)
     {
+        this.stopAudio();
+        this.stopVideo();
         this.selectedMedia = this.place.mediaItems[index];
     }
 
@@ -108,8 +114,19 @@ export class PlaceComponent implements OnInit {
 
     stopAudio()
     {
-        this.audioPlayer.pause();
-        this.selectedMedia.audioPlaying = false;
+        if (this.audioPlayer.isAudioPlaying()){
+            this.audioPlayer.pause();
+        }
+        if (this.selectedMedia){
+            this.selectedMedia.audioPlaying = false;
+        }
+    }
+
+    stopVideo(){
+        var videoPlayer = <Video>frameModule.topmost().currentPage.getViewById("videoplayer");
+        if (videoPlayer){
+            videoPlayer.pause();
+        }
     }
 
     private monitorLocation(){
