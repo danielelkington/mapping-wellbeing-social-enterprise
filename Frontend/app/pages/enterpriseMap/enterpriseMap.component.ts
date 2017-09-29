@@ -134,7 +134,7 @@ export class EnterpriseMapComponent implements OnInit
 					});
 					//why should Android users have to wait half a second for their map?
 					//don't know. But if you don't make them wait it won't work half the time...
-				}, 500);
+				}, app.android ? 500 : 0);
 			});
 		});
 	}
@@ -165,7 +165,7 @@ export class EnterpriseMapComponent implements OnInit
 				top: this.common.getActionBarHeight()
 			},
 			center: {lat: mapLatitude, lng: mapLongitude},
-			zoomLevel: 12.5,
+			zoomLevel: 16,
 			showUserLocation: false,
 			hideAttribution: true,
 			hideLogo: true
