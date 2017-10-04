@@ -5,8 +5,12 @@
 		(tap)="gotoSettings()"></ActionItem>
 </ActionBar>
 <GridLayout rows="auto, *" class="bck-grnd">
-	<StackLayout row="0" class="view-all-container" (tap)="viewAllParticipants()">
-		<Label text="View All" class="view-all"></Label>
+	<StackLayout row="0" class="view-all-container" (tap)="viewAllParticipants()" height="100">
+		<GridLayout columns="75, auto, *, auto" rows="auto">
+			<Image col="0" src="res://view_all_icon" width="100" height="100"></Image>
+			<Label text="View All Participants" col="1" class="text"></Label>
+			<Image col="3" src="res://ic_keyboard_arrow_right"></Image>
+		</GridLayout>
 	</StackLayout>
 	<RadListView [items]="participants" row="1" class="small-spacing" (itemLoading)="onItemLoading($event)" (itemTap)="selectParticipant($event)">
 		<ng-template let-item="item" let-i="index">
