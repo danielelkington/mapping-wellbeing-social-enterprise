@@ -16,12 +16,6 @@ CSS to style the enterprises list page relevant to all platforms goes here
     color: #212121;
 } /* end text-head */
 
-.view-all {
-    padding: 2;
-    text-align: center;
-    color: #212121;
-}
-
 .view-all-container {
     border-bottom-width: 1px;
     border-bottom-color: #B3B3B3
