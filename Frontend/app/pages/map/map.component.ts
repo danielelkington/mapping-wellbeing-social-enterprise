@@ -183,6 +183,12 @@ export class MapComponent implements OnInit
 		if (isEnabled() && this.localStorageService.loadAutoOpenPlace()){
 			this.monitorLocation();
 		}
+
+		if (this.localStorageService.getFakeOpenPlace() && this.places.length >= 2){
+			let mapComponent = this;
+			let placeIdToOpen = this.places[1].id;
+			timer.setTimeout(()=>mapComponent.onTap(placeIdToOpen), this.localStorageService.getSecondsToWait() * 1000);
+		}
 	}
 
 	private monitorLocation(){

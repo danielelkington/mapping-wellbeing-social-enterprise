@@ -236,4 +236,20 @@ export class LocalStorageService{
     {
         return appSettings.getBoolean("isAutoOpenPlace", true);
     }
+
+    public getSecondsToWait() : number{
+        return appSettings.getNumber("secondsToWait", 2);
+    }
+
+    public saveSecondsToWait(seconds: number){
+        appSettings.setNumber("secondsToWait", seconds);
+    }
+
+    public getFakeOpenPlace(): boolean{
+        return appSettings.getBoolean("fakeOpenPlace", false);
+    }
+
+    public saveFakeOpenPlace(value: boolean){
+        appSettings.setBoolean("fakeOpenPlace", value);
+    }
 }
